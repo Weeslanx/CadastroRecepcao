@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Visitas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Visitas</h1>
+        <form action="/visitas/cadastrar" method="post">
+            <label for="visitante">Visitante</label>
+            <select id="visitante" name="visitante.id" required>
+				<option value="">Selecione um visitante</option>
+                <th:block th:each="visitante : ${visitantes}">
+                    <option th:value="${visitante.id}" th:text="${visitante.nome}"></option>
+                </th:block>
+            </select>
+
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria.id" required>
+				<option value="">Selecione um visitante</option>
+                <th:block th:each="categoria : ${categorias}">
+                    <option th:value="${categoria.id}" th:text="${categoria.nome}"></option>
+                </th:block>
+            </select>
+
+            <label for="responsavel">Responsável</label>
+            <input type="text" id="responsavel" name="responsavel" required>
+
+            <label for="horarioEntrada">Horário de Entrada</label>
+            <input type="datetime-local" id="horarioEntrada" name="horarioEntrada" required>
+
+            <label for="horarioSaida">Horário de Saída</label>
+            <input type="datetime-local" id="horarioSaida" name="horarioSaida" required>
+
+            <label for="cracha">Crachá (1 a 10)</label>
+            <input type="number" id="cracha" name="cracha" min="1" max="10" required>
+
+            <button type="submit" class="btn">Salvar Visita</button>
+        </form>
+
+        <h2>Lista de Visitas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Visitante</th>
+                    <th>Categoria</th>
+                    <th>Responsável</th>
+                    <th>Horário de Entrada</th>
+                    <th>Horário de Saída</th>
+                    <th>Crachá</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="visita : ${visitas}">
+                    <tr>
+                        <td th:text="${visita.id}"></td>
+                        <td th:text="${visita.visitante.nome}"></td>
+                        <td th:text="${visita.categoria}"></td>
+                        <td th:text="${visita.responsavel}"></td>
+                        <td th:text="${visita.horarioEntrada}"></td>
+                        <td th:text="${visita.horarioSaida}"></td>
+                        <td th:text="${visita.cracha}"></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+s

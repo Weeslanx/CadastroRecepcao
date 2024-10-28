@@ -153,40 +153,55 @@ body {
 	    }
 
 	    .add-visit {
-	        background-color: #4caf50;
-	        color: #fff;
-	        border: none;
-	        padding: 10px 15px;
-	        border-radius: 5px;
-	        cursor: pointer;
-	        position: fixed;
+		    display: inline-flex; /* Exibe o ícone e o texto em linha */
+		    align-items: center; /* Centraliza verticalmente o ícone e o texto */
+		    padding: 10px 20px;
+		    font-size: 16px;
+		    background-color: #4CAF50; /* Verde */
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    
+		    position: fixed;
 	        top: 20px;
 	        right: 20px;
-	        font-size: 1em;
-	        transition: background-color 0.3s;
-	        z-index: 1000;
-	    }
+		}
+			    
+	    .add-visit i {
+		    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+		    font-size: 18px; /* Ajuste o tamanho do ícone */
+		}
 
 	    .add-visit:hover {
 	        background-color: #45a049;
+	        
 	    }
 
 	   
 	    
-	    .add-visitor {
-	        background-color: #0d9937;
-	        color: #fff;
-	        border: none;
-	        padding: 10px 15px;
-	        border-radius: 5px;
-	        cursor: pointer;
-	        position: fixed;
+	     .add-visitor {
+		    display: inline-flex; /* Exibe o ícone e o texto em linha */
+		    align-items: center; /* Centraliza verticalmente o ícone e o texto */
+		    padding: 10px 20px;
+		    font-size: 16px;
+		    background-color: #4CAF50; /* Verde */
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    
+		    position: fixed;
 	        top: 20px;
-	        right: 180px;
-	        font-size: 1em;
-	        transition: background-color 0.3s;
-	        z-index: 1000;
-	    }
+	        right: 210px;
+		}
+	    
+	    .add-visitor i {
+		    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+		    font-size: 18px; /* Ajuste o tamanho do ícone */
+		}
 
 	    .add-visitor:hover {
 	        background-color: #45a049;
@@ -236,7 +251,7 @@ body {
 .sidebar-right input[type="number"]:focus,
 .sidebar-right input[type="datetime-local"]:focus,
 .sidebar-right select:focus {
-    border-color: #007bff; /* Cor da borda ao focar */
+    border-color: #4CAF50; /* Cor da borda ao focar */
     background-color: #333 !important ; /* Fundo mais escuro ao focar */
     outline: none;
 }
@@ -314,7 +329,7 @@ body {
 		}
 		
 		.btn {
-		    background-color: #0056b3;
+		    background-color: #4CAF50;
 		    color: white;
 		    padding: 10px 15px;
 		    border: none;
@@ -363,4 +378,3 @@ body {
 .btn-saida i {
     font-size: 15px; /* Tamanho do ícone */
 }
-

@@ -1,0 +1,354 @@
+
+
+body {
+	        background-color: #1e1e1e;
+	        color: #ffffff;
+	        font-family: 'Roboto', sans-serif;
+	        margin: 0;
+	        padding: 0;
+	    }
+	    
+	
+	  	    
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 60px; /* Largura padrão da sidebar fechada */
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    transition: width 0.2s ease-in-out;
+    z-index: 1000; /* Para sobrepor os cards */
+}
+
+.sidebar.open {
+    width: 200px; /* Largura da sidebar quando expandida */
+}
+
+.sidebar .toggle-btn {
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.sidebar .icon {
+    margin: 20px 0;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* Mostra o texto ao lado dos ícones ao expandir a sidebar */
+.sidebar .icon span {
+    display: none;
+    margin-left: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.sidebar.open .icon span {
+    display: inline;
+}
+
+.sidebar .icon:hover {
+    transform: scale(1.1); /* Aumenta ligeiramente o tamanho do ícone */
+    color: #ffa500; /* Altere para um laranja mais claro */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar:not(.open) .icon:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 50%;
+    left: 45px; /* Exibe ao lado do ícone */
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    transform: translateY(-50%);
+    opacity: 0.9;
+}
+
+.sidebar.open ~ .main-content {
+    margin-left: 200px; /* Ajusta quando a sidebar está aberta */
+}
+
+.sidebar .icon i {
+    color: #fff; /* Cor desejada para os ícones */
+}
+
+.sidebar .icon a {
+    color: inherit; /* Herdará a cor de .icon, que já definimos como branca */
+    text-decoration: none; /* Remove o sublinhado dos links */
+}
+
+	    .main-content {
+	        flex-grow: 1;
+	        padding: 30px;
+	        position: relative;
+	        overflow-y: auto;
+	        margin-left: 60px; /* Margem padrão */
+    		
+    		transition: margin-left 0.3s ease;
+	    }
+	    
+	    .main-content h1 {
+		  
+		    text-align: left;
+		    position: relative;
+		    top:-15px;
+		    left: 10px;
+		    
+	    }
+
+	    .card-container {
+	        display: flex;
+	        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	        flex-wrap: wrap;
+	        margin-top: 40px;
+	    }
+
+	    .card {
+	        background-color: #3c3c3c;
+	        border-radius: 10px;
+	        padding: 15px;
+	        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+	        transition: transform 0.3s, box-shadow 0.3s;
+	        margin: 10px;
+	    }
+
+	    .card:hover {
+	        transform: translateY(-5px);
+	        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+	    }
+
+	    .card h3 {
+	        font-size: 1.4em;
+	        margin-top: 0;
+	        color: #4caf50;
+	        font-weight: 700;
+	    }
+
+	    .card p {
+	        margin: 5px 0;
+	        font-weight: 400;
+	        line-height: 1.5;
+	        color: #e0e0e0;
+	    }
+
+	    .add-visit {
+	        background-color: #4caf50;
+	        color: #fff;
+	        border: none;
+	        padding: 10px 15px;
+	        border-radius: 5px;
+	        cursor: pointer;
+	        position: fixed;
+	        top: 20px;
+	        right: 20px;
+	        font-size: 1em;
+	        transition: background-color 0.3s;
+	        z-index: 1000;
+	    }
+
+	    .add-visit:hover {
+	        background-color: #45a049;
+	    }
+
+	   
+	    
+	    .add-visitor {
+	        background-color: #0d9937;
+	        color: #fff;
+	        border: none;
+	        padding: 10px 15px;
+	        border-radius: 5px;
+	        cursor: pointer;
+	        position: fixed;
+	        top: 20px;
+	        right: 180px;
+	        font-size: 1em;
+	        transition: background-color 0.3s;
+	        z-index: 1000;
+	    }
+
+	    .add-visitor:hover {
+	        background-color: #45a049;
+	    }
+
+	    
+.sidebar-right {
+    padding: 20px;
+    background-color: #222; /* Cor de fundo escura */
+    border-radius: 8px;
+    width: 600px; 
+    max-width: 90%;
+    margin: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Sombra mais suave e destacada */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+}
+
+.sidebar-right label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #f1f1f1; /* Cor clara para contraste */
+    font-weight: 600;
+}
+
+.sidebar-right input[type="text"],
+.sidebar-right input[type="number"],
+.sidebar-right input[type="datetime-local"],
+.sidebar-right select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 2px solid #444; /* Cor da borda escura */
+    border-radius: 5px;
+    font-size: 16px;
+    color: #e0e0e0; /* Cor do texto clara */
+    background-color: #333 !important; /* Fundo do campo em tom escuro */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* Transições suaves */
+}
+
+.sidebar-right input[type="text"]:focus,
+.sidebar-right input[type="number"]:focus,
+.sidebar-right input[type="datetime-local"]:focus,
+.sidebar-right select:focus {
+    border-color: #007bff; /* Cor da borda ao focar */
+    background-color: #333 !important ; /* Fundo mais escuro ao focar */
+    outline: none;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #333 !important; /* Fundo escuro do Select2 */
+    height: 50px; /* Altura do campo */
+    width: 100%; /* Largura total */
+    padding: 0 12px; /* Espaçamento interno */
+    margin-bottom: 16px; /* Espaço abaixo do Select2 */
+    border: 2px solid #444; /* Borda mais escura */
+    border-radius: 5px; /* Borda arredondada */
+    color: #fff !important; /* Cor do texto */
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease; /* Transição na borda */
+}
+
+/* Placeholder e texto selecionado */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 50px;
+    color: #fff !important;
+}
+
+/* Placeholder do Select2 */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #aaa;
+}
+
+/* Seta do Select2 */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 48px;
+    padding: 0 10px;
+    color: #aaa;
+}
+
+/* Estilo das opções no dropdown */
+.select2-container--default .select2-results__option {
+    background-color: #333 !important; /* Fundo escuro das opções */
+    color: #fff;
+    padding: 10px;
+}
+
+/* Hover nas opções */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #444;
+    color: #fff;
+}
+
+/* Dropdown ao abrir */
+.select2-container--default .select2-results {
+    max-height: 200px;
+    overflow-y: auto; /* Adiciona rolagem se necessário */
+    background-color: #222; /* Fundo do dropdown */
+    color: #ddd;
+    border-radius: 5px; /* Arredondamento do dropdown */
+}
+
+		
+		
+		.close-btn {
+		    background-color: transparent;
+		    border: none;
+		    color: #ddd; /* Cor da borda do botão */
+		    font-size: 1.5em;
+		    float: right;
+		    cursor: pointer;
+		}
+		
+		@media (max-width: 480px) {
+		    .sidebar-right {
+		        max-width: 100%;
+		        padding: 15px;
+		    }
+		}
+		
+		.btn {
+		    background-color: #0056b3;
+		    color: white;
+		    padding: 10px 15px;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    font-size: 16px;
+		    transition: background-color 0.3s;
+		}
+		
+		.btn:hover {
+		    background-color: #004080;
+		}
+
+
+
+
+
+
+
+.btn-saida {
+    position: absolute; /* Permite a movimentação do botão */
+    top: 10px; /* Ajuste para a posição desejada */
+    right: 10px; /* Ajuste para a posição desejada */
+    background-color: #45a049; /* Cor de fundo do botão */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+    border-radius: 50%; /* Botão redondo */
+    width: 40px; /* Largura do botão */
+    height: 40px; /* Altura do botão */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    display: flex; /* Usado para centralizar o ícone */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    transition: background-color 0.3s; /* Transição suave na cor de fundo */
+}
+
+.btn-saida:hover {
+    background-color: #57c971; /* Cor do botão ao passar o mouse */
+}
+
+.btn-saida i {
+    font-size: 15px; /* Tamanho do ícone */
+}
+

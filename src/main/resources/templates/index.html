@@ -4,343 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Entradas</title>
+    <link rel="stylesheet" href="/styles.css"> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-
+	
 	<!-- Incluir jQuery -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 	<!-- Incluir JS do Select2 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	<style>
-	    body {
-	        background-color: #1e1e1e;
-	        color: #ffffff;
-	        font-family: 'Roboto', sans-serif;
-	        margin: 0;
-	        padding: 0;
-	    }
-	    
-	    .container {
-	        display: flex;
-	        height: 100vh;
-	        overflow: hidden; /* Oculta o conteúdo que transborda */
-	    }
-
-	    .sidebar {
-	        width: 60px; /* Largura reduzida inicialmente */
-	        background-color: #2b2b2b;
-	        padding: 10px 5px; /* Ajusta o padding */
-	        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-	        transition: width 0.3s; /* Suave transição para a largura */
-	    }
-
-	    .sidebar:hover {
-	        width: 250px; /* Largura expandida ao passar o mouse */
-	    }
-
-	    .sidebar h2 {
-	        text-align: center;
-	        font-weight: 500;
-	        color: #f0f0f0;
-	        display: none; /* Oculta o título inicialmente */
-	    }
-
-	    .sidebar:hover h2 {
-	        display: block; /* Mostra o título ao passar o mouse */
-	    }
-
-	    .sidebar a {
-	        display: block;
-	        color: #ffffff;
-	        text-decoration: none;
-	        padding: 10px;
-	        margin: 10px 0;
-	        border-radius: 5px;
-	        transition: background-color 0.3s, opacity 0.3s; /* Combina as transições */
-	        white-space: nowrap; /* Evita quebra de linha */
-	        opacity: 0; /* Oculta as opções inicialmente */
-	    }
-
-	    .sidebar:hover a {
-	        opacity: 1; /* Mostra as opções ao passar o mouse */
-	    }
-
-	    .sidebar a:hover {
-	        background-color: #3c3c3c;
-	    }
-
-	    .main-content {
-	        flex-grow: 1;
-	        padding: 30px;
-	        position: relative;
-	        overflow-y: auto;
-	    }
-
-	    .card-container {
-	        display: flex;
-	        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	        flex-wrap: wrap;
-	        margin-top: 40px;
-	    }
-
-	    .card {
-	        background-color: #3c3c3c;
-	        border-radius: 10px;
-	        padding: 15px;
-	        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-	        transition: transform 0.3s, box-shadow 0.3s;
-	        margin: 10px;
-	    }
-
-	    .card:hover {
-	        transform: translateY(-5px);
-	        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-	    }
-
-	    .card h3 {
-	        font-size: 1.4em;
-	        margin-top: 0;
-	        color: #4caf50;
-	        font-weight: 700;
-	    }
-
-	    .card p {
-	        margin: 5px 0;
-	        font-weight: 400;
-	        line-height: 1.5;
-	        color: #e0e0e0;
-	    }
-
-	    .add-visit {
-	        background-color: #4caf50;
-	        color: #fff;
-	        border: none;
-	        padding: 10px 15px;
-	        border-radius: 5px;
-	        cursor: pointer;
-	        position: fixed;
-	        top: 20px;
-	        right: 20px;
-	        font-size: 1em;
-	        transition: background-color 0.3s;
-	        z-index: 1000;
-	    }
-
-	    .add-visit:hover {
-	        background-color: #45a049;
-	    }
-
-	    .sidebar a#settings {
-	        background-color: #ff9800;
-	    }
-
-	    .sidebar-right {
-	        padding: 20px;
-	        background-color: #f9f9f9;
-	        border-radius: 8px;
-	        width: 600px; /* Mantenha a largura desejada */
-	        max-width: 90%; /* Limite máximo para telas menores */
-	        margin: 0; /* Remove a margem */
-	        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	        position: fixed;
-	        top: 50%; /* Centraliza verticalmente */
-	        left: 50%; /* Centraliza horizontalmente */
-	        transform: translate(-50%, -50%); /* Move para cima e para a esquerda */
-	        box-sizing: border-box; /* Inclui padding e border no cálculo da largura total */
-	    }
-
-	    .sidebar-right label {
-	        display: block;
-	        margin-bottom: 8px; /* Aumentado para dar mais espaço */
-	        font-size: 14px;
-	        color: #333;
-	        font-weight: 600; /* Aumentado para mais destaque */
-	    }
-
-	    /* Estilos para inputs e selects */
-	    .sidebar-right input[type="text"],
-		.sidebar-right input[type="number"],
-	    .sidebar-right input[type="datetime-local"],
-	    .sidebar-right select {
-	        width: 100%;
-	        padding: 12px; /* Aumentado para mais conforto */
-	        margin-bottom: 16px;
-	        border: 2px solid #ccc;
-	        border-radius: 5px;
-	        font-size: 16px; /* Padroniza o tamanho da fonte */
-	        box-sizing: border-box; /* Inclui padding e border no cálculo da largura total */
-	        transition: border-color 0.3s ease; /* Transição suave para a borda */
-	    }
-
-	    /* Estilo para foco nos inputs e selects */
-	    .sidebar-right input[type="text"]:focus,
-		.sidebar-right input[type="number"]:focus,
-	    .sidebar-right input[type="datetime-local"]:focus,
-	    .sidebar-right select:focus {
-	        border-color: #4a90e2; /* Cor da borda ao focar */
-	        outline: none; /* Remove o contorno padrão */
-	    }
-
-	    /* Estilo para o select */
-		.sidebar-right select {
-		    width: 100%;
-		    padding: 12px; /* Certifique-se de que o padding seja igual ao dos inputs */
-		    margin-bottom: 16px;
-		    border: 2px solid #ccc; /* Altere conforme necessário */
-		    border-radius: 5px;
-		    font-size: 16px; /* Certifique-se de que o tamanho da fonte seja igual */
-		    box-sizing: border-box; /* Inclui padding e border no cálculo da largura total */
-		    transition: border-color 0.3s ease; /* Transição suave para a borda */
-		}
-
-	    /* Estilo para o select ao passar o mouse */
-	    .sidebar-right select:hover {
-	        border-color: #4a90e2; /* Cor da borda ao passar o mouse */
-	    }
-
-	    .close-btn {
-	        background-color: transparent;
-	        border: none;
-	        color: black;
-	        font-size: 1.5em;
-	        float: right;
-	        cursor: pointer;
-	    }
-
-	    @media (max-width: 480px) {
-	        .sidebar-right {
-	            max-width: 100%;
-	            padding: 15px;
-	        }
-	    }
-		.btn {
-		      background-color: #007bff; /* Cor de fundo do botão */
-		      color: white; /* Cor do texto do botão */
-		      padding: 10px 15px; /* Espaçamento interno */
-		      border: none; /* Remove a borda */
-		      border-radius: 5px; /* Borda arredondada */
-		      cursor: pointer; /* Cursor de mão ao passar o mouse */
-		      font-size: 16px;
-		      transition: background-color 0.3s; /* Transição suave para a cor de fundo */
-		  }
-
-		  .btn:hover {
-		      background-color: #0056b3; /* Cor do botão ao passar o mouse */
-		  }
-		  /* Estilo para o Select2 */
-		  .select2-container--default .select2-selection--single {
-		      background-color: #fff; /* Fundo do Select2 */
-		      height: 50px; /* Ajuste a altura conforme necessário */
-		      box-shadow: none; /* Remove a sombra padrão */
-		      width: 100%; /* Faz o Select2 ocupar a largura total do contêiner pai */
-		      padding: 0 12px; /* Aumentado para mais conforto (espaçamento horizontal) */
-		      margin-bottom: 16px; /* Espaço abaixo do Select2 */
-		      border: 2px solid #ccc; /* Borda */
-		      border-radius: 5px; /* Arredondamento das bordas */
-		      font-size: 16px; /* Padroniza o tamanho da fonte */
-		      box-sizing: border-box; /* Inclui padding e border no cálculo da largura total */
-		      transition: border-color 0.3s ease; /* Transição suave para a borda */
-		      text-align: center; /* Centraliza o texto */
-		  }
-
-		  /* Estilo do placeholder e texto selecionado */
-		  .select2-container--default .select2-selection--single .select2-selection__rendered {
-		      line-height: 50px; /* Centraliza verticalmente o texto */
-		      color: #000; /* Cor do texto */
-		  }
-
-		  /* Estilo do placeholder */
-		  .select2-container--default .select2-selection--single .select2-selection__placeholder {
-		      color: #aaa; /* Cor do placeholder */
-		      line-height: 50px; /* Alinha o placeholder verticalmente */
-		  }
-
-		  /* Estilo da seta do Select2 */
-		  .select2-container--default .select2-selection--single .select2-selection__arrow {
-		      height: 48px; /* Alinha a seta com o campo */
-		      margin-top: 1px; /* Centraliza verticalmente a seta */
-		      padding: 0 10px; /* Adiciona espaçamento à seta */
-		  }
-
-		  /* Estilo para texto longo com reticências */
-		  .select2-container--default .select2-selection--single .select2-selection__rendered[title] {
-		      overflow: hidden; /* Evita que o texto transborde */
-		      text-overflow: ellipsis; /* Adiciona reticências se o texto for longo */
-		  }
-
-		  /* Estilo do dropdown do Select2 */
-		  .select2-container--default .select2-results__option {
-		      background-color: #fff; /* Cor de fundo das opções */
-		      color: #000; /* Cor do texto das opções */
-		      padding: 10px; /* Adiciona espaçamento às opções */
-		  }
-
-		  /* Estilo do hover das opções */
-		  .select2-container--default .select2-results__option--highlighted[aria-selected] {
-		      background-color: #444; /* Cor de fundo ao passar o mouse */
-		      color: #fff; /* Cor do texto ao passar o mouse */
-		  }
-
-		  /* Estilo do Select2 no estado de foco */
-		  .select2-container--default .select2-selection--single:focus {
-		      border-color: #007bff; /* Cor da borda no foco */
-		      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra no foco */
-		  }
-
-		  /* Estilo do dropdown ao abrir */
-		  .select2-container--default .select2-results {
-		      max-height: 200px; /* Limite a altura do dropdown */
-		      overflow-y: auto; /* Adiciona rolagem se necessário */
-		  }
-
-
-
-			  
-			  	</style>
+	
 
 
 
 
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-			
-			
-            <h2>Registro de Entradas</h2>
-			
-			
-            <a href="#" id="add-visit">Inserir Nova Visita</a>
-            <a href="#" id="add-category">Cadastrar Categoria</a>
-			
-			
-			
-            <a href="#" id="add-visitor">Cadastrar Visitante</a>
-			
-			
-            <a href="#" id="settings">Configuração</a>
+    <div class="sidebar" id="sidebar">
+        <!-- Botão de abrir/fechar -->
+        <div class="toggle-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        
+        
+         <div class="icon" data-tooltip="Entradas">
+	        <a href="/registros/visitas">
+	            <i class="fa fa-paper-plane"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <span>Visitas Finalizadas</span>
+	        </a>
+	    </div>
+        
+          <div class="icon" data-tooltip="finalizados">
+	        <a href="/registros/visitas/finalizados">
+	            <i class="fas fa-check-circle"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <span>Visitas Finalizadas</span>
+	        </a>
+	    </div>
+        <!-- Ícone de Configuração -->
+        <div class="icon" data-tooltip="Configuração">
+            <i class="fas fa-cog"></i>
+            <span>Configuração</span>
         </div>
 
+     
+	    
+	   
+    </div>
+    
         <div class="main-content">
             <h1>Visitas Registradas</h1>
             
             <!-- Container para exibir os cartões das visitas -->
             <div class="card-container" id="visitas-container">
-                <th:block th:each="visita : ${visitas}">
-                    <div class="card">
-                        <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
-                        <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
-                        <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
-                        <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>
-						<p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
-						
-                    </div>
-                </th:block>
-            </div>
+			     <th:block th:each="visita : ${visitas}"
+               			th:if="${visita.horarioSaida} == null">
+			        <div class="card">
+			            <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
+			            <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
+			            <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
+			           <!--   <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>-->
+			            <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
+			            <button class="btn-saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
+			                <i class="fas fa-sign-out-alt"></i>
+			            </button>
+			        </div>
+			    </th:block>
+			</div>
 
-			<div class="sidebar-right" id="sidebar-right" style="display: none;">
+			<div class="sidebar-right" id="sidebar-visitor" style="display: none;">
 			                <button class="close-btn" id="close-btn">&times;</button> <!-- Botão de fechar -->
 							<br><br>
 			                <form action="/visitantes/cadastrar" method="post">
@@ -367,6 +100,19 @@
 							            <button type="submit" class="btn">Salvar Categoria</button>
 						    </form>
 						</div>
+						
+						
+						
+						
+						
+						<div class="sidebar-right" id="sidebar-add-saida" style="display: none;">
+						    <button class="close-btn" id="close-saida-btn">&times;</button>
+						    <br><br>
+						    <input type="datetime-local" id="horarioSaida" />
+						    <button class ="btn" onclick="atualizarHorarioSaida()">Atualizar Horário de Saída</button>
+						</div>
+						
+						
 
 						<div class="sidebar-right" id="sidebar-visitas" style="display: none;">
 						    <button class="close-btn" id="close-visitas-btn">&times;</button>
@@ -396,9 +142,9 @@
 						        <label for="horarioEntrada">Horário de Entrada</label>
 						        <input type="datetime-local" id="horarioEntrada" name="horarioEntrada" required>
 
-						        <label for="horarioSaida">Horário de Saída</label>
+						     <!--     <label for="horarioSaida">Horário de Saída</label>
 						        <input type="datetime-local" id="horarioSaida" name="horarioSaida" required>
-
+								-->
 						        
 
 						  
@@ -408,86 +154,139 @@
 						        <button type="submit" class="btn">Salvar Visita</button>
 						    </form>
 						</div>
-
+						
+								   <button class="add-visitor" id="add-visitor-btn">Cadastrar Visitante</button>
 						           <button class="add-visit" id="add-visit-btn">Adicionar Visita</button>
 						       </div>
-						   </div>
+						  
 			    
-			    <script>
-					    
-						document.getElementById('add-visit-btn').addEventListener('click', function() {
-						       var sidebarRight = document.getElementById('sidebar-visitas');
-						       sidebarRight.style.display = 'block'; // Mostra o formulário
+<script>
 
-						      
-						       fetch('/visitas/dados')
-						           .then(response => response.json())
-						           .then(data => {
-						               // Preencher o dropdown de visitantes
-						               const visitanteSelect = document.getElementById('visitante');
-						               visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; // Limpa opções anteriores
-						               data.visitantes.forEach(visitante => {
-						                   const option = document.createElement('option');
-						                   option.value = visitante.id; // ID do visitante
-						                   option.textContent = visitante.nome; // Nome do visitante
-						                   visitanteSelect.appendChild(option);
-						               });
 
-						               // Preencher o dropdown de categorias
-						               const categoriaSelect = document.getElementById('categoria');
-						               categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; // Limpa opções anteriores
-						               data.categorias.forEach(categoria => {
-						                   const option = document.createElement('option');
-						                   option.value = categoria.id; // ID da categoria
-						                   option.textContent = categoria.nome; // Nome da categoria
-						                   categoriaSelect.appendChild(option);
-						               });
-						           })
-						           .catch(error => console.error('Erro ao carregar dados:', error));
-						   });
-				
-				
-				document.getElementById('close-visitas-btn').addEventListener('click', function() {
-				var sidebarRight = document.getElementById('sidebar-visitas');
-				sidebarRight.style.display = 'none'; // Esconde o formulário
-					});
-					
-					        //cadastro para categoria 
-			  		document.getElementById('add-category').addEventListener('click', function() {
-					 var sidebarRight = document.getElementById('sidebar-category');
-					sidebarRight.style.display = 'block'; // Mostra o formulário
-					});
-		
-							        // Fechar o formulário ao clicar no botão de fechar
-					document.getElementById('close-category-btn').addEventListener('click', function() {
-					var sidebarRight = document.getElementById('sidebar-category');
-					sidebarRight.style.display = 'none'; // Esconde o formulário
-					 });
-							
-					
-					
-					
-			        // Mostrar o formulário de cadastro de visitante
-			        document.getElementById('add-visitor').addEventListener('click', function() {
-			            var sidebarRight = document.getElementById('sidebar-right');
-			            sidebarRight.style.display = 'block'; // Mostra o formulário
-			        });
 
-			        // Fechar o formulário ao clicar no botão de fechar
-			        document.getElementById('close-btn').addEventListener('click', function() {
-			            var sidebarRight = document.getElementById('sidebar-right');
-			            sidebarRight.style.display = 'none'; // Esconde o formulário
-			        });
-					
-					$(document).ready(function() {
-					      // Inicializa o Select2 nos elementos com a classe select2
-					      $('.select2').select2({
-					          placeholder: "Selecione uma opção",
-					          allowClear: true
-					      });
-					  });
-					
-					
-			    </script>
+let currentVisitaId = null;
+
+function abrirSidebar(visitaId) {
+    currentVisitaId = visitaId; // Armazena o ID da visita atual
+    document.getElementById('sidebar-add-saida').style.display = 'block';
+}
+
+document.getElementById('close-saida-btn').addEventListener('click', function() {
+    document.getElementById('sidebar-add-saida').style.display = 'none';
+    currentVisitaId = null; // Limpa o ID da visita atual
+});
+
+function atualizarHorarioSaida() {
+    const horarioSaida = document.getElementById('horarioSaida').value;
+
+    if (horarioSaida && currentVisitaId) {
+        fetch('/visitas/atualizar-saida', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `id=${currentVisitaId}&horarioSaida=${encodeURIComponent(horarioSaida)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                fecharSidebar();
+                location.reload(); // Recarrega a página para atualizar as informações
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao atualizar o horário de saída.');
+        });
+    } else {
+        alert('Por favor, informe o horário de saída.');
+    }
+}
+
+function fecharSidebar() {
+    document.getElementById('sidebar-add-saida').style.display = 'none';
+    currentVisitaId = null; // Limpa o ID da visita atual
+}
+    // Inicializa o Select2 nos elementos com a classe select2
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Selecione uma opção",
+            allowClear: true
+        });
+    });
+
+    // Função para mostrar o formulário de visitantes
+    document.getElementById('add-visitor-btn').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-visitor');
+        sidebarRight.style.display = 'block'; // Mostra o formulário
+    });
+
+    // Função para fechar o formulário de visitantes
+    document.getElementById('close-btn').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-visitor');
+        sidebarRight.style.display = 'none'; // Esconde o formulário
+    });
+
+    // Função para mostrar o formulário de visitas
+    document.getElementById('add-visit-btn').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-visitas');
+        sidebarRight.style.display = 'block'; // Mostra o formulário
+
+        fetch('/visitas/dados')
+            .then(response => response.json())
+            .then(data => {
+                // Preencher o dropdown de visitantes
+                const visitanteSelect = document.getElementById('visitante');
+                visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; // Limpa opções anteriores
+                data.visitantes.forEach(visitante => {
+                    const option = document.createElement('option');
+                    option.value = visitante.id; // ID do visitante
+                    option.textContent = visitante.nome; // Nome do visitante
+                    visitanteSelect.appendChild(option);
+                });
+
+                // Preencher o dropdown de categorias
+                const categoriaSelect = document.getElementById('categoria');
+                categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; // Limpa opções anteriores
+                data.categorias.forEach(categoria => {
+                    const option = document.createElement('option');
+                    option.value = categoria.id; // ID da categoria
+                    option.textContent = categoria.nome; // Nome da categoria
+                    categoriaSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar dados:', error));
+    });
+
+    // Função para fechar o formulário de visitas
+    document.getElementById('close-visitas-btn').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-visitas');
+        sidebarRight.style.display = 'none'; // Esconde o formulário
+    });
+
+    // Função para mostrar o formulário de categorias
+    document.getElementById('add-category').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-category');
+        sidebarRight.style.display = 'block'; // Mostra o formulário
+    });
+
+    // Função para fechar o formulário de categorias
+    document.getElementById('close-category-btn').addEventListener('click', function() {
+        var sidebarRight = document.getElementById('sidebar-category');
+        sidebarRight.style.display = 'none'; // Esconde o formulário
+    });
+    
+
+   
+    // Função para alternar a visibilidade da sidebar
+    function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("open");
+    }
+</script>
+
 	</body>
 </html>

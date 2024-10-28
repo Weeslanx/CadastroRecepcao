@@ -117,17 +117,15 @@
 						<div class="sidebar-right" id="sidebar-visitas" style="display: none;">
 						    <button class="close-btn" id="close-visitas-btn">&times;</button>
 						    <br><br>
-						    <form action="/visitas/cadastrar" method="post">
+						    <form id="visitaForm" action="/visitas/cadastrar" method="post" onsubmit="return verificarCracha(event)">
 						        <label for="visitante">Visitante</label>
 						        <select id="visitante" name="visitante.id" class="select2" required>
 						            <option value="">Selecione um visitante</option>
 						            <th:block th:each="visitante : ${visitantes}">
 						                <option th:value="${visitante.id}" th:text="${visitante.nome}"></option>
-						            
-						            
-						</th:block>
+						            </th:block>
 						        </select>
-
+						
 						        <label for="categoria">Categoria</label>
 						        <select id="categoria" name="categoria.id" class="select2" required>
 						            <option value="">Selecione uma categoria</option>
@@ -135,22 +133,18 @@
 						                <option th:value="${categoria.id}" th:text="${categoria.nome}"></option>
 						            </th:block>
 						        </select>
-
+						
 						        <label for="responsavel">Responsável</label>
 						        <input type="text" id="responsavel" name="responsavel" required>
-
+						
 						        <label for="horarioEntrada">Horário de Entrada</label>
 						        <input type="datetime-local" id="horarioEntrada" name="horarioEntrada" required>
-
-						     <!--     <label for="horarioSaida">Horário de Saída</label>
-						        <input type="datetime-local" id="horarioSaida" name="horarioSaida" required>
-								-->
-						        
-
-						  
-						<label for="cracha">Crachá (1 a 10)</label>
+						
+						        <label for="cracha">Crachá (1 a 10)</label>
 						        <input type="number" id="cracha" name="cracha" min="1" max="10" required>
 						        <br><br>
+						        <div id="error-message"  style="color: red; display: none;"></div> <!-- Mensagem de erro -->
+						        <br>
 						        <button type="submit" class="btn">Salvar Visita</button>
 						    </form>
 						</div>
@@ -285,6 +279,30 @@ function fecharSidebar() {
     function toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
         sidebar.classList.toggle("open");
+    }
+    
+    function verificarCracha(event) {
+        event.preventDefault(); // Previne o envio do formulário
+        
+        const cracha = document.getElementById('cracha').value;
+        const errorMessage = document.getElementById('error-message');
+
+        fetch(`/visitas/verificar-cracha?cracha=${cracha}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.emUso) {
+                    errorMessage.textContent = `O crachá ${cracha} já está em uso. Por favor, escolha outro.`;
+                    errorMessage.style.display = 'block'; // Exibe a mensagem de erro
+                } else {
+                    errorMessage.style.display = 'none'; // Esconde a mensagem de erro
+                    document.getElementById('visitaForm').submit(); // Envia o formulário
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao verificar o crachá:', error);
+                errorMessage.textContent = 'Ocorreu um erro ao verificar o crachá. Tente novamente.';
+                errorMessage.style.display = 'block'; // Exibe a mensagem de erro
+            });
     }
 </script>
 

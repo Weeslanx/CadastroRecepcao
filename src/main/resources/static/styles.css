@@ -124,12 +124,19 @@ body {
 	        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 	        transition: transform 0.3s, box-shadow 0.3s;
 	        margin: 10px;
+			position: relative; /* Torna o cartão o elemento de referência para o botão */
+    		overflow: hidden;
+    		
 	    }
 
 	    .card:hover {
 	        transform: translateY(-5px);
 	        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 	    }
+	    
+	    
+	    
+	    
 
 	    .card h3 {
 	        font-size: 1.4em;
@@ -338,14 +345,19 @@ body {
     width: 40px; /* Largura do botão */
     height: 40px; /* Altura do botão */
     cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    display: flex; /* Usado para centralizar o ícone */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    transition: background-color 0.3s; /* Transição suave na cor de fundo */
+    visibility: hidden; /* Oculta o botão inicialmente */
+    opacity: 0; /* Torna o botão invisível */
+    transition: visibility 0s, opacity 0.3s ease; /* Transição suave */
+    z-index: 10; /* Garante que o botão fique acima do cartão */
 }
 
 .btn-saida:hover {
     background-color: #57c971; /* Cor do botão ao passar o mouse */
+}
+
+.card:hover .btn-saida {
+     visibility: visible; /* Torna o botão visível */
+    opacity: 1; /* Altera a opacidade para tornar o botão visível */
 }
 
 .btn-saida i {

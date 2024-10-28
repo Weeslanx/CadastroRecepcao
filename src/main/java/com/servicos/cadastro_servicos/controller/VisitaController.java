@@ -84,6 +84,19 @@ public class VisitaController {
         return "redirect:/registros/visitas"; // Redireciona para a mesma página para exibir a lista atualizada
     }
     
+    @GetMapping("/visitas/verificar-cracha")
+    @ResponseBody
+    public Map<String, Boolean> verificarCracha(@RequestParam int cracha) {
+        boolean emUso = visitaRepository.findAll().stream()
+            .filter(v -> v.getHorarioSaida() == null) // Filtra as visitas sem horário de saída
+            .anyMatch(v -> v.getCracha() == cracha); // Verifica se o crachá está em uso
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("emUso", emUso);
+        return response; // Retorna a verificação como JSON
+    }
+    
+    
     @PostMapping("/visitas/atualizar-saida")
     @ResponseBody
     public Map<String, String> atualizarHorarioSaida(

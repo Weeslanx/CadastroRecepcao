@@ -57,7 +57,8 @@
             
             <!-- Container para exibir os cartões das visitas -->
             <div class="card-container" id="visitas-container">
-			    <th:block th:each="visita : ${visitas}">
+			  <th:block th:each="visita : ${visitas}"
+               			th:if="${visita.horarioSaida} != null">
 			        <div class="card">
 			            <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
 			            <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>

@@ -28,7 +28,7 @@ public class Visita {
     private LocalDateTime horarioEntrada;
     private LocalDateTime horarioSaida;
 
-    // De 1 a 10
+    
     private int cracha; 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     // Construtor padrão

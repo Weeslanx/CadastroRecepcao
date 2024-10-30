@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -46,13 +47,26 @@ public class VisitaController {
     }
     
     @GetMapping("/registros/visitas/finalizados")
-    public String listarVisitasfinalizadas(Model model) {
-        List<Visita> visitas = visitaRepository.findAll(); // Busca todas as visitas cadastradas
+    public String listarVisitasFinalizadas(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+            Model model) {
+
+        List<Visita> visitas;
+
+        if (startDate != null && endDate != null) {
+            // Busca as visitas finalizadas dentro do intervalo de datas
+            visitas = visitaRepository.findByHorarioSaidaBetween(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+        } else {
+            // Busca todas as visitas finalizadas se nenhuma data for passada
+            visitas = visitaRepository.findByHorarioSaidaIsNotNull();
+        }
 
         model.addAttribute("visitas", visitas); // Passa a lista de visitas para o template
 
         return "finalizados"; // Nome do template HTML que exibe as visitas
     }
+
     
     @GetMapping("/visitas")
     public String mostrarFormulario(Model model) {
@@ -83,6 +97,7 @@ public class VisitaController {
         visitaRepository.save(visita); // Salva a nova visita no repositório
         return "redirect:/registros/visitas"; // Redireciona para a mesma página para exibir a lista atualizada
     }
+    
     
     @GetMapping("/visitas/verificar-cracha")
     @ResponseBody

@@ -2,10 +2,13 @@ package com.servicos.cadastro_servicos.controller;
 
 import com.servicos.cadastro_servicos.model.Visitante;
 import com.servicos.cadastro_servicos.VisitanteService; // Importando o serviço
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
@@ -26,7 +29,7 @@ public class VisitanteControlle {
         model.addAttribute("visitante", new Visitante());
         List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista do banco de dados
         model.addAttribute("visitantes", visitantes);
-        return "cadastrar_visitante"; // nome do template do HTML
+        return "index"; // nome do template do HTML
     }
 
     // Cadastra o visitante e atualiza a lista
@@ -37,7 +40,7 @@ public class VisitanteControlle {
             model.addAttribute("erro", "O nome do visitante é obrigatório.");
             List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista do banco de dados
             model.addAttribute("visitantes", visitantes);
-            return "cadastrar_visitante";
+            return "redirect:/registros/visitas";
         }
 
         // Salva o visitante no banco de dados

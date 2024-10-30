@@ -20,7 +20,7 @@ public class CategoriaController {
     @GetMapping("/cadastrar")
     public String exibirFormularioCadastro(Model model) {
         model.addAttribute("categorias", categoriaRepository.findAll());
-        return "cadastrar_categoria"; 
+        return "index"; 
     }
 
     @PostMapping("/cadastrar")

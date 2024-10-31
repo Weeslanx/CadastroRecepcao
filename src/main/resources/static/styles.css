@@ -21,8 +21,9 @@ body {
     flex-direction: column;
     align-items: center;
     padding-top: 10px;
-    transition: width 0.2s ease-in-out;
-    z-index: 1000; /* Para sobrepor os cards */
+   
+    z-index: 1008; /* Para sobrepor os cards */
+     transition: left 0.6s ease 0.6s, color 0.6s ease;
 }
 
 .sidebar.open {
@@ -33,22 +34,24 @@ body {
     font-size: 24px;
     color: #fff;
     cursor: pointer;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .sidebar .icon {
-    margin: 20px 0;
+    margin: 40px 0;
     color: #fff;
     font-size: 24px;
     cursor: pointer;
     position: relative;
     transition: color 0.3s ease;
+    margin-top: 5px;
 }
 
 /* Mostra o texto ao lado dos ícones ao expandir a sidebar */
 .sidebar .icon span {
     display: none;
-    margin-left: 10px;
+    margin-left: 20px;
     font-size: 16px;
     color: #fff;
 }
@@ -78,7 +81,7 @@ body {
     opacity: 0.9;
 }
 
-.sidebar.open ~ .main-content {
+.sidebar.open ~ .main-content  {
     margin-left: 200px; /* Ajusta quando a sidebar está aberta */
 }
 
@@ -98,14 +101,14 @@ body {
 	        overflow-y: auto;
 	        margin-left: 60px; /* Margem padrão */
     		
-    		transition: margin-left 0.3s ease;
+    		transition: margin-left 0.2s ease;
 	    }
 	    
 	    .main-content h1 {
 		  
 		    text-align: left;
 		    position: relative;
-		    top:-15px;
+		    top:-40px;
 		    left: 10px;
 		    
 	    }
@@ -388,6 +391,7 @@ body {
 		    cursor: pointer;
 		    font-size: 16px;
 		    transition: background-color 0.3s;
+		  
 		}
 		
 		.btn:hover {
@@ -432,18 +436,21 @@ body {
 
 /* Container da barra de pesquisa */
 .search-container {
-    position: fixed;
-    top:20px;
-    right:150px;
+    position: relative;
+   	
+    right: 145px; /* Ajuste inicial para o lado esquerdo */
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 100%;
     max-width: 500px;
     padding: 0 10px;
     box-sizing: border-box;
+    transition: margin-left 0.2s ease; /* Transição suave para margin-left */
 }
+
+
+
 
 /* Campo de entrada de pesquisa */
 #search-input {
@@ -457,18 +464,18 @@ body {
     background-color: #333;
     color: #fff;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  
+  
 }
 
 #search-input:hover {
     background-color: #444;
-    box-shadow: 0 6px 12px rgba(87, 201, 113, 0.3);
+    
 }
 
 #search-input:focus {
     border-color: #57c971;
     background-color: #222;
-    box-shadow: 0 6px 12px rgba(87, 201, 113, 0.4);
 }
 
 #search-input::placeholder {
@@ -495,6 +502,7 @@ body {
     /* Estilo ao passar o mouse sobre o botão */
     #filter-btn:hover {
         background-color: #2eaf55; 
+          transform: translateY(-2px); /* Eleva o botão levemente */
     }
 
     /* Estilo para o botão ativo */
@@ -513,13 +521,13 @@ body {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
-        z-index: 1000; /* Fica acima de outros elementos */
+        z-index: 1000152; /* Fica acima de outros elementos */
         text-align: center; /* Centraliza o texto */
         padding-top: 20%; /* Espaçamento do topo */
         color: #ffffff; /* Cor do texto */
         font-family: Arial, sans-serif; /* Fonte do texto */
         font-size: 24px; /* Tamanho da fonte */
-        border: 3px solid #ffffff; /* Borda branca ao redor */
+     
         border-radius: 10px; /* Cantos arredondados */
     }
 
@@ -580,4 +588,79 @@ body {
     outline: none; /* Remove contorno padrão */
     background-color: #3c4043; /* Muda o fundo ao focar */
 }
+
+
+.btn_dowload {
+  position: absolute; 
+        right: 130px; 
+        top: 20px; 
+        background-color: #45a049; 
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        padding: 10px 15px; 
+        font-size: 16px; 
+        cursor: pointer; 
+        transition: background-color 0.3s; 
+        z-index: 1000;
+}
+
+/* Efeito de hover no botão */
+.btn_dowload:hover {
+    background-color: #2eaf55; /* Cor mais escura ao passar o mouse */
+    transform: translateY(-2px); /* Eleva o botão levemente */
+}
+
+/* Efeito de active no botão */
+.btn_dowload:active {
+    transform: translateY(1px); /* Faz o botão "afundar" ao ser clicado */
+}
+
+/* Animação de aparecimento */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Começa invisível */
+    }
+    to {
+        opacity: 1; /* Fica totalmente visível */
+    }
+}
+
+/* Adicionando a animação ao botão ao aparecer */
+.btn_dowload {
+    animation: fadeIn 0.5s ease; /* Animação de aparição */
+}
+
+.menu {
+    display: flex; /* Usa flexbox para alinhar os itens */
+    justify-content: space-between; /* Espaça o conteúdo para as extremidades */
+    align-items: center; /* Centraliza verticalmente */
+    background-color: #333; /* Cor de fundo da barra */
+    padding: 20px 20px; /* Espaçamento interno */
+    color: white; /* Cor do texto */
+    font-size: 24px; /* Tamanho da fonte do título */
+    transition: left 0.5s ease 0.3s, color 0.3s ease;
+    position: relative; /* Permite posicionamento relativo de elementos filhos */
+    z-index: 1000; /* Fica acima de outros elementos */
+}
+
+/* Estilo adicional para o título */
+.menu h1 {
+   margin: 0; /* Remove margens do título */
+    text-align: left; /* Alinha o texto à esquerda (mude para right se preferir) */
+    padding: 0; /* Remove espaçamento interno */
+    font-size: 30px; /* Tamanho da fonte do título em pixels */
+    
+    /* Ajustes de posicionamento */
+    position: relative; /* Permite usar margin-top e margin-left */
+    left: 60px; /* Ajuste para mover o título para a direita */
+    top: center; /* Ajuste para mover o título para baixo ou cima */
+}
+
+.menu h1.open {
+    left: 200px; /* Ajuste para onde o título deve ir quando a sidebar está aberta */
+     transition: left 0.0s ease 0.0s, color 0.0s ease;
+}
+
+
 

@@ -49,6 +49,6 @@ public class VisitanteControlle {
         model.addAttribute("visitante", new Visitante()); // Limpa o formulário após o cadastro
         List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista atualizada
         model.addAttribute("visitantes", visitantes); // Atualiza a lista com o novo visitante
-        return "index"; // Mantém na mesma página
+        return "redirect:/registros/visitas"; // Mantém na mesma página
     }
 }

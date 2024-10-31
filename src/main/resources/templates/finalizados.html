@@ -26,24 +26,16 @@
 				    <h2>Carregando...</h2> <!-- Mensagem de carregamento -->
 				</div>
 			
-			  <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
-		        <i class="fas fa-filter"></i> Filtrar
-		    </button>
 		
 		
 		
-		
-		
-		    <div class="search-container">
-		        <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
-		    </div>
-		
+		 
 
-    <div class="sidebar" id="sidebar">
-        <!-- Botão de abrir/fechar -->
-        <div class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
-        </div>
+	    <div class="sidebar" id="sidebar">
+	        <!-- Botão de abrir/fechar -->
+	        <div class="toggle-btn" onclick="toggleSidebarmenu()">
+	            <i class="fas fa-bars"></i>
+	        </div>
         
         
          <div class="icon" data-tooltip="Entradas">
@@ -70,8 +62,30 @@
 	   
     </div>
     
+    		<div class = "menu"> 
+       
+       <h1>Visitas Finalizadas</h1>
+       
+       
+			  <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
+		        <i class="fas fa-filter"></i> Filtrar
+		    </button>
+		
+				 <button class="btn_dowload" onclick="downloadCSV()">
+					    		    <i class="fas fa-download"></i>
+					    </button>   
+        
+        </div>
+    
         <div class="main-content">
-            <h1>Visitas Finalizadas</h1>
+        
+		        	<div class="search-container">
+				        <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
+				    </div>
+		
+		
+        
+            
             
             <!-- Container para exibir os cartões das visitas -->
             <div class="card-container" id="visitas-container">
@@ -107,15 +121,24 @@
 						<!-- Sidebar de Filtros -->
 					    <div id="filter-sidebar" class="filter-sidebar" style="display: none;">
 					    <button class="close-btn" onclick="toggleSidebar()">&times;</button> <!-- Botão de fechar -->
+					    <br><br>
+					 
+					    
+					  
 					        <h2>Filtrar Visitas</h2>
 					        <label for="start-date">Data Inicial:</label>
-					        <input type="date" id="start-date">
+					        <input type="date" id="start-date" value="${startDate}">
 					        
 					        <label for="end-date">Data Final:</label>
-					        <input type="date" id="end-date">
+					        <input type="date" id="end-date" value="${endDate}">
 					        <br><br>
 					       <button class = "btn" onclick="applyFilter()">Aplicar Filtro</button> 
 					        <button class = "btn" onclick="removeFilter()">limpar</button> 
+					         <br><br>
+					        
+					    
+					    
+					    <br><br>
 					       <!--  <button class = "btn" onclick="toggleSidebar()">Fechar</button>-->
 					    </div>
 						
@@ -127,10 +150,93 @@
 			    
 <script>
 
+function toggleSidebarmenu() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+
+    var title = document.querySelector(".menu h1");
+    title.classList.toggle("open");
+
+    var searchContainer = document.getElementById("search-container"); // Certifique-se que o ID está correto
+    searchContainer.classList.toggle("open"); // Adiciona/remover a classe
+}
+
+
+function initializeSidebar() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Obter os valores dos parâmetros da URL
+    const startDate = params.get('startDate');
+    const endDate = params.get('endDate');
+    
+    // Preencher os campos do sidebar se os valores existirem
+    if (startDate) {
+        document.getElementById('start-date').value = startDate; // Substitua pelo ID correto do seu campo
+    }
+    if (endDate) {
+        document.getElementById('end-date').value = endDate; // Substitua pelo ID correto do seu campo
+    }
+}
+
+
+function downloadCSV() {
+    // Seleciona todos os cartões visíveis na tela
+    const cards = document.querySelectorAll(".card");
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Inclui BOM para codificação UTF-8
+
+    // Cabeçalhos das colunas do CSV
+    csvContent += "Nome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n";
+
+    // Extrai dados de cada cartão visível e adiciona ao conteúdo CSV
+    cards.forEach(card => {
+        // Verifica se o cartão está visível
+        if (card.style.display !== "none") {
+            const nome = card.querySelector("h3").innerText;
+            const tipo = card.querySelector("p:nth-child(2) span").innerText;
+            const horarioEntrada = card.querySelector("p:nth-child(3) span").innerText;
+            const horarioSaida = card.querySelector("p:nth-child(4) span").innerText;
+            const cartao = card.querySelector("p:nth-child(5) span").innerText;
+
+            // Cria uma linha no CSV com os dados do cartão usando ";" como separador
+            csvContent += `${nome};${tipo};${horarioEntrada};${horarioSaida};${cartao}\n`;
+        }
+    });
+
+    // Verifica se há dados para download
+    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nNome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n") {
+        alert("Nenhum dado disponível para download.");
+        return;
+    }
+
+    // Cria um link para download do CSV
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "dados_visitas.csv");
+    document.body.appendChild(link);
+
+    // Aciona o download e remove o link
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+
 function toggleSidebar() {
     const sidebar = document.getElementById('filter-sidebar');
-    sidebar.style.display = (sidebar.style.display === 'none' || sidebar.style.display === '') ? 'block' : 'none';
+    
+    // Verifica se o sidebar está oculto e deve ser aberto
+    if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+        sidebar.style.display = 'block'; // Exibe o sidebar
+        
+        // Chama a função para carregar os dados
+        initializeSidebar();
+        
+    } else {
+        sidebar.style.display = 'none'; // Oculta o sidebar
+    }
 }
+
 
 function applyFilter() {
     const startDate = document.getElementById('start-date').value;
@@ -143,16 +249,59 @@ function applyFilter() {
     }
     
     document.getElementById('loading').style.display = 'block';
-    document.getElementById('filter-btn').classList.add('active'); // Adiciona a classe para mudar a cor do botão
-
+    
+    
+    
+    
     // Redireciona para a URL com as datas para aplicar o filtro
     window.location.href = `/registros/visitas/finalizados?startDate=${startDate}&endDate=${endDate}`;
+   
+ 
 }
 
-function removeFilter() {
-    window.location.href = 'http://192.168.2.60:2003/registros/visitas/finalizados';
-    document.getElementById('filter-btn').classList.remove('active'); // Remove a classe do botão de filtro
+function checkFilterStatus() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Obter os valores dos parâmetros da URL
+    const startDate = params.get('startDate');
+    const endDate = params.get('endDate');
+    
+    // Seleciona o botão de filtro
+    const filterBtn = document.getElementById("filter-btn");
+    
+    // Verifica se startDate e endDate estão preenchidos
+    if (startDate && endDate) {
+        // Altera a cor do botão para laranja se ambos os parâmetros estiverem preenchidos
+        filterBtn.style.backgroundColor = "orange"; // Muda a cor para laranja
+    } else {
+        // Se não, define a cor original
+        filterBtn.style.backgroundColor = "#45a049"; // Cor original
+    }
 }
+
+// Chama a função ao carregar a página
+window.onload = function() {
+    checkFilterStatus();
+};
+
+
+function removeFilter() {
+    // Obtém a URL atual
+    const url = new URL(window.location.href);
+
+    // Remove os parâmetros `startDate` e `endDate`
+    url.searchParams.delete("startDate");
+    url.searchParams.delete("endDate");
+
+    // Atualiza a URL sem redirecionar
+    window.history.replaceState(null, '', url);
+
+   
+    document.getElementById('loading').style.display = 'block';
+    // Recarrega a página
+    location.reload();
+}
+
 
 function filterCards() {
     // Obtém o valor digitado no campo de pesquisa

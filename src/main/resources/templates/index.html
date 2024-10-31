@@ -53,8 +53,28 @@
 	   
     </div>
     
+       <div class = "menu"> 
+       
+        <h1> Registro de Entradas</h1>
+        	
+        	
+								   <button class="add-visitor" id="add-visitor-btn">
+								      <i class="fa fa-id-badge"  ></i>Cadastrar Visitante
+								   
+								   			
+								   </button>
+						           <button class="add-visit" id="add-visit-btn">
+									    <i class="fas fa-plus"></i> Adicionar Visita
+									</button>
+        	
+        
+       </div>
+       
+       
+    
+    
         <div class="main-content">
-            <h1>Visitas Registradas</h1>
+           
             
             <!-- Container para exibir os cartões das visitas -->
             <div class="card-container" id="visitas-container">
@@ -285,6 +305,9 @@ function fecharSidebar() {
     function toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
         sidebar.classList.toggle("open");
+        
+        var title = document.querySelector(".menu h1"); // Seleciona o título corretamente
+            title.classList.toggle("open"); //
     }
     
     function verificarCracha(event) {

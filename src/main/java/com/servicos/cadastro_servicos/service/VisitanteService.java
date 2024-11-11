@@ -1,12 +1,13 @@
-package com.servicos.cadastro_servicos;
+package com.servicos.cadastro_servicos.service;
 
 
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.servicos.cadastro_servicos.model.Visitante;
 import com.servicos.cadastro_servicos.repository.VisitanteRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class VisitanteService {

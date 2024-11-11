@@ -22,6 +22,8 @@
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    
+
     <dependencies>
         <!-- Spring Boot Web Dependency -->
         
@@ -36,7 +38,18 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         
-       
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+
+       <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+        
+        </dependency>
         
         <dependency>
 	    <groupId>org.springframework.boot</groupId>
@@ -51,6 +64,20 @@
 		    <version>8.0.33</version> <!-- Verifique a versão mais recente -->
 		</dependency>
 
+        
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+          
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+           
+        </dependency>
+
+        
+        
         
 
         <!-- Spring Boot DevTools for Development -->

@@ -1,13 +1,14 @@
-package com.servicos.cadastro_servicos;
+package com.servicos.cadastro_servicos.service;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.servicos.cadastro_servicos.model.Categoria;
-import com.servicos.cadastro_servicos.repository.CategoriaRepository;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.servicos.cadastro_servicos.model.Categoria;
+import com.servicos.cadastro_servicos.repository.CategoriaRepository;
 
 @Service
 public class CategoriaService {

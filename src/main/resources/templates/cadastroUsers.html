@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuários</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Certifique-se de que o caminho do arquivo CSS está correto -->
+    <style>
+        .main-content {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .user-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        label {
+            width: 100%;
+            text-align: left;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3c3c3c;
+            color: #ffffff;
+            outline: none;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border: 2px solid #4caf50;
+        }
+        .btn {
+            background-color: #4caf50;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .user-list li {
+            background-color: #3c3c3c;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .home-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .home-btn:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Cadastro de Usuários</h1>
+
+        <!-- Botão para voltar à página inicial -->
+        <a href="/registros/visitas" class="home-btn">Home</a>
+
+        <!-- Formulário para adicionar um novo usuário -->
+        <form action="/users/add" method="post" class="user-form">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" placeholder="Digite o nome" required>
+
+            <label for="pass">Senha:</label>
+            <input type="password" id="pass" name="pass" placeholder="Digite a senha" required>
+
+            <label for="role">Função:</label>
+            <input type="text" id="role" name="role" placeholder="Digite a função" required>
+
+            <button type="submit" class="btn">Registrar</button>
+        </form>
+
+        <!-- Exibição de mensagem de erro, se houver -->
+        <div th:if="${error != null}" style="color: red; margin-top: 20px;">
+            <p th:text="${error}"></p>
+        </div>
+
+        <!-- Lista de usuários cadastrados -->
+        <h2>Lista de Usuários</h2>
+        <ul class="user-list">
+            <th:block th:each="user : ${users}">
+                <li th:text="${user.name} + ' (' + ${user.role} + ')'"></li>
+            </th:block>
+        </ul>
+    </div>
+</body>
+</html>

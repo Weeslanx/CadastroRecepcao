@@ -24,7 +24,9 @@ public final class Visita {
     @JoinColumn(name = "categoria_id", nullable = false) // Chave estrangeira para Categoria
     private Categoria categoria; // Relação com Categoria
 
+   
     private String responsavel;
+
     private LocalDateTime horarioEntrada;
     private LocalDateTime horarioSaida;
 

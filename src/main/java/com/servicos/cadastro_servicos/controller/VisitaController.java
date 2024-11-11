@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -98,14 +102,27 @@ public class VisitaController {
   
     @PostMapping("/visitas/cadastrar")
     public String cadastrarVisita(Visita visita, Model model) {
-    if (visita.getCategoria() == null || visita.getVisitante() == null) {
-        model.addAttribute("error", "Categoria e Visitante são obrigatórios.");
-        return "index"; // Redireciona para a página do formulário com uma mensagem de erro
+        System.out.println("Responsável recebido: " + visita.getResponsavel()); // Log para verificar o valor
+    
+        if (visita.getCategoria() == null || visita.getVisitante() == null || visita.getResponsavel() == null) {
+            model.addAttribute("error", "Categoria, Visitante e Responsável são obrigatórios.");
+            return "index"; // Redireciona para a página do formulário com uma mensagem de erro
+        }
+    
+        visitaRepository.save(visita); // Salva a nova visita no banco
+        return "redirect:/registros/visitas"; // Redireciona para a página de visitas
     }
-
-    visitaRepository.save(visita); // Salva a nova visita no banco
-    return "redirect:/registros/visitas"; // Redireciona para a página de visitas
-}
+    
+    @DeleteMapping("/visitas/deletar/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deletarVisita(@PathVariable Long id) {
+        if (visitaRepository.existsById(id)) {
+            visitaRepository.deleteById(id);
+            return ResponseEntity.ok("Visita excluída com sucesso.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visita não encontrada.");
+        }
+    }
 
 
     // Verifica se um crachá já está em uso (visitante sem horário de saída)

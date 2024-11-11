@@ -26,7 +26,11 @@
 
     <dependencies>
         <!-- Spring Boot Web Dependency -->
-        
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -76,9 +80,10 @@
            
         </dependency>
 
-        
-        
-        
+        <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        </dependency>
 
         <!-- Spring Boot DevTools for Development -->
         <dependency>

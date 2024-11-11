@@ -1,6 +1,8 @@
 
 package com.servicos.cadastro_servicos.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,22 +12,32 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.servicos.cadastro_servicos.dto.ResterDTO;
+import com.servicos.cadastro_servicos.model.AzureUser;
 import com.servicos.cadastro_servicos.model.User;
 import com.servicos.cadastro_servicos.repository.UserRepository;
+import com.servicos.cadastro_servicos.service.AzureUserFetcher;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AzureUserFetcher azureUserFetcher;
 
     @GetMapping("/cadastroUsers")
     public String showCadastroUsersPage(Model model) {
@@ -47,7 +59,6 @@ public class UserController {
 
         return "redirect:/users/cadastroUsers"; // Redireciona para a página de listagem após o cadastro
     }
-
     
 
     
@@ -72,6 +83,19 @@ public class UserController {
     }
     
 
+    @GetMapping("/api/users")
+    @ResponseBody
+    public List<AzureUser> getUsers() {
+        try {
+            String accessToken = azureUserFetcher.getAccessToken();
+            if (accessToken != null) {
+                return azureUserFetcher.fetchUsers(accessToken);
+            }
+        } catch (Exception e) {
+            logger.error("Erro ao buscar usuários da Azure API", e);
+        }
+        return List.of();
+    }
     
 
 }

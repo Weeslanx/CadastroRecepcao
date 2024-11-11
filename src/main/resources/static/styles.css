@@ -311,35 +311,35 @@ body {
     outline: none;
 }
 .select2-container--default .select2-selection--single {
-    background-color: #333 !important; /* Fundo escuro do Select2 */
-    height: 50px; /* Altura do campo */
-    width: 100%; /* Largura total */
-    padding: 0 12px; /* Espaçamento interno */
-    margin-bottom: 16px; /* Espaço abaixo do Select2 */
-    border: 2px solid #444; /* Borda mais escura */
+    background-color: #333 !important; /* Fundo escuro */
+    border: 1px solid #444 !important; /* Borda */
     border-radius: 5px; /* Borda arredondada */
-    color: #fff !important; /* Cor do texto */
-    font-size: 16px;
+    color: #e0e0e0 !important; /* Cor do texto */
+    font-size: 20px;
+    height: 38px !important; 
+    width: 380px; /* Largura total */
+    padding: 0 20px; /* Espaçamento interno */
     box-sizing: border-box;
-    transition: border-color 0.3s ease; /* Transição na borda */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
 }
 
 /* Placeholder e texto selecionado */
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 50px;
-    color: #fff !important;
+    color: #e0e0e0 !important; /* Cor do texto */
+    line-height: normal; /* Remove line-height para centralização com flex */
+    text-align: center; /* Centraliza o texto horizontalmente */
 }
 
 /* Placeholder do Select2 */
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
-    color: #aaa;
+    color: #aaa !important; /* Cor do placeholder */
 }
 
+
 /* Seta do Select2 */
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 48px;
-    padding: 0 10px;
-    color: #aaa;
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #aaa transparent transparent transparent !important; /* Cor da seta */
 }
 
 /* Estilo das opções no dropdown */

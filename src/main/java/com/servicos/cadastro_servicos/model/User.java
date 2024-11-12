@@ -71,7 +71,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Adiciona a role "ROLE_ADMIN" se o usuário tiver "adm" como role
-        if ("adm".equalsIgnoreCase(this.role)) {
+        if ("Admin".equalsIgnoreCase(this.role)) {
             return List.of(
                 new SimpleGrantedAuthority("ROLE_ADMIN"),
                 new SimpleGrantedAuthority("ROLE_USER")

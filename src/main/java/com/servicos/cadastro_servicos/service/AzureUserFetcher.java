@@ -12,20 +12,29 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.servicos.cadastro_servicos.Security.AzureConfig;
 import com.servicos.cadastro_servicos.model.AzureUser;
 @Component
 public class AzureUserFetcher {
-    private static final String TENANT_ID = "6fdfcb68-bdb6-4b67-ae6a-2356458c73d0";
-    private static final String CLIENT_ID = "24f015ec-0b74-4cde-887c-cc3475e41e01";
-    private static final String CLIENT_SECRET = "yKd8Q~QLRkkeZmYoJFGK0kQaE~BVTemRte9iIdyO";
+    private final String TENANT_ID;
+    private final String CLIENT_ID;
+    private final String CLIENT_SECRET;
 
     private final Cache<String, List<AzureUser>> userCache = Caffeine.newBuilder()
-            .expireAfterWrite(1, TimeUnit.MINUTES) // Atualiza os dados a cada 15 minutos
+            .expireAfterWrite(1, TimeUnit.MINUTES)
             .build();
+
+    @Autowired
+    public AzureUserFetcher(AzureConfig azureConfig) {
+        this.TENANT_ID = azureConfig.getTenantId();
+        this.CLIENT_ID = azureConfig.getClientId();
+        this.CLIENT_SECRET = azureConfig.getClientSecret();
+    }
 
     public List<AzureUser> getUsers() throws Exception {
         // Obtém a lista de usuários do cache, ou busca da API se não estiver no cache

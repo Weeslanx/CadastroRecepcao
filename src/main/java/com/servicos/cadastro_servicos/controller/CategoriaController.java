@@ -23,11 +23,11 @@ public class CategoriaController {
         return "index"; 
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/novocadastro")
     public String cadastrarCategoria(@ModelAttribute Categoria categoria) {
         System.out.println("Categoria a ser salva: " + categoria.getNome());
         categoriaRepository.save(categoria);
         System.out.println("Categoria salva com sucesso.");
-        return "redirect:/registros/visitas";  
+        return "redirect:/users/cadastroUsers";  
     }
 }

@@ -49,7 +49,7 @@ public class VisitaController {
 
         model.addAttribute("visitas", visitas); // Passa a lista de visitas para o template
 
-        return "index"; // Nome do template HTML que exibe as visitas
+        return "index"; 
     }
 
     // Lista visitas finalizadas com filtro de datas
@@ -73,20 +73,10 @@ public class VisitaController {
         return "finalizados"; // Nome do template HTML que exibe as visitas finalizadas
     }
 
-    // Exibe o formulário para cadastrar uma nova visita
-    @GetMapping("/visitas")
-    public String mostrarFormulario(Model model) {
-        // Carrega todos os visitantes e categorias para preencher os campos no formulário
-        List<Visitante> visitantes = visitanteRepository.findAll();
-        List<Categoria> categorias = categoriaRepository.findAll();
-        model.addAttribute("visitantes", visitantes); // Passa a lista de visitantes
-        model.addAttribute("categorias", categorias); // Passa a lista de categorias
-        model.addAttribute("visita", new Visita()); // Adiciona um objeto vazio de Visita
+    
+    
 
-        return "index"; // Nome do template HTML para o formulário de cadastro
-    }
-
-    // Endpoint para carregar dados de visitantes e categorias via AJAX (JSON)
+   
     @GetMapping("/visitas/dados")
     @ResponseBody
     public Map<String, List<?>> carregarDadosVisitas() {
@@ -96,8 +86,18 @@ public class VisitaController {
         Map<String, List<?>> dados = new HashMap<>();
         dados.put("visitantes", visitantes);
         dados.put("categorias", categorias);
-        return dados; // Retorna os dados como JSON
+        return dados;
     }
+
+    @GetMapping("/visitas/contagem")
+    @ResponseBody
+    public Map<String, Integer> contarTotalDeVisitas() {
+        long totalVisitas = visitaRepository.count();
+        Map<String, Integer> resultado = new HashMap<>();
+        resultado.put("totalVisitas", (int) totalVisitas);
+        return resultado;
+    }
+
 
   
     @PostMapping("/visitas/cadastrar")

@@ -91,6 +91,10 @@
                         <button class="btn-saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
+
+                        <button class="btn-delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
+                            <i class="fa fa-trash"></i>
+                        </button>
             
                       
                     </div>
@@ -188,7 +192,7 @@
 
 async function deletarVisita(visitaId) {
     const confirmar = confirm("Tem certeza que deseja excluir este cadastro?");
-    if (!confirmar) return; // Cancela a exclusão se o usuário não confirmar
+    if (!confirmar) return; 
 
     try {
         const response = await fetch(`/visitas/deletar/${visitaId}`, {
@@ -197,7 +201,7 @@ async function deletarVisita(visitaId) {
 
         if (response.ok) {
             alert("Cadastro excluído com sucesso!");
-            location.reload(); // Recarrega a página para atualizar a lista
+            location.reload(); 
         } else {
             alert("Erro ao excluir o cadastro.");
         }

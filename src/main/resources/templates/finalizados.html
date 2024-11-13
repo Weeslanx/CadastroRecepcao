@@ -32,31 +32,36 @@
 		 
 
 	    <div class="sidebar" id="sidebar">
-	        <!-- Botão de abrir/fechar -->
-	        <div class="toggle-btn" onclick="toggleSidebarmenu()">
-	            <i class="fas fa-bars"></i>
-	        </div>
+	      
+	       
         
         
          <div class="icon" data-tooltip="Entradas">
 	        <a href="/registros/visitas">
-	            <i class="fa fa-paper-plane"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <i class="fa fa-paper-plane"></i> 
                 <span>Registro de Entradas</span>
 	        </a>
 	    </div>
         
           <div class="icon" data-tooltip="finalizados">
 	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <i class="fas fa-check-circle"></i>
 	            <span>Visitas Finalizadas</span>
 	        </a>
 	    </div>
-        <!-- Ícone de Configuração -->
+        
         <div class="icon" data-tooltip="Configuração">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
         </div>
 
+        <div class="sidebar-bottom-button">
+            <form action="/users/logout" method="get">
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </form>
+        </div>
      
 	    
 	   
@@ -74,6 +79,10 @@
 				 <button class="btn_dowload" onclick="downloadCSV()">
 					    		    <i class="fas fa-download"></i>
 					    </button>   
+
+                        <div class="logo-container">
+                            <img src="/images/logo3.png" alt="Logo" class="logo-img">
+                        </div>
         
                         
                         <div class="logo-container">

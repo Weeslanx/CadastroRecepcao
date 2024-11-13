@@ -27,7 +27,11 @@ public class SecurityConfigurations {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
                 .requestMatchers("/users/cadastroUsers").hasRole("ADMIN") // Permite login e registro sem autenticação
+
                 
+
+                .requestMatchers("/images/**").permitAll()
+
                 .anyRequest().authenticated() // Todas as outras requisições requerem autenticação
             )
             .formLogin(form -> form

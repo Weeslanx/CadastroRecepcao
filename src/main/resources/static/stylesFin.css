@@ -6,7 +6,6 @@ body {
 	        font-family: 'Roboto', sans-serif;
 	        margin: 0;
 	        padding: 0;
-            overflow-x: hidden; 
 	    }
 	    
 	
@@ -48,7 +47,7 @@ body {
     cursor: pointer;
     position: relative;
     transition: color 0.3s ease;
-    top: 75px;
+    top: 25px;
     margin: 20px;
     left: 8px;
     margin-left: 2px;
@@ -418,31 +417,32 @@ body {
     border: none; /* Remove a borda padrão */
     border-radius: 50%; /* Botão redondo */
     width: 40px; /* Largura do botão */
-    height: 40px; 
-    cursor: pointer;
-    visibility: hidden; 
-    opacity: 0; 
-    transition: visibility 0s, opacity 0.3s ease; 
-    z-index: 10; 
+    height: 40px; /* Altura do botão */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    visibility: hidden; /* Oculta o botão inicialmente */
+    opacity: 0; /* Torna o botão invisível */
+    transition: visibility 0s, opacity 0.3s ease; /* Transição suave */
+    z-index: 10; /* Garante que o botão fique acima do cartão */
 }
+
 .btn-saida:hover {
-    background-color: #57c971; 
+    background-color: #57c971; /* Cor do botão ao passar o mouse */
 }
 
 .card:hover .btn-saida {
-     visibility: visible; 
-    opacity: 1; 
+     visibility: visible; /* Torna o botão visível */
+    opacity: 1; /* Altera a opacidade para tornar o botão visível */
 }
 
 .btn-saida i {
-    font-size: 15px;
+    font-size: 15px; /* Tamanho do ícone */
 }
 
-
+/* Container da barra de pesquisa */
 .search-container {
     position: relative;
    	
-    right: 145px; 
+    right: 145px; /* Ajuste inicial para o lado esquerdo */
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -450,8 +450,7 @@ body {
     max-width: 500px;
     padding: 0 10px;
     box-sizing: border-box;
-    transition: margin-left 0.2s ease;
-    z-index: 1;
+    transition: margin-left 0.2s ease; /* Transição suave para margin-left */
 }
 
 
@@ -754,34 +753,4 @@ body {
     object-fit: cover;      /* A imagem cobre toda a área do contêiner, mantendo a proporção */
        /* Posiciona a imagem no topo do contêiner */
        z-index: 2000;
-}
-
-.sidebar-bottom-button {
-    position: absolute;
-    bottom: 20px; /* Distância de 20px da parte inferior */
-    width: 100%; /* Largura total da sidebar */
-    display: flex;
-    justify-content: center; /* Centraliza o botão */
-}
-
-.logout-btn {
-    background-color: #f44336; /* Cor vermelha para indicar o logout */
-    color: white; /* Cor do texto */
-    border: none;
-    padding: 5px 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-}
-
-.logout-btn i {
-    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
-}
-
-.logout-btn:hover {
-    background-color: #d32f2f; /* Cor ao passar o mouse */
 }

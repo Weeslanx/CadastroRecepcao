@@ -4,204 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Configurações</title>
-    <link rel="stylesheet" href="/styles.css">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            font-family: Arial, sans-serif;
-            color: #f7f5f5;
-        }
-        
-        /* Barra lateral fixa */
-        .sidebar {
-            width: 250px;
-            background-color: #2c2c2c;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            padding-top: 20px;
-        }
-        .sidebar h2 {
-            text-align: center;
-            margin: 0;
-            padding: 15px;
-            font-size: 18px;
-        }
-        .sidebar button {
-            background-color: #333;
-            color: #ffffff;
-            padding: 15px;
-            border: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .sidebar button:hover{
-            background-color: #4caf50;
-        }
-        .main-content {
-           
-            height: 100vh;
-            background-color: #302f2f;
-            overflow-y: auto;
-            width: calc(100% - 250px);
-            flex: 1;
-            transition: margin-left 0.3s, width 0.3s;
-        }
-        .main-content.closed {
-            margin-left: 0;
-            width: 100%;
-        }
-        .section {
-            display: none;
-            margin-left: 230px ; 
-            margin-right: 45px ; 
-            margin-top: 40px;
-            max-width: 700px;
-    
-           
-        }
-        .section.active {
-            display: block; 
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="password"], 
-        select {
-            width: 100%;
-            padding:10px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            outline: none;
-        }
-        .btn {
-            background-color: #4caf50;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .btn:hover {
-            background-color: #45a049;
-        }
-        
-        /* Container para os cards */
-        .cards-container {
-    position: fixed; /* Fixa o contêiner no lugar, mesmo ao rolar a página */
-    right: 0; /* Alinha o contêiner ao limite direito da tela */
-    top: 20px; /* Define uma margem superior, caso necessário */
-    display: flex;
-    flex-direction: column; /* Organiza os cards em coluna, um embaixo do outro */
-    gap: 20px; /* Espaço entre os cards */
-    padding: 20px; /* Margem interna para o contêiner */
-    max-width: 600px;
-    box-sizing: border-box;
-}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/stylesTelaAdm.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-
-.info-card {
-    background-color: #2c2c2c;
-    color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-sizing: border-box;
-}
-
-
-
-@media (max-width: 768px) {
-    .cards-container {
-        flex-wrap: wrap;
-    }
-
-    .info-card {
-        width: 100%; 
-    }
-}
-
-
-        .info-card h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .info-card ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .info-card li {
-            padding: 5px 0;
-            border-bottom: 1px solid #444;
-        }
-
-        .info-card li:last-child {
-            border-bottom: none;
-        }
-
-        .btn-concluir {
-    position: absolute;
-    bottom: 20px; /* Espaço entre o botão e o final da sidebar */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #4caf50;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    
-    cursor: pointer;
-    font-size: 16px center;
-    transition: background-color 0.3s;
-    text-align: center;
-    width: 80%; /* Ajuste conforme necessário para o tamanho desejado */
-}
-
-.btn-concluir:hover {
-    background-color: #45a049;
-}
-
-    </style>
+   
 </head>
 <body>
 
     <!-- Barra Lateral -->
-    <div class="sidebar">
+    <button class="btn-open-sidebar" onclick="toggleSidebar()">☰ Painel de Configuração</button>
+
+    <div class="sidebar" id="sidebar">
+        <!-- Botão para fechar o sidebar -->
+        <button class="btn-close-sidebar" onclick="toggleSidebar()"></button>
+        
         <h2>Painel de Configurações</h2>
         <button onclick="toggleSection('user-section')">Cadastro de Usuários</button>
         <button onclick="toggleSection('category-section')">Cadastro de Categorias</button>
-        
-        
-       
-        <button class="btn-concluir" onclick="window.location.href='/registros/visitas'">Concluir</button>
+    </div>
 
-
-        
-        
+    <div class="main-content" id="main-content">
+        <!-- Conteúdo principal da página -->
     </div>
 
    
@@ -245,24 +69,122 @@
     </div>
 
     <div class="cards-container">
-        <div class="info-card user-info">
-            <h3>Total de Usuários: <span id="totalUsuarios">0</span></h3>
+        <!-- Card para visitas com botões -->
+        <div class="info-card visitas-info total-visitas-card">
+            <h3>Total de Visitas</h3>
+            <ul>
+                <li id="total-visitas">Carregando...</li>
+            </ul>
+            <div class="visitas-buttons">
+                <button onclick="verVisitas()">
+                    <i class="fas fa-eye"></i> Ver Visitas
+                </button>
+                <button onclick="baixarVisitas()">
+                    <i class="fas fa-download"></i> Baixar Visitas
+                </button>
+            </div>
+        </div>
+    
+        <!-- Card para gráfico de visitas por dia -->
+        <div class="info-card grafico-visitas grafico-visitas-card">
+            <h3>Gráfico de Visitas por Dia</h3>
+            <canvas id="visitasGrafico" width="400" height="200"></canvas>
+        </div>
+    
+        <div class="info-card categorias-info categorias-card">
+            <h3>Categorias Cadastradas</h3>
+            <ul id="categoriasList">
+                <!-- As categorias serão carregadas aqui -->
+                <li>Carregando categorias...</li>
+            </ul>
+        </div>
+    
+        <!-- Card para total de usuários -->
+        <div class="info-card user-info usuarios-card">
+            <h3>Usuários: <span id="totalUsuarios">0</span></h3>
             <ul id="usuariosList">
                 <!-- Os usuários serão inseridos aqui -->
             </ul>
         </div>
-
-        <div class="info-card visitas-info">
-            <h3>Total de visitas</h3>
-            <ul>
-                <li id="total-visitas">Carregando...</li>
-            </ul>
-        </div>
-
-        <!-- Adicione mais cards aqui se necessário -->
     </div>
+    
+    
 
     <script>
+       const ctx = document.getElementById('visitasGrafico').getContext('2d');
+const visitasGrafico = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
+        datasets: [{
+            label: 'Visitas',
+            data: [12, 19, 3, 5, 2, 3, 7,50],
+            borderColor: 'rgba(34, 139, 34, 1)',
+            backgroundColor: 'rgba(34, 139, 34, 0.2)',
+            pointBackgroundColor: 'rgba(34, 139, 34, 1)',
+            pointBorderColor: 'rgba(34, 139, 34, 1)',
+            pointHoverBackgroundColor: 'rgba(0, 255, 0, 1)',
+            pointHoverBorderColor: 'rgba(0, 255, 0, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false, // Permite que o gráfico se ajuste ao card
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                },
+                ticks: {
+                    color: '#ffffff'
+                }
+            },
+            x: {
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                },
+                ticks: {
+                    color: '#ffffff'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#ffffff'
+                }
+            }
+        }
+    }
+});
+
+
+fetch('/categorias/list')  // A URL do endpoint que você configurou
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            // Seleciona o elemento onde as categorias serão exibidas
+            const categoriasList = document.getElementById('categoriasList');
+            categoriasList.innerHTML = '';  // Limpa a lista existente
+
+            // Itera sobre as categorias recebidas e as adiciona ao HTML
+            data.forEach(categoria => {
+                const li = document.createElement('li');
+                li.textContent = categoria.nome;  // Supondo que o nome da categoria seja 'nome'
+                categoriasList.appendChild(li);   // Adiciona a categoria à lista
+            });
+        } else {
+            // Caso não haja categorias, exibe uma mensagem
+            const categoriasList = document.getElementById('categoriasList');
+            categoriasList.innerHTML = '<li>Nenhuma categoria cadastrada</li>';
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao buscar categorias:', error);
+    });
+
          fetch('/users/userContagem')
             .then(response => response.json())
             .then(data => {
@@ -308,7 +230,7 @@
         fetch('/visitas/contagem')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('total-visitas').innerText = `Total de visitas: ${data.totalVisitas}`;
+                document.getElementById('total-visitas').innerText = ` ${data.totalVisitas}`;
             })
             .catch(error => {
                 console.error('Erro ao carregar o total de visitas:', error);
@@ -340,6 +262,32 @@
         section.classList.add('active');
     }
 }
+
+
+function toggleSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const cardsContainer = document.querySelector(".cards-container");
+    const mainContent = document.querySelector(".main-content");
+    const openBtn = document.querySelector(".btn-open-sidebar");
+
+    sidebar.classList.toggle("open");
+    cardsContainer.classList.toggle("sidebar-open");
+
+    if (sidebar.classList.contains("open")) {
+        mainContent.style.visibility = "visible";
+        openBtn.style.display = "none";
+    } else {
+        // Remove a classe 'active' de todas as seções ao fechar o sidebar
+        document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+        mainContent.style.visibility = "hidden";
+        openBtn.style.display = "block";
+    }
+}
+
+
+
+
+
     </script>
     
     

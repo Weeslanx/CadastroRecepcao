@@ -4,30 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
     <title>Página de Login</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #121212, #1e1e1e);
-            color: #e0e0e0;
-            overflow: hidden;
-        }
 
-        .login-container {
-            background-color: #1e1e1e;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            text-align: center;
-            animation: fadeIn 1s ease-in-out;
-            position: relative;
-        }
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #121212; /* Fundo escuro por trás das partículas */
+    z-index: -1;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Alinha o conteúdo na vertical */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ 
+    color: #e0e0e0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.title-heading {
+    text-align: center;
+    color: #f7f5f5;
+    
+    margin: 0;
+}
+
+   
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.logo-container {
+    width: 100%;            /* Largura do contêiner */
+    height: 200px;         /* Defina o comprimento desejado */
+    overflow: hidden;       /* Corta qualquer parte que ultrapasse os limites */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    background: transparent; /* Remova qualquer fundo no contêiner */
+    position: relative;
+    z-index: 1;              /* Mantém a imagem acima de outros elementos */
+}
+
+.logo-img {
+    width: 100%;            /* A imagem ocupa toda a largura do contêiner */
+    height: 100%;           /* A altura da imagem é ajustada para preencher o contêiner */
+    object-fit: cover;      /* A imagem cobre toda a área do contêiner, mantendo a proporção */
+    object-position: top;    /* Posiciona a imagem no topo do contêiner */
+}
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -55,30 +92,9 @@
             transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
 
-        .login-input:hover {
-            box-shadow: 0 0 15px 5px rgba(76, 175, 80, 0.6);
-            transform: scale(1.02);
-        }
+        
 
-        .login-button {
-            width: 100%;
-            max-width: 300px;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            background-color: #4caf50;
-            color: white;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .login-button:hover {
-            background-color: #45a049;
-            box-shadow: 0 0 15px 5px rgba(76, 175, 80, 0.6);
-            transform: scale(1.02);
-        }
+        
 
         .loading-spinner {
             display: none;
@@ -98,6 +114,16 @@
     </style>
 </head>
 <body>
+    <div id="particles-js"></div>
+    <h1 class="title-heading">
+        <div class="logo-container">
+            <img src="/images/logo3.png" alt="Logo" class="logo-img">
+        </div>
+
+
+
+    </h1>
+
     <div class="login-container">
         <h2 class="login-title">Login</h2>
         <form action="/login" method="post">
@@ -109,6 +135,24 @@
     </div>
 
     <script>
+
+particlesJS("particles-js", {
+    particles: {
+        number: { value: 50, density: { enable: true, value_area: 800 } },
+        shape: { type: "circle", stroke: { width: 0, color: "#000000" }, fill: { color: "#ffffff" } },
+        opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+        size: { value: 5, random: true, anim: { enable: true, speed: 10, size_min: 0.1, sync: false } },
+        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 3, direction: "none", random: false, straight: false, out_mode: "out" }
+    },
+    interactivity: {
+        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } },
+        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+});
+
+
         function handleLogin(event) {
             const loadingSpinner = document.getElementById('loadingSpinner');
             loadingSpinner.style.display = 'block';

@@ -24,10 +24,7 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <!-- Botão de abrir/fechar -->
-        <div class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
-        </div>
+        
         
         
          <div class="icon" data-tooltip="Entradas">
@@ -46,6 +43,13 @@
         <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
+        </div>
+        <div class="sidebar-bottom-button">
+            <form action="/users/logout" method="get">
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </form>
         </div>
         
         
@@ -68,8 +72,9 @@
 						           <button class="add-visit" id="add-visit-btn">
 									    <i class="fas fa-plus"></i> Adicionar Visita
 									</button>
-        	
-        
+                                    <div class="logo-container">
+                                        <img src="/images/logo3.png" alt="Logo" class="logo-img">
+                                    </div>
        </div>
        
        
@@ -358,11 +363,11 @@ function fecharSidebar() {
     // Função para alternar a visibilidade da sidebar
     function toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
-        sidebar.classList.toggle("open");
-        
-        var title = document.querySelector(".menu h1"); // Seleciona o título corretamente
-            title.classList.toggle("open"); //
-    }
+    sidebar.classList.toggle("open");
+    
+    var title = document.querySelector(".logo-container"); // Seleciona o título corretamente
+    title.classList.toggle("open"); // Alterna a classe 'open' para mover o título
+}
     
     function verificarCracha(event) {
     event.preventDefault(); // Previne o envio do formulário

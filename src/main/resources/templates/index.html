@@ -93,11 +93,11 @@
                         <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
                         
                         
-                        <button class="btn-saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
+                        <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
 
-                        <button class="btn-delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
+                        <button class="btn-card delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
                             <i class="fa fa-trash"></i>
                         </button>
             

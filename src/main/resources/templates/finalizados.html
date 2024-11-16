@@ -4,50 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Entradas</title>
-    <link rel="stylesheet" href="/styles.css">
-
- 
+     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-	
-	
+
+	<!-- Incluir jQuery -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-	
+	<!-- Incluir JS do Select2 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	
+
 
 
 
 
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        
+				<div id="loading">
+				    <div class="spinner"></div> <!-- Spinner de carregamento -->
+				    <h2>Carregando...</h2> <!-- Mensagem de carregamento -->
+				</div>
+			
+		
+		
+		
+		 
+
+	    <div class="sidebar" id="sidebar">
+	      
+	       
         
         
          <div class="icon" data-tooltip="Entradas">
 	        <a href="/registros/visitas">
 	            <i class="fa fa-paper-plane"></i> 
-	            <span>Registro de Entradas</span>
+                <span>Registro de Entradas</span>
 	        </a>
 	    </div>
         
           <div class="icon" data-tooltip="finalizados">
 	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i> 
+	            <i class="fas fa-check-circle"></i>
 	            <span>Visitas Finalizadas</span>
 	        </a>
 	    </div>
-<<<<<<< HEAD
         
-=======
->>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
         <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
         </div>
+
         <div class="sidebar-bottom-button">
             <form action="/users/logout" method="get">
                 <button type="submit" class="logout-btn">
@@ -55,34 +62,16 @@
                 </button>
             </form>
         </div>
-        
-        
-
      
 	    
 	   
     </div>
     
-       <div class = "menu"> 
+    		<div class = "menu"> 
        
-        <h1> Registro de Entradas</h1>
-        	
-        	
-								   <button class="add-visitor" id="add-visitor-btn">
-								      <i class="fa fa-id-badge"  ></i>Cadastrar Visitante
-								   
-								   			
-								   </button>
-						           <button class="add-visit" id="add-visit-btn">
-									    <i class="fas fa-plus"></i> Adicionar Visita
-									</button>
-                                    <div class="logo-container">
-                                        <img src="/images/logo3.png" alt="Logo" class="logo-img">
-                                    </div>
-       </div>
+       <h1>Visitas Finalizadas</h1>
        
        
-<<<<<<< HEAD
 			  <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
 		        <i class="fas fa-filter"></i> Filtrar
 		    </button>
@@ -102,61 +91,36 @@
 
         </div>
             </div>
-=======
-    
-    
->>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
         <div class="main-content">
-           
+        
+		        	<div class="search-container">
+				        <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
+				    </div>
+		
+		
+        
             
-<<<<<<< HEAD
             
            
-=======
->>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
             <div class="card-container" id="visitas-container">
-                <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} == null">
-                    <div class="card">
-                        <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
-                        <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
-                        <p><strong>Responsável:</strong> <span th:text="${visita.responsavel}">Nome Categoria</span></p>
-                        <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
-                        <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
-                        
-                        
-                        <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
+			  <th:block th:each="visita : ${visitas}"
+               			th:if="${visita.horarioSaida} != null">
+			        <div class="card">
+			            <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
+			            <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
+			            <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
+			            <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>
+			            <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
+			          
+			            </button>
+			        </div>
+			    </th:block>
+			</div>
 
-                        <button class="btn-card delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
-                            <i class="fa fa-trash"></i>
-                        </button>
-            
-                      
-                    </div>
-                </th:block>
-            </div>
-            
-
-			<div class="sidebar-right" id="sidebar-visitor" style="display: none;">
-			                <button class="close-btn" id="close-btn">&times;</button> 
-							<br><br>
-			                <form action="/visitantes/cadastrar" method="post">
-			                    <label for="nome">Nome do Visitante</label>
-			                    <input type="text" id="nome" name="nome" required>
-
-			                    <label for="empresa">Empresa</label>
-			                    <input type="text" id="empresa" name="empresa">
-
-			                    <label for="documento">Documento</label>
-			                    <input type="text" id="documento" name="documento">
-
-			                    <button type="submit" class="btn">Salvar Visitante</button>
-			                </form>
-			            </div>
+			
 						
 						<div class="sidebar-right" id="sidebar-category" style="display: none;">
-						    <button class="close-btn" id="close-category-btn">&times;</button> 
+						    <button class="close-btn" id="close-category-btn">&times;</button> <!-- Botão de fechar -->
 						    <br><br>
 							<form action="/categorias/cadastrar" method="post">
 							            <label for="nome">Nome da Categoria</label>
@@ -168,7 +132,6 @@
 						
 						
 						
-<<<<<<< HEAD
 						
 					    <div id="filter-sidebar" class="filter-sidebar" style="display: none;">
 					    <button class="close-btn" onclick="toggleSidebar()">&times;</button> <!-- Botão de fechar -->
@@ -192,295 +155,187 @@
 					    <br><br>
 					       <!--  <button class = "btn" onclick="toggleSidebar()">Fechar</button>-->
 					    </div>
-=======
->>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 						
-						
-						<div class="sidebar-right" id="sidebar-add-saida" style="display: none;">
-						    <button class="close-btn" id="close-saida-btn">&times;</button>
-						    <br><br>
-						    <input type="datetime-local" id="horarioSaida" />
-						    <button class ="btn" onclick="atualizarHorarioSaida()">Atualizar Horário de Saída</button>
-						</div>
-						
+					
 						
 
-						<div class="sidebar-right" id="sidebar-visitas" style="display: none;">
-                            <button class="close-btn" id="close-visitas-btn">&times;</button>
-                            <br><br>
-                            <form action="/visitas/cadastrar" method="post">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                <br><br>
-                                <label for="visitante">Visitante</label>
-                                <select id="visitante" name="visitante.id" class="select2" required>
-                                    <option value="">Selecione um visitante</option>
-                                </select>
-                                <br><br>
-                                <label for="categoria">Categoria</label>
-                                <select id="categoria" name="categoria.id" class="select2" required>
-                                    <option value="">Selecione uma categoria</option>
-                                </select>
-                                <br><br>
-                                <label for="responsavel">Responsável</label>
-                                <select id="responsavel" name="responsavel" class="select2" required>
-                                    <option value="">Selecione um responsável</option>
-                                </select>
-                                <br><br>
-                                <label for="horarioEntrada">Horário de Entrada</label>
-                                <input type="datetime-local" id="horarioEntrada" name="horarioEntrada" required>
-                                <br><br>
-                                <label for="cracha">Crachá (1 a 10)</label>
-                                <input type="number" id="cracha" name="cracha" min="1" max="10" required>
-                                <br><br>
-                                <div id="error-message" style="color: red; display: none;"></div>
-                                <br>
-                                <button type="submit" class="btn">Salvar Visita</button>
-                            </form>
-                        </div>
-                        
-						
-								   <button class="add-visitor" id="add-visitor-btn">
-								      <i class="fa fa-id-badge"  ></i>Cadastrar Visitante
-								   
-								   			
-								   </button>
-						           <button class="add-visit" id="add-visit-btn">
-									    <i class="fas fa-plus"></i> Adicionar Visita
-									</button>
-						       </div>
+					
 						  
 			    
 <script>
 
-async function deletarVisita(visitaId) {
-    const confirmar = confirm("Tem certeza que deseja excluir este cadastro?");
-    if (!confirmar) return; 
-
-    try {
-        const response = await fetch(`/visitas/deletar/${visitaId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            alert("Cadastro excluído com sucesso!");
-            location.reload(); 
-        } else {
-            alert("Erro ao excluir o cadastro.");
-        }
-    } catch (error) {
-        console.error("Erro ao excluir a visita:", error);
-        alert("Erro ao excluir o cadastro.");
-    }
-}
-
-async function populateResponsaveisSelect() {
-    const responsavelSelect = document.getElementById("responsavel");
-
-    try {
-        const response = await fetch("/users/api/users");
-        const users = await response.json();
-
-        users.forEach(user => {
-            const option = document.createElement("option");
-            
-            option.value = user.officeLocation 
-                ? `${user.displayName} - ${user.officeLocation}`
-                : user.displayName;
-            option.textContent = user.displayName; 
-            responsavelSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Erro ao carregar os dados de responsáveis:", error);
-    }
-}
-
-
-document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
-
-
-
-
-let currentVisitaId = null;
-
-function abrirSidebar(visitaId) {
-    currentVisitaId = visitaId; 
-    document.getElementById('sidebar-add-saida').style.display = 'block';
-}
-
-document.getElementById('close-saida-btn').addEventListener('click', function() {
-    document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null; 
-});
-
-function atualizarHorarioSaida() {
-    const horarioSaida = document.getElementById('horarioSaida').value;
-
-    if (horarioSaida && currentVisitaId) {
-        fetch('/visitas/atualizar-saida', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `id=${currentVisitaId}&horarioSaida=${encodeURIComponent(horarioSaida)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                fecharSidebar();
-                location.reload(); 
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao atualizar o horário de saída.');
-        });
-    } else {
-        alert('Por favor, informe o horário de saída.');
-    }
-}
-
-function fecharSidebar() {
-    document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null; 
-}
-    
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Selecione uma opção",
-            allowClear: true
-        });
-    });
-
-    
-    document.getElementById('add-visitor-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'block'; 
-    });
-
-   
-    document.getElementById('close-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'none'; 
-    });
-
-    
-    document.getElementById('add-visit-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'block'; 
-
-        fetch('/visitas/dados')
-            .then(response => response.json())
-            .then(data => {
-                
-                const visitanteSelect = document.getElementById('visitante');
-                visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; 
-                data.visitantes.forEach(visitante => {
-                    const option = document.createElement('option');
-                    option.value = visitante.id; 
-                    option.textContent = visitante.nome; 
-                    visitanteSelect.appendChild(option);
-                });
-
-                
-                const categoriaSelect = document.getElementById('categoria');
-                categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; 
-                data.categorias.forEach(categoria => {
-                    const option = document.createElement('option');
-                    option.value = categoria.id; 
-                    option.textContent = categoria.nome; 
-                    categoriaSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Erro ao carregar dados:', error));
-    });
-
-    
-    document.getElementById('close-visitas-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'none'; 
-    });
-
-    
-    document.getElementById('add-category').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'block'; 
-    });
-
-    
-    document.getElementById('close-category-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'none'; 
-    });
-    
-
-   
-    
-    function toggleSidebar() {
+function toggleSidebarmenu() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("open");
-    
-    var title = document.querySelector(".logo-container"); 
-    title.classList.toggle("open"); 
-}
-    
-    function verificarCracha(event) {
-    event.preventDefault(); 
 
-    const cracha = document.getElementById('cracha').value;
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
+    var title = document.querySelector(".menu h1");
+    title.classList.toggle("open");
 
-    
-    errorMessage.style.display = 'none';
-    successMessage.style.display = 'none';
-
-    
-    fetch(`/visitas/verificar-cracha?cracha=${cracha}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.emUso) {
-                
-                errorMessage.textContent = `O crachá ${cracha} já está em uso. Por favor, escolha outro.`;
-                errorMessage.style.display = 'block'; 
-            } else {
-                
-                successMessage.textContent = 'Crachá válido, enviando formulário...';
-                successMessage.style.display = 'block'; 
-                document.getElementById('visitaForm').submit(); 
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar o crachá:', error);
-            errorMessage.textContent = 'Ocorreu um erro ao verificar o crachá. Tente novamente.';
-            errorMessage.style.display = 'block'; 
-        });
+    var searchContainer = document.getElementById("search-container"); // Certifique-se que o ID está correto
+    searchContainer.classList.toggle("open"); // Adiciona/remover a classe
 }
 
 
-
-function armazenarToken(token) {
-    localStorage.setItem('token', token); 
-    console.log('Token armazenado com sucesso:', token);
+function initializeSidebar() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Obter os valores dos parâmetros da URL
+    const startDate = params.get('startDate');
+    const endDate = params.get('endDate');
+    
+    // Preencher os campos do sidebar se os valores existirem
+    if (startDate) {
+        document.getElementById('start-date').value = startDate; // Substitua pelo ID correto do seu campo
+    }
+    if (endDate) {
+        document.getElementById('end-date').value = endDate; // Substitua pelo ID correto do seu campo
+    }
 }
 
 
-function obterTokenDePermissao() {
-    return new Promise((resolve, reject) => {
-        const token = localStorage.getItem('token'); 
-        if (token) {
-            resolve(token);
+function downloadCSV() {
+    // Seleciona todos os cartões visíveis na tela
+    const cards = document.querySelectorAll(".card");
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Inclui BOM para codificação UTF-8
+
+    // Cabeçalhos das colunas do CSV
+    csvContent += "Nome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n";
+
+    // Extrai dados de cada cartão visível e adiciona ao conteúdo CSV
+    cards.forEach(card => {
+        // Verifica se o cartão está visível
+        if (card.style.display !== "none") {
+            const nome = card.querySelector("h3").innerText;
+            const tipo = card.querySelector("p:nth-child(2) span").innerText;
+            const horarioEntrada = card.querySelector("p:nth-child(3) span").innerText;
+            const horarioSaida = card.querySelector("p:nth-child(4) span").innerText;
+            const cartao = card.querySelector("p:nth-child(5) span").innerText;
+
+            // Cria uma linha no CSV com os dados do cartão usando ";" como separador
+            csvContent += `${nome};${tipo};${horarioEntrada};${horarioSaida};${cartao}\n`;
+        }
+    });
+
+    // Verifica se há dados para download
+    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nNome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n") {
+        alert("Nenhum dado disponível para download.");
+        return;
+    }
+
+    // Cria um link para download do CSV
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "dados_visitas.csv");
+    document.body.appendChild(link);
+
+    // Aciona o download e remove o link
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('filter-sidebar');
+    
+    // Verifica se o sidebar está oculto e deve ser aberto
+    if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+        sidebar.style.display = 'block'; // Exibe o sidebar
+        
+        // Chama a função para carregar os dados
+        initializeSidebar();
+        
+    } else {
+        sidebar.style.display = 'none'; // Oculta o sidebar
+    }
+}
+
+
+function applyFilter() {
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+
+    // Verifica se as datas estão preenchidas
+    if (!startDate || !endDate) {
+        alert('Por favor, selecione ambas as datas.');
+        return; 
+    }
+    
+    document.getElementById('loading').style.display = 'block';
+    
+    
+    
+    
+    // Redireciona para a URL com as datas para aplicar o filtro
+    window.location.href = `/registros/visitas/finalizados?startDate=${startDate}&endDate=${endDate}`;
+   
+ 
+}
+
+function checkFilterStatus() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Obter os valores dos parâmetros da URL
+    const startDate = params.get('startDate');
+    const endDate = params.get('endDate');
+    
+    // Seleciona o botão de filtro
+    const filterBtn = document.getElementById("filter-btn");
+    
+    // Verifica se startDate e endDate estão preenchidos
+    if (startDate && endDate) {
+        // Altera a cor do botão para laranja se ambos os parâmetros estiverem preenchidos
+        filterBtn.style.backgroundColor = "orange"; // Muda a cor para laranja
+    } else {
+        // Se não, define a cor original
+        filterBtn.style.backgroundColor = "#45a049"; // Cor original
+    }
+}
+
+// Chama a função ao carregar a página
+window.onload = function() {
+    checkFilterStatus();
+};
+
+
+function removeFilter() {
+    // Obtém a URL atual
+    const url = new URL(window.location.href);
+
+    // Remove os parâmetros `startDate` e `endDate`
+    url.searchParams.delete("startDate");
+    url.searchParams.delete("endDate");
+
+    // Atualiza a URL sem redirecionar
+    window.history.replaceState(null, '', url);
+
+   
+    document.getElementById('loading').style.display = 'block';
+    // Recarrega a página
+    location.reload();
+}
+
+
+function filterCards() {
+    // Obtém o valor digitado no campo de pesquisa
+    const query = document.getElementById("search-input").value.toLowerCase();
+    // Seleciona todos os cartões de visita
+    const cards = document.querySelectorAll(".card");
+
+    // Itera sobre cada cartão e aplica o filtro
+    cards.forEach(card => {
+        // Obter o texto do cartão (nome, tipo, horário, etc.)
+        const cardText = card.innerText.toLowerCase();
+
+        // Verifica se o texto do cartão contém a consulta de pesquisa
+        if (cardText.includes(query)) {
+            card.style.display = "block"; // Exibe o cartão
         } else {
-            reject('Token não encontrado');
+            card.style.display = "none"; // Oculta o cartão
         }
     });
 }
-
-
-
-
 
 </script>
 

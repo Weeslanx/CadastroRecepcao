@@ -12,20 +12,37 @@
 </head>
 <body>
 
-    <!-- Barra Lateral -->
+   
     <button class="btn-open-sidebar" onclick="toggleSidebar()">☰ Painel de Configuração</button>
 
     <div class="sidebar" id="sidebar">
-        <!-- Botão para fechar o sidebar -->
+       
         <button class="btn-close-sidebar" onclick="toggleSidebar()"></button>
         
         <h2>Painel de Configurações</h2>
         <button onclick="toggleSection('user-section')">Cadastro de Usuários</button>
         <button onclick="toggleSection('category-section')">Cadastro de Categorias</button>
+
+        
+        
+        
+        <div class="icon" data-tooltip="Entradas">
+	        <a href="/registros/visitas">
+	            <i class="fa fa-check"></i>
+                <span>Concluir</span>
+	        </a>
+	    </div>
+	   
+	    
+        
+    </div>
+
+    <div class="logo-container">
+        <img src="/images/logo3.png" alt="Logo" class="logo-img">
     </div>
 
     <div class="main-content" id="main-content">
-        <!-- Conteúdo principal da página -->
+       
     </div>
 
    
@@ -33,7 +50,7 @@
       
         <div id="user-section" class="section">
             <h1>Cadastro de Usuários</h1>
-            <!-- Formulário para adicionar um novo usuário -->
+           
         <form action="/users/add" method="post" class="form-group">
             <label for="name">Nome:</label>
             <input type="text" id="name" name="name" placeholder="Digite o nome" required>
@@ -55,7 +72,7 @@
             
         </div>
 
-        <!-- Seção de Cadastro de Categorias -->
+       
         <div id="category-section" class="section">
             <h1>Cadastro de Categorias</h1>
             <form action="/categorias/novocadastro" method="post" class="form-group">
@@ -69,7 +86,10 @@
     </div>
 
     <div class="cards-container">
-        <!-- Card para visitas com botões -->
+       
+        
+
+
         <div class="info-card visitas-info total-visitas-card">
             <h3>Total de Visitas</h3>
             <ul>
@@ -85,7 +105,7 @@
             </div>
         </div>
     
-        <!-- Card para gráfico de visitas por dia -->
+       
         <div class="info-card grafico-visitas grafico-visitas-card">
             <h3>Gráfico de Visitas por Dia</h3>
             <canvas id="visitasGrafico" width="400" height="200"></canvas>
@@ -94,16 +114,24 @@
         <div class="info-card categorias-info categorias-card">
             <h3>Categorias Cadastradas</h3>
             <ul id="categoriasList">
-                <!-- As categorias serão carregadas aqui -->
+               
                 <li>Carregando categorias...</li>
             </ul>
         </div>
+
+        <div class="info-card visitante-info visitante-card">
+            <h3>visitante</h3>
+            <ul id="categoriasList">
+               
+                <li>visitante</li>
+            </ul>
+        </div>
     
-        <!-- Card para total de usuários -->
+     
         <div class="info-card user-info usuarios-card">
             <h3>Usuários: <span id="totalUsuarios">0</span></h3>
             <ul id="usuariosList">
-                <!-- Os usuários serão inseridos aqui -->
+                
             </ul>
         </div>
     </div>
@@ -130,7 +158,7 @@ const visitasGrafico = new Chart(ctx, {
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false, // Permite que o gráfico se ajuste ao card
+        maintainAspectRatio: false, 
         scales: {
             y: {
                 beginAtZero: true,
@@ -161,29 +189,54 @@ const visitasGrafico = new Chart(ctx, {
 });
 
 
-fetch('/categorias/list')  // A URL do endpoint que você configurou
+fetch('/categorias/list')  
     .then(response => response.json())
     .then(data => {
-        if (data && data.length > 0) {
-            // Seleciona o elemento onde as categorias serão exibidas
-            const categoriasList = document.getElementById('categoriasList');
-            categoriasList.innerHTML = '';  // Limpa a lista existente
+        const categoriasList = document.getElementById('categoriasList');
+        categoriasList.innerHTML = ''; 
 
-            // Itera sobre as categorias recebidas e as adiciona ao HTML
+        if (data && data.length > 0) {
             data.forEach(categoria => {
                 const li = document.createElement('li');
-                li.textContent = categoria.nome;  // Supondo que o nome da categoria seja 'nome'
-                categoriasList.appendChild(li);   // Adiciona a categoria à lista
+                li.textContent = categoria.nome;
+
+              
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.onclick = function() {
+                    deleteCategoria(categoria.id);  
+                };
+
+            
+                li.appendChild(deleteButton);
+                categoriasList.appendChild(li);
             });
         } else {
-            // Caso não haja categorias, exibe uma mensagem
-            const categoriasList = document.getElementById('categoriasList');
             categoriasList.innerHTML = '<li>Nenhuma categoria cadastrada</li>';
         }
     })
     .catch(error => {
         console.error('Erro ao buscar categorias:', error);
     });
+
+
+function deleteCategoria(id) {
+    fetch(`/categorias/${id}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Categoria excluída com sucesso.');
+           
+            location.reload();
+        } else {
+            alert('Erro ao excluir a categoria.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao excluir a categoria:', error);
+    });
+}
 
          fetch('/users/userContagem')
             .then(response => response.json())
@@ -244,7 +297,7 @@ fetch('/categorias/list')  // A URL do endpoint que você configurou
             document.getElementById(sectionId).classList.add('active');
         }
     
-        // Função para alternar a barra lateral
+        
         function toggleSidebar() {
             const mainContent = document.querySelector('.main-content');
             mainContent.classList.toggle('closed');
@@ -253,11 +306,11 @@ fetch('/categorias/list')  // A URL do endpoint que você configurou
         function toggleSection(sectionId) {
     const section = document.getElementById(sectionId);
 
-    // Se a seção já está ativa, fecha ao clicar novamente
+
     if (section.classList.contains('active')) {
         section.classList.remove('active');
     } else {
-        // Fecha todas as seções antes de abrir a nova
+      
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         section.classList.add('active');
     }
@@ -277,7 +330,7 @@ function toggleSidebar() {
         mainContent.style.visibility = "visible";
         openBtn.style.display = "none";
     } else {
-        // Remove a classe 'active' de todas as seções ao fechar o sidebar
+        
         document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
         mainContent.style.visibility = "hidden";
         openBtn.style.display = "block";

@@ -32,7 +32,7 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
     if (token != null) {
         var login = tokenService.validateToken(token);
         
-        if (login != null) { // Verifique se login não é null
+        if (login != null) { 
             UserDetails user = userRepository.findByName(login);
             
             if (user != null) {

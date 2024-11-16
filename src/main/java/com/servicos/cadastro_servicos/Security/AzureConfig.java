@@ -15,7 +15,6 @@ public class AzureConfig {
     @Value("${azure.client.secret}")
     private String clientSecret;
 
-    // Getters para acessar as variáveis em outras partes do código, se necessário
     public String getTenantId() {
         return tenantId;
     }

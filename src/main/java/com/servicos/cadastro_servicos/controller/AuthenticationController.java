@@ -40,7 +40,7 @@ public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid Authentication
     var usernamePassword = new UsernamePasswordAuthenticationToken(data.name(), data.pass());
     Authentication auth = this.authenticationManager.authenticate(usernamePassword);
 
-    // Verifica se auth.getPrincipal() é uma instância de User com pattern matching
+    
     if (auth.getPrincipal() instanceof User user) {
         var token = tokenService.generateToken(user);
 
@@ -48,7 +48,7 @@ public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid Authentication
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
-    return ResponseEntity.status(401).build(); // Retorna 401 se a autenticação falhar
+    return ResponseEntity.status(401).build(); 
 }
 
 

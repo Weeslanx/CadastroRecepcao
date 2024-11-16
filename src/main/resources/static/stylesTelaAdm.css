@@ -9,7 +9,6 @@ body, html {
     background-color: #1f1e1e;
 }
 
-
 .sidebar h2 {
     text-align: center;
     margin: 0;
@@ -35,11 +34,7 @@ body, html {
 }
 
 .main-content {
-    
     background-color: #302f2f;
-   
-    
-    margin-left: 125px;
     transition: margin-left 0.3s, width 0.3s;
     z-index: 1000;
 }
@@ -74,16 +69,36 @@ input[type="text"], input[type="password"], select {
     outline: none;
 }
 
+.logo-container {
+    height: 60px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    position: absolute;
+    z-index: 10000;
+    top: 4%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: right 0.3s ease;
+    z-index: 1999;
+}
 
-
-
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    align-items: center;
+    z-index: 2000;
+}
 
 .cards-container {
     position: fixed;
-    top: 30px;
-    left: 0px; 
+    top: 60px;
+    left: 0px;
     right: 20px;
-    bottom: 20px;
+    bottom: 3px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 200px 200px;
@@ -91,11 +106,26 @@ input[type="text"], input[type="password"], select {
     padding: 20px;
     overflow-y: auto;
     box-sizing: border-box;
-    transition: left 0.3s ease; /* Transição suave para o ajuste da margem */
+    transition: left 0.3s ease;
+}
+
+.cards-container::-webkit-scrollbar {
+    width: 10px;
+    background-color: #2c2c2c;
+    margin-right: 0px;
+}
+
+.cards-container::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+.cards-container::-webkit-scrollbar-thumb:hover {
+    background-color: #23e644;
 }
 
 .cards-container.sidebar-open {
-    left: 250px; /* Margem quando o sidebar está aberto */
+    left: 250px;
 }
 
 .total-visitas-card {
@@ -108,61 +138,32 @@ input[type="text"], input[type="password"], select {
     grid-row: 2/ 2;
     display: flex;
     flex-direction: column;
-    height:350px;
-      
+    height: 350px;
+}
+
+.visitante-card {
+    grid-column: 1/4;
+    grid-row: 4/ 4;
+    height: 400px;
 }
 
 .grafico-visitas-card canvas {
-    margin-bottom: 50px; 
+    margin-bottom: 50px;
 }
 
 .categorias-card {
     grid-column: 2 / 4;
     grid-row: 1 / 2;
-
 }
 
 .usuarios-card {
-    grid-column: 1 / 4; 
+    grid-column: 1 / 4;
     grid-row: 3 / 3;
-    margin-top: auto;
-    height: auto;
+    margin-top: 150px;
+    height: 400px;
 }
 
-    .info-card {
-        background-color: #2c2c2c;
-        color: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        box-sizing: border-box;
-        overflow: hidden;
-    }
-
-
-.info-card.user-info {
-    max-height: 250px;
-    overflow-y: auto;
-}
-
-.info-card.user-info::-webkit-scrollbar {
-    width: 8px;
-    background-color: #2c2c2c;
-}
-
-.info-card.user-info::-webkit-scrollbar-thumb {
-    background-color: #444;
-    border-radius: 4px;
-}
-
-.info-card.user-info::-webkit-scrollbar-thumb:hover {
-    background-color: #23e644;
-}
-
-.info-card.categorias-card {
+.info-card {
     background-color: #2c2c2c;
     color: white;
     border-radius: 8px;
@@ -172,37 +173,7 @@ input[type="text"], input[type="password"], select {
     flex-direction: column;
     gap: 10px;
     box-sizing: border-box;
-    max-height: auto; 
-    overflow-y: auto; 
-}
-
-.info-card.categorias-card::-webkit-scrollbar {
-    width: 8px;
-    background-color: #2c2c2c;
-}
-
-.info-card.categorias-card::-webkit-scrollbar-thumb {
-    background-color: #444;
-    border-radius: 4px;
-}
-
-.info-card.categorias-card::-webkit-scrollbar-thumb:hover {
-    background-color: #23e644;
-}
-.user-info button {
-    background-color: #ff4c4c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 1px 3px;
-    cursor: pointer;
-    font-size: 10px;
-    margin-top: 5px;
-    transition: background-color 0.3s;
-}
-
-.user-info button:hover {
-    background-color: #d43f3f;
+    overflow: hidden;
 }
 
 .info-card h3 {
@@ -218,6 +189,60 @@ input[type="text"], input[type="password"], select {
     font-size: 20px;
 }
 
+.info-card li {
+    padding: 5px 0;
+    border-bottom: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.info-card.user-info,
+.info-card.categorias-card {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.info-card.categorias-card {
+    max-height: auto;
+}
+
+.info-card.user-info::-webkit-scrollbar,
+.info-card.categorias-card::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2c2c2c;
+}
+
+.info-card.user-info::-webkit-scrollbar-thumb,
+.info-card.categorias-card::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+.info-card.user-info::-webkit-scrollbar-thumb:hover,
+.info-card.categorias-card::-webkit-scrollbar-thumb:hover {
+    background-color: #23e644;
+}
+
+.user-info button,
+.categorias-card button {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 1px 3px;
+    cursor: pointer;
+    font-size: 10px;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+}
+
+.user-info button:hover,
+.categorias-card button:hover {
+    background-color: #d43f3f;
+}
+
 .visitas-info ul {
     list-style: none;
     margin: 0;
@@ -227,15 +252,6 @@ input[type="text"], input[type="password"], select {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.info-card li {
-    padding: 5px 0;
-    border-bottom: 1px solid #444;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
 }
 
 .btn-concluir {
@@ -253,7 +269,6 @@ input[type="text"], input[type="password"], select {
     transition: background-color 0.3s;
     text-align: center;
     z-index: 0;
-    
 }
 
 .btn-concluir:hover {
@@ -294,37 +309,32 @@ input[type="text"], input[type="password"], select {
     background-color: transparent;
     color: #8f8e8e;
     border: none;
-    font-size: 24px; /* Aumente o tamanho da fonte para destacar o ícone */
+    font-size: 24px;
     cursor: pointer;
     z-index: 100;
-    padding: 0; /* Remove padding extra */
+    padding: 0;
     transition: color 0.3s;
 }
 
 .btn-open-sidebar:hover {
-    color: #45a049; /* Altera a cor ao passar o mouse */
+    color: #45a049;
 }
-
 
 .btn-close-sidebar {
     position: absolute;
-   
     color: #d43f3f;
     background: none;
     border: none;
-    font-size: 20px; /* Tamanho maior para o ícone */
+    font-size: 20px;
     cursor: pointer;
-    
-   
 }
 
 .btn-close-sidebar:hover {
-background-color: transparent !important;
-
+    background-color: transparent !important;
 }
 
 .sidebar {
-    position: fixed;
+    position: relative;
     top: 0;
     left: -250px;
     width: 250px;
@@ -339,31 +349,78 @@ background-color: transparent !important;
 }
 
 .sidebar.open {
-    left: 0; 
+    left: 0;
+}
+
+.sidebar .icon {
+    margin: 40px 0;
+    color: #f3f0f0 !important;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+    margin-top: 5px;
+    top: 75px;
+    margin: 20px;
+    left: 8px;
+    margin-left: 2px;
 }
 
 .btn {
-    background-color: #4caf50; /* Verde primário */
-    color: #ffffff; /* Cor do texto */
-    padding: 12px 24px; /* Espaçamento interno */
-    border: none; /* Remove a borda padrão */
-    border-radius: 8px; /* Bordas arredondadas */
-    cursor: pointer; /* Muda o cursor ao passar */
-    font-size: 16px; /* Tamanho da fonte */
-    font-weight: bold; /* Deixa o texto em negrito */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra leve */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transições suaves */
-    display: inline-flex; /* Alinhamento interno */
-    align-items: center; /* Centraliza o texto verticalmente */
+    background-color: #4caf50;
+    color: #ffffff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .btn:hover {
-    background-color: #45a049; /* Cor ao passar o mouse */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Aumenta a sombra */
+    background-color: #45a049;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn:active {
-    background-color: #3e8e41; /* Cor ao pressionar */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra reduzida */
-    transform: translateY(1px); /* Pequeno efeito de clique */
+    background-color: #3e8e41;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
+.icon {
+    position: absolute;
+    top: calc(100vh - 250px) !important;
+    left: 120px !important;
+    transform: translateX(-50%);
+    color: #ffffff !important;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: 10px 20px;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.icon i {
+    color: #ffffff !important;
+}
+
+.icon a {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.icon:hover {
+    color: #0c9e3d !important;
+    background-color: #1d7c3d;
+}
+
+.icon:hover i {
+    color: #0c9e3d !important;
 }

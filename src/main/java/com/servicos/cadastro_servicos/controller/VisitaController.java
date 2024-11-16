@@ -33,7 +33,7 @@ public class VisitaController {
     private final CategoriaRepository categoriaRepository;
     private final VisitaRepository visitaRepository;
 
-    // Construtor para injeção de dependências
+    
     public VisitaController(VisitanteRepository visitanteRepository,
                             CategoriaRepository categoriaRepository,
                             VisitaRepository visitaRepository) {
@@ -42,17 +42,17 @@ public class VisitaController {
         this.visitaRepository = visitaRepository;
     }
 
-    // Lista todas as visitas cadastradas
+    
     @GetMapping("/registros/visitas")
     public String listarVisitas(Model model) {
-        List<Visita> visitas = visitaRepository.findAll(); // Busca todas as visitas
+        List<Visita> visitas = visitaRepository.findAll(); 
 
-        model.addAttribute("visitas", visitas); // Passa a lista de visitas para o template
+        model.addAttribute("visitas", visitas); 
 
         return "index"; 
     }
 
-    // Lista visitas finalizadas com filtro de datas
+    
     @GetMapping("/registros/visitas/finalizados")
     public String listarVisitasFinalizadas(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
@@ -61,16 +61,16 @@ public class VisitaController {
 
         List<Visita> visitas;
 
-        // Filtro de visitas entre duas datas
+       
         if (startDate != null && endDate != null) {
             visitas = visitaRepository.findByHorarioSaidaBetween(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
         } else {
-            visitas = visitaRepository.findByHorarioSaidaIsNotNull(); // Filtra visitas que já saíram
+            visitas = visitaRepository.findByHorarioSaidaIsNotNull();
         }
 
-        model.addAttribute("visitas", visitas); // Passa a lista de visitas para o template
+        model.addAttribute("visitas", visitas); 
 
-        return "finalizados"; // Nome do template HTML que exibe as visitas finalizadas
+        return "finalizados"; 
     }
 
     
@@ -102,15 +102,15 @@ public class VisitaController {
   
     @PostMapping("/visitas/cadastrar")
     public String cadastrarVisita(Visita visita, Model model) {
-        System.out.println("Responsável recebido: " + visita.getResponsavel()); // Log para verificar o valor
+        System.out.println("Responsável recebido: " + visita.getResponsavel()); 
     
         if (visita.getCategoria() == null || visita.getVisitante() == null || visita.getResponsavel() == null) {
             model.addAttribute("error", "Categoria, Visitante e Responsável são obrigatórios.");
-            return "index"; // Redireciona para a página do formulário com uma mensagem de erro
+            return "index"; 
         }
     
-        visitaRepository.save(visita); // Salva a nova visita no banco
-        return "redirect:/registros/visitas"; // Redireciona para a página de visitas
+        visitaRepository.save(visita); 
+        return "redirect:/registros/visitas"; 
     }
     
     @DeleteMapping("/visitas/deletar/{id}")
@@ -125,20 +125,20 @@ public class VisitaController {
     }
 
 
-    // Verifica se um crachá já está em uso (visitante sem horário de saída)
+    
     @GetMapping("/visitas/verificar-cracha")
     @ResponseBody
     public Map<String, Boolean> verificarCracha(@RequestParam int cracha) {
         boolean emUso = visitaRepository.findAll().stream()
-            .filter(v -> v.getHorarioSaida() == null) // Filtra visitas sem horário de saída
-            .anyMatch(v -> v.getCracha() == cracha); // Verifica se o crachá está em uso
+            .filter(v -> v.getHorarioSaida() == null) 
+            .anyMatch(v -> v.getCracha() == cracha); 
 
         Map<String, Boolean> response = new HashMap<>();
         response.put("emUso", emUso);
-        return response; // Retorna o estado do crachá como JSON
+        return response; 
     }
 
-    // Atualiza o horário de saída de uma visita
+    
     @PostMapping("/visitas/atualizar-saida")
     @ResponseBody
     public Map<String, String> atualizarHorarioSaida(
@@ -150,8 +150,8 @@ public class VisitaController {
 
         if (visitaOptional.isPresent()) {
             Visita visita = visitaOptional.get();
-            visita.setHorarioSaida(horarioSaida); // Atualiza o horário de saída da visita
-            visitaRepository.save(visita); // Salva a atualização no banco
+            visita.setHorarioSaida(horarioSaida); 
+            visitaRepository.save(visita); 
             response.put("status", "success");
             response.put("message", "Horário de saída atualizado com sucesso.");
         } else {
@@ -159,12 +159,12 @@ public class VisitaController {
             response.put("message", "Visita não encontrada.");
         }
 
-        return response; // Retorna o status da operação como JSON
+        return response; 
     }
 
-    // Exibe a página de login (se necessário)
+
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login"; // Nome do arquivo HTML do formulário de login
+        return "login"; 
     }
 }

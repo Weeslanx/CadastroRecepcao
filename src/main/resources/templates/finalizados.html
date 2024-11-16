@@ -50,7 +50,7 @@
 	        </a>
 	    </div>
         
-        <div class="icon" data-tooltip="Configuração">
+        <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
         </div>
@@ -83,14 +83,14 @@
                         <div class="logo-container">
                             <img src="/images/logo3.png" alt="Logo" class="logo-img">
                         </div>
-        
+                        
                         
                         <div class="logo-container">
                             <img src="/images/logo3.png" alt="Logo" class="logo-img">
 
 
         </div>
-    
+            </div>
         <div class="main-content">
         
 		        	<div class="search-container">
@@ -101,7 +101,7 @@
         
             
             
-            <!-- Container para exibir os cartões das visitas -->
+           
             <div class="card-container" id="visitas-container">
 			  <th:block th:each="visita : ${visitas}"
                			th:if="${visita.horarioSaida} != null">
@@ -132,7 +132,7 @@
 						
 						
 						
-						<!-- Sidebar de Filtros -->
+						
 					    <div id="filter-sidebar" class="filter-sidebar" style="display: none;">
 					    <button class="close-btn" onclick="toggleSidebar()">&times;</button> <!-- Botão de fechar -->
 					    <br><br>

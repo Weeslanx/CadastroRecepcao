@@ -35,10 +35,10 @@ public class CategoriaController {
         return "redirect:/users/cadastroUsers";  
     }
 
-    @GetMapping("/list")
+     @GetMapping("/list")
     @ResponseBody
     public List<Categoria> listarCategorias() {
         List<Categoria> categorias = categoriaRepository.findAll();
-        return categorias;  // Retorna as categorias em formato JSON
+        return categorias;  
     }
 }

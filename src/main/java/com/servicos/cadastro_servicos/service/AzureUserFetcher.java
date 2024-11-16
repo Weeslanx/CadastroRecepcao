@@ -26,7 +26,7 @@ public class AzureUserFetcher {
     private final String CLIENT_SECRET;
 
     private final Cache<String, List<AzureUser>> userCache = Caffeine.newBuilder()
-            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .expireAfterWrite(200, TimeUnit.MINUTES)
             .build();
 
     @Autowired

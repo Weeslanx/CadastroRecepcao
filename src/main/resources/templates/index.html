@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 	
-	<!-- Incluir jQuery -->
+	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-	<!-- Incluir JS do Select2 -->
+	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 	
@@ -29,14 +29,14 @@
         
          <div class="icon" data-tooltip="Entradas">
 	        <a href="/registros/visitas">
-	            <i class="fa fa-paper-plane"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <i class="fa fa-paper-plane"></i> 
 	            <span>Registro de Entradas</span>
 	        </a>
 	    </div>
         
           <div class="icon" data-tooltip="finalizados">
 	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i> <!-- Substitua "fa-check-circle" por outro ícone se desejar -->
+	            <i class="fas fa-check-circle"></i> 
 	            <span>Visitas Finalizadas</span>
 	        </a>
 	    </div>
@@ -93,11 +93,11 @@
                         <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
                         
                         
-                        <button class="btn-saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
+                        <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
 
-                        <button class="btn-delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
+                        <button class="btn-card delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
                             <i class="fa fa-trash"></i>
                         </button>
             
@@ -108,7 +108,7 @@
             
 
 			<div class="sidebar-right" id="sidebar-visitor" style="display: none;">
-			                <button class="close-btn" id="close-btn">&times;</button> <!-- Botão de fechar -->
+			                <button class="close-btn" id="close-btn">&times;</button> 
 							<br><br>
 			                <form action="/visitantes/cadastrar" method="post">
 			                    <label for="nome">Nome do Visitante</label>
@@ -125,7 +125,7 @@
 			            </div>
 						
 						<div class="sidebar-right" id="sidebar-category" style="display: none;">
-						    <button class="close-btn" id="close-category-btn">&times;</button> <!-- Botão de fechar -->
+						    <button class="close-btn" id="close-category-btn">&times;</button> 
 						    <br><br>
 							<form action="/categorias/cadastrar" method="post">
 							            <label for="nome">Nome da Categoria</label>
@@ -225,11 +225,11 @@ async function populateResponsaveisSelect() {
 
         users.forEach(user => {
             const option = document.createElement("option");
-            // Verifica se 'officeLocation' existe e concatena apenas se não for nulo ou undefined
+            
             option.value = user.officeLocation 
                 ? `${user.displayName} - ${user.officeLocation}`
                 : user.displayName;
-            option.textContent = user.displayName; // Exibe apenas o nome no dropdown
+            option.textContent = user.displayName; 
             responsavelSelect.appendChild(option);
         });
     } catch (error) {
@@ -237,7 +237,7 @@ async function populateResponsaveisSelect() {
     }
 }
 
-// Chama a função após o carregamento da página
+
 document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
 
 
@@ -287,9 +287,9 @@ function atualizarHorarioSaida() {
 
 function fecharSidebar() {
     document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null; // Limpa o ID da visita atual
+    currentVisitaId = null; 
 }
-    // Inicializa o Select2 nos elementos com a classe select2
+    
     $(document).ready(function() {
         $('.select2').select2({
             placeholder: "Selecione uma opção",
@@ -297,127 +297,122 @@ function fecharSidebar() {
         });
     });
 
-    // Função para mostrar o formulário de visitantes
+    
     document.getElementById('add-visitor-btn').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'block'; // Mostra o formulário
+        sidebarRight.style.display = 'block'; 
     });
 
-    // Função para fechar o formulário de visitantes
+   
     document.getElementById('close-btn').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'none'; // Esconde o formulário
+        sidebarRight.style.display = 'none'; 
     });
 
-    // Função para mostrar o formulário de visitas
+    
     document.getElementById('add-visit-btn').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'block'; // Mostra o formulário
+        sidebarRight.style.display = 'block'; 
 
         fetch('/visitas/dados')
             .then(response => response.json())
             .then(data => {
-                // Preencher o dropdown de visitantes
+                
                 const visitanteSelect = document.getElementById('visitante');
-                visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; // Limpa opções anteriores
+                visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; 
                 data.visitantes.forEach(visitante => {
                     const option = document.createElement('option');
-                    option.value = visitante.id; // ID do visitante
-                    option.textContent = visitante.nome; // Nome do visitante
+                    option.value = visitante.id; 
+                    option.textContent = visitante.nome; 
                     visitanteSelect.appendChild(option);
                 });
 
-                // Preencher o dropdown de categorias
+                
                 const categoriaSelect = document.getElementById('categoria');
-                categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; // Limpa opções anteriores
+                categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; 
                 data.categorias.forEach(categoria => {
                     const option = document.createElement('option');
-                    option.value = categoria.id; // ID da categoria
-                    option.textContent = categoria.nome; // Nome da categoria
+                    option.value = categoria.id; 
+                    option.textContent = categoria.nome; 
                     categoriaSelect.appendChild(option);
                 });
             })
             .catch(error => console.error('Erro ao carregar dados:', error));
     });
 
-    // Função para fechar o formulário de visitas
+    
     document.getElementById('close-visitas-btn').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'none'; // Esconde o formulário
+        sidebarRight.style.display = 'none'; 
     });
 
-    // Função para mostrar o formulário de categorias
+    
     document.getElementById('add-category').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'block'; // Mostra o formulário
+        sidebarRight.style.display = 'block'; 
     });
 
-    // Função para fechar o formulário de categorias
+    
     document.getElementById('close-category-btn').addEventListener('click', function() {
         var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'none'; // Esconde o formulário
+        sidebarRight.style.display = 'none'; 
     });
     
 
    
-    // Função para alternar a visibilidade da sidebar
+    
     function toggleSidebar() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("open");
     
-    var title = document.querySelector(".logo-container"); // Seleciona o título corretamente
-    title.classList.toggle("open"); // Alterna a classe 'open' para mover o título
+    var title = document.querySelector(".logo-container"); 
+    title.classList.toggle("open"); 
 }
     
     function verificarCracha(event) {
-    event.preventDefault(); // Previne o envio do formulário
+    event.preventDefault(); 
 
     const cracha = document.getElementById('cracha').value;
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
 
-    // Limpa as mensagens de erro e sucesso anteriores
+    
     errorMessage.style.display = 'none';
     successMessage.style.display = 'none';
 
-    // Verifica se o crachá está em uso
+    
     fetch(`/visitas/verificar-cracha?cracha=${cracha}`)
         .then(response => response.json())
         .then(data => {
             if (data.emUso) {
-                // Exibe a mensagem de erro se o crachá estiver em uso
+                
                 errorMessage.textContent = `O crachá ${cracha} já está em uso. Por favor, escolha outro.`;
-                errorMessage.style.display = 'block'; // Exibe a mensagem de erro
+                errorMessage.style.display = 'block'; 
             } else {
-                // Se o crachá não estiver em uso, envia o formulário
+                
                 successMessage.textContent = 'Crachá válido, enviando formulário...';
-                successMessage.style.display = 'block'; // Exibe a mensagem de sucesso
-                document.getElementById('visitaForm').submit(); // Envia o formulário
+                successMessage.style.display = 'block'; 
+                document.getElementById('visitaForm').submit(); 
             }
         })
         .catch(error => {
             console.error('Erro ao verificar o crachá:', error);
             errorMessage.textContent = 'Ocorreu um erro ao verificar o crachá. Tente novamente.';
-            errorMessage.style.display = 'block'; // Exibe a mensagem de erro
+            errorMessage.style.display = 'block'; 
         });
 }
 
 
 
-
-
-// Função para obter o token de permissão
-
-// Função para armazenar o token JWT após o login (simulação)
 function armazenarToken(token) {
-    localStorage.setItem('token', token); // Armazena o token JWT no localStorage
+    localStorage.setItem('token', token); 
     console.log('Token armazenado com sucesso:', token);
 }
 
-// Função para obter o token de permissão do localStorage
+
 function obterTokenDePermissao() {
     return new Promise((resolve, reject) => {
-        const token = localStorage.getItem('token'); // Obtenha o token armazenado
+        const token = localStorage.getItem('token'); 
         if (token) {
             resolve(token);
         } else {

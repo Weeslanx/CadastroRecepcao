@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -71,25 +72,25 @@ public class UserController {
     public Map<String, Object> contarUsuariosEListar() {
         List<User> users = userRepository.findAll();
 
-        // Contando os usuários
+       
         int totalUsuarios = users.size();
 
-        // Criando uma lista de objetos com id, nome e role dos usuários
+        
         List<Map<String, Object>> usuariosInfo = new ArrayList<>();
         for (User user : users) {
             Map<String, Object> usuarioInfo = new HashMap<>();
-            usuarioInfo.put("id", user.getId());  // Incluindo o ID do usuário
+            usuarioInfo.put("id", user.getId());  
             usuarioInfo.put("nome", user.getName());
-            usuarioInfo.put("role", user.getRole());  // Ou user.getRole().getNome() se for um relacionamento com a classe Role
+            usuarioInfo.put("role", user.getRole());  
             usuariosInfo.add(usuarioInfo);
         }
 
-        // Criando o mapa com os dados que vamos retornar
+        
         Map<String, Object> response = new HashMap<>();
         response.put("totalUsuarios", totalUsuarios);
         response.put("usuarios", usuariosInfo);
 
-        return response;  // Retorna o total e os dados dos usuários com o ID
+        return response;  
     }
 
 
@@ -116,7 +117,7 @@ public class UserController {
     @PostMapping("/add")
     public String addUser(@ModelAttribute User user, Model model) {
         if (userRepository.findByName(user.getName()) != null) {
-            model.addAttribute("error", "O usuário já existe."); // Adiciona uma mensagem de erro ao modelo
+            model.addAttribute("error", "O usuário já existe."); 
             return "cadastroUsers"; 
         }
     
@@ -134,7 +135,7 @@ public class UserController {
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam String userId, Model model) {
         try {
-            UUID uuid = UUID.fromString(userId); // Converte o ID para UUID
+            UUID uuid = UUID.fromString(userId); 
             Optional<User> user = userRepository.findById(uuid);
             if (user.isPresent()) {
                 userRepository.delete(user.get());
@@ -151,12 +152,12 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        // Obtém o contexto de segurança e chama o método de logout do Spring Security
+        
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect:/login"; // Redireciona para a página de login após o logout
+        return "redirect:/login"; 
     }
 
 

@@ -1,34 +1,29 @@
-
-
 body {
-	        background-color: #1e1e1e;
-	        color: #ffffff;
-	        font-family: 'Roboto', sans-serif;
-	        margin: 0;
-	        padding: 0;
-            overflow-x: hidden; 
-	    }
-	    
-	
-	  	    
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 60px; /* Largura padrão da sidebar fechada */
+    width: 60px;
     background-color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 10px;
-  
-    z-index: 100; /* Para sobrepor os cards */
-     transition: left 0.6s ease 0.6s, color 0.6s ease;
+    z-index: 100;
+    transition: left 0.6s ease 0.6s, color 0.6s ease;
 }
 
 .sidebar.open {
-    width: 230px; /* Largura da sidebar quando expandida */
+    width: 230px;
 }
 
 .sidebar .toggle-btn {
@@ -36,9 +31,6 @@ body {
     color: #fff;
     cursor: pointer;
     margin-bottom: 20px;
-   
-  
-
 }
 
 .sidebar .icon {
@@ -54,9 +46,6 @@ body {
     margin-left: 2px;
 }
 
-
-
-/* Mostra o texto ao lado dos ícones ao expandir a sidebar */
 .sidebar .icon span {
     display: none;
     margin-left: 20px;
@@ -64,10 +53,9 @@ body {
     color: #fff;
 }
 
-
 .sidebar .icon:hover {
-    transform: scale(1.1); /* Aumenta ligeiramente o tamanho do ícone */
-    color: #ffa500; /* Altere para um laranja mais claro */
+    transform: scale(1.1);
+    color: #ffa500;
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -75,7 +63,7 @@ body {
     content: attr(data-tooltip);
     position: absolute;
     top: 50%;
-    left: 45px; /* Exibe ao lado do ícone */
+    left: 45px;
     background-color: #333;
     color: #fff;
     padding: 5px 10px;
@@ -86,190 +74,174 @@ body {
     opacity: 0.9;
 }
 
-.sidebar.open ~ .main-content  {
-    margin-left: 200px; /* Ajusta quando a sidebar está aberta */
+.sidebar.open ~ .main-content {
+    margin-left: 200px;
 }
 
 .sidebar .icon i {
-    color: #fff; /* Cor desejada para os ícones */
+    color: #fff;
 }
 
 .sidebar .icon a {
-    color: inherit; /* Herdará a cor de .icon, que já definimos como branca */
-    text-decoration: none; /* Remove o sublinhado dos links */
+    color: inherit;
+    text-decoration: none;
 }
 
-	    .main-content {
-	        flex-grow: 1;
-	        padding: 30px;
-	        position: relative;
-	        overflow-y: auto;
-	        margin-left: 60px; /* Margem padrão */
-    		
-    		transition: margin-left 0.2s ease;
-	    }
-	    
-	    .main-content h1 {
-		  
-		    text-align: left;
-		    position: relative;
-		    top:-40px;
-		    left: 10px;
-		    
-	    }
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    position: relative;
+    overflow-y: auto;
+    margin-left: 60px;
+    transition: margin-left 0.2s ease;
+}
 
-	    .card-container {
-	        display: flex;
-	        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	        flex-wrap: wrap;
-	        margin-top: 40px;
-	    }
+.main-content h1 {
+    text-align: left;
+    position: relative;
+    top: -40px;
+    left: 10px;
+}
 
-	    .card {
-	        background-color: #3c3c3c;
-	        border-radius: 10px;
-	        padding: 15px;
-	        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-	        transition: transform 0.3s, box-shadow 0.3s;
-	        margin: 10px;
-			position: relative; /* Torna o cartão o elemento de referência para o botão */
-    		overflow: hidden;
-    		
-	    }
+.card-container {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
 
-	    .card:hover {
-	        transform: translateY(-5px);
-	        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-	    }
-	    
-	    
-	    
-	    
+.card {
+    background-color: #3c3c3c;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+}
 
-	    .card h3 {
-	        font-size: 1.4em;
-	        margin-top: 0;
-	        color: #4caf50;
-	        font-weight: 700;
-	    }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
 
-	    .card p {
-	        margin: 5px 0;
-	        font-weight: 400;
-	        line-height: 1.5;
-	        color: #e0e0e0;
-	    }
+.card h3 {
+    font-size: 1.4em;
+    margin-top: 0;
+    color: #4caf50;
+    font-weight: 700;
+}
 
-	    .add-visit {
-		    display: inline-flex; /* Exibe o ícone e o texto em linha */
-		    align-items: center; /* Centraliza verticalmente o ícone e o texto */
-		    padding: 10px 20px;
-		    font-size: 16px;
-		    background-color: #4CAF50; /* Verde */
-		    color: white;
-		    border: none;
-		    border-radius: 5px;
-		    cursor: pointer;
-		    transition: background-color 0.3s ease;
-		    
-		    position: fixed;
-	        top: 20px;
-	        right: 20px;
-		}
-			    
-	    .add-visit i {
-		    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
-		    font-size: 18px; /* Ajuste o tamanho do ícone */
-		}
+.card p {
+    margin: 5px 0;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #e0e0e0;
+}
 
-	    .add-visit:hover {
-	        background-color: #45a049;
-	        
-	    }
+.add-visit {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
 
-	   
-	    
-	     .add-visitor {
-		    display: inline-flex; /* Exibe o ícone e o texto em linha */
-		    align-items: center; /* Centraliza verticalmente o ícone e o texto */
-		    padding: 10px 20px;
-		    font-size: 16px;
-		    background-color: #4CAF50; /* Verde */
-		    color: white;
-		    border: none;
-		    border-radius: 5px;
-		    cursor: pointer;
-		    transition: background-color 0.3s ease;
-		    
-		    position: fixed;
-	        top: 20px;
-	        right: 210px;
-		}
-	    
-	    .add-visitor i {
-		    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
-		    font-size: 18px; /* Ajuste o tamanho do ícone */
-		}
+.add-visit i {
+    margin-right: 8px;
+    font-size: 18px;
+}
 
-	    .add-visitor:hover {
-	        background-color: #45a049;
-	    }
+.add-visit:hover {
+    background-color: #45a049;
+}
 
-	    
+.add-visitor {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    top: 20px;
+    right: 210px;
+}
+
+.add-visitor i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.add-visitor:hover {
+    background-color: #45a049;
+}
+
 .sidebar-right {
-   position: fixed; /* Fixa a sidebar no canto */
+    position: fixed;
     right: 0;
     top: 0;
-    width: 380px; /* Largura da sidebar */
-    height: 100%; /* Altura completa */
-    background-color: #1e1e1e; /* Cor de fundo escura */
-    color: #ffffff; /* Cor do texto */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
-    padding: 20px; /* Espaçamento interno */
-    transition: transform 0.3s ease; /* Transição suave */
-    z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+    width: 380px;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
 }
 
 .sidebar-vitan {
-   position: fixed; /* Fixa a sidebar no canto */
+    position: fixed;
     right: 0;
     top: 0;
-    width: 380px; /* Largura da sidebar */
-    height: 100%; /* Altura completa */
-    background-color: #1e1e1e; /* Cor de fundo escura */
-    color: #ffffff; /* Cor do texto */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
-    padding: 20px; /* Espaçamento interno */
-    transition: transform 0.3s ease; /* Transição suave */
-    z-index: 1001; /* Coloca a sidebar acima de outros elementos */
+    width: 380px;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    z-index: 1001;
 }
 
 .filter-sidebar {
-   position: fixed; /* Fixa a sidebar no canto */
+    position: fixed;
     right: 0;
     top: 0;
-    width: 380px; /* Largura da sidebar */
-    height: 100%; /* Altura completa */
-    background-color: #1e1e1e !important; /* Cor de fundo escura */
-    color: #ffffff; /* Cor do texto */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
-    padding: 20px; /* Espaçamento interno */
-    transition: transform 0.3s ease; /* Transição suave */
-    z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+    width: 380px;
+    height: 100%;
+    background-color: #1e1e1e !important;
+    color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
 }
 
-/* Exibir a aba lateral */
 .filter-sidebar.show {
-    display: block; /* Exibe a aba lateral quando a classe 'show' é adicionada */
+    display: block;
 }
 
 .sidebar-right label,
 .sidebar-vitan label {
-	
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
-    color: #f1f1f1; /* Cor clara para contraste */
+    color: #f1f1f1;
     font-weight: 600;
 }
 
@@ -289,13 +261,13 @@ body {
     width: 100%;
     padding: 12px;
     margin-bottom: 16px;
-    border: 2px solid #444; /* Cor da borda escura */
+    border: 2px solid #444;
     border-radius: 5px;
     font-size: 16px;
-    color: #e0e0e0; /* Cor do texto clara */
-    background-color: #333 !important; /* Fundo do campo em tom escuro */
+    color: #e0e0e0;
+    background-color: #333 !important;
     box-sizing: border-box;
-    transition: border-color 0.3s ease, background-color 0.3s ease; /* Transições suaves */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .filter-sidebar input[type="text"]:focus,
@@ -311,138 +283,130 @@ body {
 .sidebar-vitan input[type="number"]:focus,
 .sidebar-vitan input[type="datetime-local"]:focus,
 .sidebar-vitan select:focus {
-    border-color: #4CAF50; /* Cor da borda ao focar */
-    background-color: #333 !important; /* Fundo mais escuro ao focar */
+    border-color: #4CAF50;
+    background-color: #333 !important;
     outline: none;
 }
+
 .select2-container--default .select2-selection--single {
-    background-color: #333 !important; /* Fundo escuro */
-    border: 1px solid #444 !important; /* Borda */
-    border-radius: 5px; /* Borda arredondada */
-    color: #e0e0e0 !important; /* Cor do texto */
+    background-color: #333 !important;
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+    color: #e0e0e0 !important;
     font-size: 20px;
-    height: 38px !important; 
-    width: 380px; /* Largura total */
-    padding: 0 20px; /* Espaçamento interno */
+    height: 38px !important;
+    width: 380px;
+    padding: 0 20px;
     box-sizing: border-box;
     display: flex;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
 }
 
-/* Placeholder e texto selecionado */
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    color: #e0e0e0 !important; 
-    line-height: normal; 
+    color: #e0e0e0 !important;
+    line-height: normal;
     text-align: center;
 }
-
 
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
     color: #aaa !important;
 }
 
-
-/* Seta do Select2 */
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
-    border-color: #aaa transparent transparent transparent !important; /* Cor da seta */
+    border-color: #aaa transparent transparent transparent !important;
 }
 
-/* Estilo das opções no dropdown */
 .select2-container--default .select2-results__option {
-    background-color: #333 !important; /* Fundo escuro das opções */
+    background-color: #333 !important;
     color: #fff;
     padding: 10px;
 }
 
-/* Hover nas opções */
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: #444;
     color: #fff;
 }
 
-/* Dropdown ao abrir */
 .select2-container--default .select2-results {
     max-height: 200px;
-    overflow-y: auto; /* Adiciona rolagem se necessário */
-    background-color: #222; /* Fundo do dropdown */
+    overflow-y: auto;
+    background-color: #222;
     color: #ddd;
-    border-radius: 5px; /* Arredondamento do dropdown */
+    border-radius: 5px;
 }
 
-		
-		
-		.close-btn {
-		    background-color: transparent;
-		    border: none;
-		    color: #ddd; /* Cor da borda do botão */
-		    font-size: 1.5em;
-		    float: right;
-		    cursor: pointer;
-		}
-		
-		@media (max-width: 480px) {
-		    .sidebar-right {
-		        max-width: 100%;
-		        padding: 15px;
-		    }
-		}
-		
-		.btn {
-		    background-color: #45a049;
-		    color: white;
-		    padding: 10px 15px;
-		    border: none;
-		    border-radius: 5px;
-		    cursor: pointer;
-		    font-size: 16px;
-		    transition: background-color 0.3s;
-		  
-		}
-		
-		.btn:hover {
-		    background-color: #2eaf55;
-		}
-
-
-
-
-
-
-
-.btn-saida {
-    position: absolute; /* Permite a movimentação do botão */
-    top: 10px; /* Ajuste para a posição desejada */
-    right: 10px; /* Ajuste para a posição desejada */
-    background-color: #45a049; /* Cor de fundo do botão */
-    color: white; /* Cor do texto */
-    border: none; /* Remove a borda padrão */
-    border-radius: 50%; /* Botão redondo */
-    width: 40px; /* Largura do botão */
-    height: 40px; 
+.close-btn {
+    background-color: transparent;
+    border: none;
+    color: #ddd;
+    font-size: 1.5em;
+    float: right;
     cursor: pointer;
-    visibility: hidden; 
-    opacity: 0; 
-    transition: visibility 0s, opacity 0.3s ease; 
-    z-index: 10; 
-}
-.btn-saida:hover {
-    background-color: #57c971; 
 }
 
-.card:hover .btn-saida {
-     visibility: visible; 
-    opacity: 1; 
+@media (max-width: 480px) {
+    .sidebar-right {
+        max-width: 100%;
+        padding: 15px;
+    }
 }
 
-.btn-saida i {
+.btn {
+    background-color: #45a049;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #2eaf55;
+}
+
+.btn-card {
+    position: absolute;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 10;
+}
+
+.btn-card:hover {
+    background-color: #57c971;
+}
+
+.card:hover .btn-card {
+    visibility: visible;
+    opacity: 1;
+}
+
+.btn-card i {
     font-size: 15px;
 }
 
+.btn-card.delet {
+    top: 10px;
+    right: 50px;
+}
+
+.btn-card.saida {
+    top: 10px;
+    right: 10px;
+}
 
 .search-container {
     position: relative;
-   	
-    right: 145px; 
+    right: 145px;
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -454,10 +418,6 @@ body {
     z-index: 1;
 }
 
-
-
-
-/* Campo de entrada de pesquisa */
 #search-input {
     width: 100%;
     max-width: 300px;
@@ -469,13 +429,10 @@ body {
     background-color: #333;
     color: #fff;
     transition: all 0.3s ease;
-  
-  
 }
 
 #search-input:hover {
     background-color: #444;
-    
 }
 
 #search-input:focus {
@@ -488,152 +445,141 @@ body {
     font-style: italic;
 }
 
-/* Estilo para o botão de filtro */
-  #filter-btn {
-        position: absolute; 
-        right: 20px; 
-        top: 20px; 
-        background-color: #45a049; 
-        color: white; 
-        border: none; 
-        border-radius: 5px; 
-        padding: 10px 15px; 
-        font-size: 16px; 
-        cursor: pointer; 
-        transition: background-color 0.3s; 
-        z-index: 1000;
-    }
+#filter-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1000;
+}
 
-    /* Estilo ao passar o mouse sobre o botão */
-    #filter-btn:hover {
-        background-color: #2eaf55; 
-          transform: translateY(-2px); /* Eleva o botão levemente */
-    }
+#filter-btn:hover {
+    background-color: #2eaf55;
+    transform: translateY(-2px);
+}
 
-    /* Estilo para o botão ativo */
-    #filter-btn.active {
-        background-color: orange; 
-        color: white; 
-    }
+#filter-btn.active {
+    background-color: orange;
+    color: white;
+}
 
+#loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000152;
+    text-align: center;
+    padding-top: 20%;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    border-radius: 10px;
+}
 
- /* Estilos para o carregando */
-    #loading {
-        display: none; /* Inicialmente oculto */
-        position: fixed; /* Fica fixo na tela */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
-        z-index: 1000152; /* Fica acima de outros elementos */
-        text-align: center; /* Centraliza o texto */
-        padding-top: 20%; /* Espaçamento do topo */
-        color: #ffffff; /* Cor do texto */
-        font-family: Arial, sans-serif; /* Fonte do texto */
-        font-size: 24px; /* Tamanho da fonte */
-     
-        border-radius: 10px; /* Cantos arredondados */
-    }
+.spinner {
+    margin: 20px auto;
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-top: 8px solid #ffffff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
 
-    /* Estilo para o spinner de carregamento */
-    .spinner {
-        margin: 20px auto; /* Centraliza o spinner */
-        border: 8px solid rgba(255, 255, 255, 0.3); /* Borda leve */
-        border-top: 8px solid #ffffff; /* Borda mais forte no topo */
-        border-radius: 50%; /* Forma circular */
-        width: 60px; /* Largura do spinner */
-        height: 60px; /* Altura do spinner */
-        animation: spin 1s linear infinite; /* Animação de rotação */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
     }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .filter-sidebar {
-    position: fixed; /* Fixa a sidebar no canto */
+.filter-sidebar {
+    position: fixed;
     right: 0;
     top: 0;
-    width: 300px; /* Largura da sidebar */
-    height: 100%; /* Altura completa */
-    background-color: #343a40; /* Cor de fundo escura */
-    color: #ffffff; /* Cor do texto */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
-    padding: 20px; /* Espaçamento interno */
-    transition: transform 0.3s ease; /* Transição suave */
-    z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+    width: 300px;
+    height: 100%;
+    background-color: #343a40;
+    color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
 }
 
-/* Estilo dos rótulos */
 .filter-sidebar label {
-    font-weight: bold; /* Negrito */
-    color: #e9ecef; /* Cor do texto clara */
-    display: block; /* Faz o label ocupar toda a largura */
-    margin-bottom: 8px; /* Margem inferior */
-    font-size: 16px; /* Tamanho da fonte */
+    font-weight: bold;
+    color: #e9ecef;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
 }
 
-/* Estilo dos inputs de data */
 .date-input {
-    width: calc(100% - 10px); /* Largura total menos margem */
-    padding: 10px; /* Espaçamento interno */
-    margin-bottom: 15px; /* Margem inferior */
-    border: 1px solid #495057; /* Borda cinza escura */
-    border-radius: 4px; /* Bordas arredondadas */
-    background-color: #495057; /* Cor de fundo do campo */
-    color: #ffffff; /* Cor do texto */
-    transition: border-color 0.3s, background-color 0.3s; /* Transição suave */
+    width: calc(100% - 10px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #495057;
+    border-radius: 4px;
+    background-color: #495057;
+    color: #ffffff;
+    transition: border-color 0.3s, background-color 0.3s;
 }
 
-/* Efeito de foco nos inputs de data */
 .date-input:focus {
-    border-color: #007bff; /* Cor da borda ao focar */
-    outline: none; /* Remove contorno padrão */
-    background-color: #3c4043; /* Muda o fundo ao focar */
+    border-color: #007bff;
+    outline: none;
+    background-color: #3c4043;
 }
-
 
 .btn_dowload {
-  position: absolute; 
-        right: 130px; 
-        top: 20px; 
-        background-color: #45a049; 
-        color: white; 
-        border: none; 
-        border-radius: 5px; 
-        padding: 10px 15px; 
-        font-size: 16px; 
-        cursor: pointer; 
-        transition: background-color 0.3s; 
-        z-index: 1000;
+    position: absolute;
+    right: 130px;
+    top: 20px;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1000;
 }
 
-/* Efeito de hover no botão */
 .btn_dowload:hover {
-    background-color: #2eaf55; /* Cor mais escura ao passar o mouse */
-    transform: translateY(-2px); /* Eleva o botão levemente */
+    background-color: #2eaf55;
+    transform: translateY(-2px);
 }
 
-/* Efeito de active no botão */
 .btn_dowload:active {
-    transform: translateY(1px); /* Faz o botão "afundar" ao ser clicado */
+    transform: translateY(1px);
 }
 
-/* Animação de aparecimento */
 @keyframes fadeIn {
     from {
-        opacity: 0; /* Começa invisível */
+        opacity: 0;
     }
     to {
-        opacity: 1; /* Fica totalmente visível */
+        opacity: 1;
     }
 }
 
-/* Adicionando a animação ao botão ao aparecer */
 .btn_dowload {
-    animation: fadeIn 0.5s ease; /* Animação de aparição */
+    animation: fadeIn 0.5s ease;
 }
 
 .menu {
@@ -641,32 +587,25 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #333;
-    padding: 20px 0px; /* Ajuste o padding para garantir o espaçamento interno */
+    padding: 20px 0px;
     color: white;
     font-size: 24px;
     transition: left 0.5s ease 0.3s, color 0.3s ease;
     position: relative;
     z-index: 1000;
     width: 100%;
-    border-bottom: 1px solid #0a990a; /* Adiciona a borda verde */
-   
-   
+    border-bottom: 1px solid #0a990a;
 }
 
-/* Estilo adicional para o título */
 .menu h1 {
-   margin: 0; /* Remove margens do título */
-    text-align: left; /* Alinha o texto à esquerda (mude para right se preferir) */
-    padding: 0; /* Remove espaçamento interno */
-    font-size: 25px; /* Tamanho da fonte do título em pixels */
+    margin: 0;
+    text-align: center;
+    padding: 0;
+    font-size: 25px;
     flex-grow: 1;
-    /* Ajustes de posicionamento */
-    position: relative; /* Permite usar margin-top e margin-left */
-    left: 800px; /* Ajuste para mover o título para a direita */
-    top: center; /* Ajuste para mover o título para baixo ou cima */
+    position: relative;
+    top: center;
 }
-
-
 
 .user-form {
     display: center;
@@ -733,40 +672,37 @@ body {
 }
 
 .logo-container {
-    width: auto;            /* Largura do contêiner */
-    height: 60px;           /* Defina o comprimento desejado */
-    overflow: hidden;       /* Corta qualquer parte que ultrapasse os limites */
+    width: auto;
+    height: 60px;
+    overflow: hidden;
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente */
-    background: transparent; /* Remova qualquer fundo no contêiner */
-    position: absolute;      /* Necessário para o 'right' funcionar */
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    position: absolute;
     z-index: 10000;
-    left: 10px;                /* Inicialmente, a imagem estará no lugar normal */
-    transition: right 0.3s ease; /* Transição suave para o 'right' */
+    left: 10px;
+    transition: right 0.3s ease;
 }
 
-
-
 .logo-img {
-    width: 100%;            /* A imagem ocupa toda a largura do contêiner */
-    height: 100%;           /* A altura da imagem é ajustada para preencher o contêiner */
-    object-fit: cover;      /* A imagem cobre toda a área do contêiner, mantendo a proporção */
-       /* Posiciona a imagem no topo do contêiner */
-       z-index: 2000;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2000;
 }
 
 .sidebar-bottom-button {
     position: absolute;
-    bottom: 20px; /* Distância de 20px da parte inferior */
-    width: 100%; /* Largura total da sidebar */
+    bottom: 20px;
+    width: 100%;
     display: flex;
-    justify-content: center; /* Centraliza o botão */
+    justify-content: center;
 }
 
 .logout-btn {
-    background-color: #f44336; /* Cor vermelha para indicar o logout */
-    color: white; /* Cor do texto */
+    background-color: #f44336;
+    color: white;
     border: none;
     padding: 5px 5px;
     border-radius: 5px;
@@ -779,9 +715,9 @@ body {
 }
 
 .logout-btn i {
-    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+    margin-right: 8px;
 }
 
 .logout-btn:hover {
-    background-color: #d32f2f; /* Cor ao passar o mouse */
+    background-color: #d32f2f;
 }

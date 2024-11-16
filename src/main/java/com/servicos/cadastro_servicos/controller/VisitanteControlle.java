@@ -14,39 +14,39 @@ import com.servicos.cadastro_servicos.service.VisitanteService;
 @Controller
 public class VisitanteControlle {
 
-    private final VisitanteService visitanteService; // Injetando o serviço
+    private final VisitanteService visitanteService; 
 
 
     public VisitanteControlle(VisitanteService visitanteService) {
         this.visitanteService = visitanteService;
     }
 
-    // Exibe o formulário de cadastro e a lista de visitantes na mesma página
+    
     @GetMapping("/visitantes/cadastrar")
     public String exibirFormularioELista(Model model) {
         model.addAttribute("visitante", new Visitante());
-        List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista do banco de dados
+        List<Visitante> visitantes = visitanteService.listarVisitantes(); 
         model.addAttribute("visitantes", visitantes);
-        return "index"; // nome do template do HTML
+        return "index"; 
     }
 
-    // Cadastra o visitante e atualiza a lista
+    
     @PostMapping("/visitantes/cadastrar")
     public String cadastrarVisitante(@ModelAttribute Visitante visitante, Model model) {
-        // Valida se o nome está vazio
+        
         if (visitante.getNome() == null || visitante.getNome().trim().isEmpty()) {
             model.addAttribute("erro", "O nome do visitante é obrigatório.");
-            List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista do banco de dados
+            List<Visitante> visitantes = visitanteService.listarVisitantes(); 
             model.addAttribute("visitantes", visitantes);
             return "redirect:/registros/visitas";
         }
 
-        // Salva o visitante no banco de dados
+       
         visitanteService.salvarVisitante(visitante);
 
-        model.addAttribute("visitante", new Visitante()); // Limpa o formulário após o cadastro
-        List<Visitante> visitantes = visitanteService.listarVisitantes(); // Obtendo a lista atualizada
-        model.addAttribute("visitantes", visitantes); // Atualiza a lista com o novo visitante
-        return "redirect:/registros/visitas"; // Mantém na mesma página
+        model.addAttribute("visitante", new Visitante()); 
+        List<Visitante> visitantes = visitanteService.listarVisitantes(); 
+        model.addAttribute("visitantes", visitantes); 
+        return "redirect:/registros/visitas"; 
     }
 }

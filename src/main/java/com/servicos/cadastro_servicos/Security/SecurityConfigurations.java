@@ -26,19 +26,19 @@ public class SecurityConfigurations {
             .and()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-                .requestMatchers("/users/cadastroUsers").hasRole("ADMIN") // Permite login e registro sem autenticação
+                .requestMatchers("/users/cadastroUsers").hasRole("ADMIN") 
 
                 
 
                 .requestMatchers("/images/**").permitAll()
 
-                .anyRequest().authenticated() // Todas as outras requisições requerem autenticação
+                .anyRequest().authenticated() 
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/registros/visitas", true) 
-                .failureUrl("/login?error=true")// Redireciona para /registros/visitas após login bem-sucedido
+                .failureUrl("/login?error=true")
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")

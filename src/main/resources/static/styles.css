@@ -4,6 +4,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+<<<<<<< HEAD
     overflow-x: hidden;
 }
 
@@ -31,29 +32,65 @@ body {
     color: #fff;
     cursor: pointer;
     margin-bottom: 20px;
+=======
+    overflow-x: hidden; 
+}
+
+
+      
+.sidebar {
+position: fixed;
+top: 0;
+left: 0;
+height: 100%;
+width: 60px; /* Largura padrão da sidebar fechada */
+background-color: #333;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding-top: 10px;
+
+z-index: 100; /* Para sobrepor os cards */
+transition: left 0.6s ease 0.6s, color 0.6s ease;
+}
+
+.sidebar.open {
+width: 230px; /* Largura da sidebar quando expandida */
+}
+
+.sidebar .toggle-btn {
+font-size: 24px;
+color: #fff;
+cursor: pointer;
+margin-bottom: 20px;
+
+
+
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .sidebar .icon {
-    margin: 40px 0;
-    color: #db8888;
-    font-size: 24px;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.3s ease;
-    top: 75px;
-    margin: 20px;
-    left: 8px;
-    margin-left: 2px;
+margin: 40px 0;
+color: #db8888;
+font-size: 24px;
+cursor: pointer;
+position: relative;
+transition: color 0.3s ease;
+top: 75px;
+margin: 20px;
+left: 8px;
+margin-left: 2px;
 }
 
 .sidebar .icon span {
-    display: none;
-    margin-left: 20px;
-    font-size: 16px;
-    color: #fff;
+display: none;
+margin-left: 20px;
+font-size: 16px;
+color: #fff;
 }
 
 .sidebar .icon:hover {
+<<<<<<< HEAD
     transform: scale(1.1);
     color: #ffa500;
     transition: transform 0.2s ease, color 0.2s ease;
@@ -85,6 +122,39 @@ body {
 .sidebar .icon a {
     color: inherit;
     text-decoration: none;
+=======
+transform: scale(1.1); /* Aumenta ligeiramente o tamanho do ícone */
+color: #ffa500; /* Altere para um laranja mais claro */
+transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar:not(.open) .icon:hover::after {
+content: attr(data-tooltip);
+position: absolute;
+top: 50%;
+left: 45px; /* Exibe ao lado do ícone */
+background-color: #333;
+color: #fff;
+padding: 5px 10px;
+border-radius: 5px;
+font-size: 12px;
+white-space: nowrap;
+transform: translateY(-50%);
+opacity: 0.9;
+}
+
+.sidebar.open ~ .main-content  {
+margin-left: 200px; /* Ajusta quando a sidebar está aberta */
+}
+
+.sidebar .icon i {
+color: #fff; /* Cor desejada para os ícones */
+}
+
+.sidebar .icon a {
+color: inherit; /* Herdará a cor de .icon, que já definimos como branca */
+text-decoration: none; /* Remove o sublinhado dos links */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .main-content {
@@ -92,15 +162,29 @@ body {
     padding: 30px;
     position: relative;
     overflow-y: auto;
+<<<<<<< HEAD
     margin-left: 60px;
+=======
+    margin-left: 60px; /* Margem padrão */
+    
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
     transition: margin-left 0.2s ease;
 }
 
 .main-content h1 {
+<<<<<<< HEAD
     text-align: left;
     position: relative;
     top: -40px;
     left: 10px;
+=======
+  
+    text-align: left;
+    position: relative;
+    top:-40px;
+    left: 10px;
+    
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .card-container {
@@ -117,8 +201,14 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s, box-shadow 0.3s;
     margin: 10px;
+<<<<<<< HEAD
     position: relative;
     overflow: hidden;
+=======
+    position: relative; /* Torna o cartão o elemento de referência para o botão */
+    overflow: hidden;
+    
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .card:hover {
@@ -126,6 +216,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
+<<<<<<< HEAD
 .card h3 {
     font-size: 1.4em;
     margin-top: 0;
@@ -171,24 +262,89 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     background-color: #4CAF50;
+=======
+
+
+
+
+.card h3 {
+    font-size: 1.4em;
+    margin-top: 0;
+    color: #4caf50;
+    font-weight: 700;
+}
+
+.card p {
+    margin: 5px 0;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #e0e0e0;
+}
+
+.add-visit {
+    display: inline-flex; /* Exibe o ícone e o texto em linha */
+    align-items: center; /* Centraliza verticalmente o ícone e o texto */
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Verde */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+<<<<<<< HEAD
+=======
+    
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+        
+.add-visit i {
+    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+    font-size: 18px; /* Ajuste o tamanho do ícone */
+}
+
+.add-visit:hover {
+    background-color: #45a049;
+    
+}
+
+
+
+ .add-visitor {
+    display: inline-flex; /* Exibe o ícone e o texto em linha */
+    align-items: center; /* Centraliza verticalmente o ícone e o texto */
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
     position: fixed;
     top: 20px;
     right: 210px;
 }
 
 .add-visitor i {
+<<<<<<< HEAD
     margin-right: 8px;
     font-size: 18px;
+=======
+    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+    font-size: 18px; /* Ajuste o tamanho do ícone */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .add-visitor:hover {
     background-color: #45a049;
 }
+<<<<<<< HEAD
 
 .sidebar-right {
     position: fixed;
@@ -230,19 +386,76 @@ body {
     padding: 20px;
     transition: transform 0.3s ease;
     z-index: 1000;
+=======
+
+
+.sidebar-right {
+position: fixed; /* Fixa a sidebar no canto */
+right: 0;
+top: 0;
+width: 380px; /* Largura da sidebar */
+height: 100%; /* Altura completa */
+background-color: #1e1e1e; /* Cor de fundo escura */
+color: #ffffff; /* Cor do texto */
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+padding: 20px; /* Espaçamento interno */
+transition: transform 0.3s ease; /* Transição suave */
+z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+}
+
+.sidebar-vitan {
+position: fixed; /* Fixa a sidebar no canto */
+right: 0;
+top: 0;
+width: 380px; /* Largura da sidebar */
+height: 100%; /* Altura completa */
+background-color: #1e1e1e; /* Cor de fundo escura */
+color: #ffffff; /* Cor do texto */
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+padding: 20px; /* Espaçamento interno */
+transition: transform 0.3s ease; /* Transição suave */
+z-index: 1001; /* Coloca a sidebar acima de outros elementos */
+}
+
+.filter-sidebar {
+position: fixed; /* Fixa a sidebar no canto */
+right: 0;
+top: 0;
+width: 380px; /* Largura da sidebar */
+height: 100%; /* Altura completa */
+background-color: #1e1e1e !important; /* Cor de fundo escura */
+color: #ffffff; /* Cor do texto */
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+padding: 20px; /* Espaçamento interno */
+transition: transform 0.3s ease; /* Transição suave */
+z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .filter-sidebar.show {
+<<<<<<< HEAD
     display: block;
+=======
+display: block; /* Exibe a aba lateral quando a classe 'show' é adicionada */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .sidebar-right label,
 .sidebar-vitan label {
+<<<<<<< HEAD
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
     color: #f1f1f1;
     font-weight: 600;
+=======
+
+display: block;
+margin-bottom: 10px;
+font-size: 14px;
+color: #f1f1f1; /* Cor clara para contraste */
+font-weight: 600;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .filter-sidebar input[type="text"],
@@ -258,6 +471,7 @@ body {
 .sidebar-vitan input[type="number"],
 .sidebar-vitan input[type="datetime-local"],
 .sidebar-vitan select {
+<<<<<<< HEAD
     width: 100%;
     padding: 12px;
     margin-bottom: 16px;
@@ -268,6 +482,18 @@ body {
     background-color: #333 !important;
     box-sizing: border-box;
     transition: border-color 0.3s ease, background-color 0.3s ease;
+=======
+width: 100%;
+padding: 12px;
+margin-bottom: 16px;
+border: 2px solid #444; /* Cor da borda escura */
+border-radius: 5px;
+font-size: 16px;
+color: #e0e0e0; /* Cor do texto clara */
+background-color: #333 !important; /* Fundo do campo em tom escuro */
+box-sizing: border-box;
+transition: border-color 0.3s ease, background-color 0.3s ease; /* Transições suaves */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .filter-sidebar input[type="text"]:focus,
@@ -283,12 +509,19 @@ body {
 .sidebar-vitan input[type="number"]:focus,
 .sidebar-vitan input[type="datetime-local"]:focus,
 .sidebar-vitan select:focus {
+<<<<<<< HEAD
     border-color: #4CAF50;
     background-color: #333 !important;
     outline: none;
+=======
+border-color: #4CAF50; /* Cor da borda ao focar */
+background-color: #333 !important; /* Fundo mais escuro ao focar */
+outline: none;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .select2-container--default .select2-selection--single {
+<<<<<<< HEAD
     background-color: #333 !important;
     border: 1px solid #444 !important;
     border-radius: 5px;
@@ -300,34 +533,64 @@ body {
     box-sizing: border-box;
     display: flex;
     align-items: center;
+=======
+background-color: #333 !important; /* Fundo escuro */
+border: 1px solid #444 !important; /* Borda */
+border-radius: 5px; /* Borda arredondada */
+color: #e0e0e0 !important; /* Cor do texto */
+font-size: 20px;
+height: 38px !important; 
+width: 380px; /* Largura total */
+padding: 0 20px; /* Espaçamento interno */
+box-sizing: border-box;
+display: flex;
+align-items: center; /* Centraliza verticalmente */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
+<<<<<<< HEAD
     color: #e0e0e0 !important;
     line-height: normal;
     text-align: center;
+=======
+color: #e0e0e0 !important; 
+line-height: normal; 
+text-align: center;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
-    color: #aaa !important;
+color: #aaa !important;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
+<<<<<<< HEAD
     border-color: #aaa transparent transparent transparent !important;
+=======
+border-color: #aaa transparent transparent transparent !important; /* Cor da seta */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .select2-container--default .select2-results__option {
+<<<<<<< HEAD
     background-color: #333 !important;
     color: #fff;
     padding: 10px;
+=======
+background-color: #333 !important; /* Fundo escuro das opções */
+color: #fff;
+padding: 10px;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #444;
-    color: #fff;
+background-color: #444;
+color: #fff;
 }
 
 .select2-container--default .select2-results {
+<<<<<<< HEAD
     max-height: 200px;
     overflow-y: auto;
     background-color: #222;
@@ -339,6 +602,21 @@ body {
     background-color: transparent;
     border: none;
     color: #ddd;
+=======
+max-height: 200px;
+overflow-y: auto; /* Adiciona rolagem se necessário */
+background-color: #222; /* Fundo do dropdown */
+color: #ddd;
+border-radius: 5px; /* Arredondamento do dropdown */
+}
+
+
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    color: #ddd; /* Cor da borda do botão */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
     font-size: 1.5em;
     float: right;
     cursor: pointer;
@@ -360,12 +638,20 @@ body {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .btn:hover {
     background-color: #2eaf55;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 .btn-card {
     position: absolute;
     background-color: #45a049;
@@ -385,6 +671,10 @@ body {
     background-color: #57c971;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 .card:hover .btn-card {
     visibility: visible;
     opacity: 1;
@@ -404,7 +694,19 @@ body {
     right: 10px;
 }
 
+.btn-card.delet {
+    top: 10px;
+    right: 50px;
+}
+
+.btn-card.saida {
+    top: 10px;
+    right: 10px;
+}
+
+
 .search-container {
+<<<<<<< HEAD
     position: relative;
     right: 145px;
     z-index: 1000;
@@ -416,9 +718,24 @@ body {
     box-sizing: border-box;
     transition: margin-left 0.2s ease;
     z-index: 1;
+=======
+position: relative;
+
+right: 145px; 
+z-index: 1000;
+display: flex;
+align-items: center;
+justify-content: flex-end;
+max-width: 500px;
+padding: 0 10px;
+box-sizing: border-box;
+transition: margin-left 0.2s ease;
+z-index: 1;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 #search-input {
+<<<<<<< HEAD
     width: 100%;
     max-width: 300px;
     padding: 12px 18px;
@@ -433,18 +750,38 @@ body {
 
 #search-input:hover {
     background-color: #444;
+=======
+width: 100%;
+max-width: 300px;
+padding: 12px 18px;
+border: 1px solid #57c971;
+border-radius: 25px;
+font-size: 16px;
+outline: none;
+background-color: #333;
+color: #fff;
+transition: all 0.3s ease;
+
+
+}
+
+#search-input:hover {
+background-color: #444;
+
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 #search-input:focus {
-    border-color: #57c971;
-    background-color: #222;
+border-color: #57c971;
+background-color: #222;
 }
 
 #search-input::placeholder {
-    color: #bbb;
-    font-style: italic;
+color: #bbb;
+font-style: italic;
 }
 
+<<<<<<< HEAD
 #filter-btn {
     position: absolute;
     right: 20px;
@@ -468,6 +805,34 @@ body {
 #filter-btn.active {
     background-color: orange;
     color: white;
+=======
+/* Estilo para o botão de filtro */
+#filter-btn {
+position: absolute; 
+right: 20px; 
+top: 20px; 
+background-color: #45a049; 
+color: white; 
+border: none; 
+border-radius: 5px; 
+padding: 10px 15px; 
+font-size: 16px; 
+cursor: pointer; 
+transition: background-color 0.3s; 
+z-index: 1000;
+}
+
+/* Estilo ao passar o mouse sobre o botão */
+#filter-btn:hover {
+background-color: #2eaf55; 
+  transform: translateY(-2px); /* Eleva o botão levemente */
+}
+
+/* Estilo para o botão ativo */
+#filter-btn.active {
+background-color: orange; 
+color: white; 
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 #loading {
@@ -487,6 +852,7 @@ body {
     border-radius: 10px;
 }
 
+<<<<<<< HEAD
 .spinner {
     margin: 20px auto;
     border: 8px solid rgba(255, 255, 255, 0.3);
@@ -518,17 +884,75 @@ body {
     padding: 20px;
     transition: transform 0.3s ease;
     z-index: 1000;
+=======
+/* Estilos para o carregando */
+#loading {
+display: none; /* Inicialmente oculto */
+position: fixed; /* Fica fixo na tela */
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+z-index: 1000152; /* Fica acima de outros elementos */
+text-align: center; /* Centraliza o texto */
+padding-top: 20%; /* Espaçamento do topo */
+color: #ffffff; /* Cor do texto */
+font-family: Arial, sans-serif; /* Fonte do texto */
+font-size: 24px; /* Tamanho da fonte */
+
+border-radius: 10px; /* Cantos arredondados */
+}
+
+/* Estilo para o spinner de carregamento */
+.spinner {
+margin: 20px auto; /* Centraliza o spinner */
+border: 8px solid rgba(255, 255, 255, 0.3); /* Borda leve */
+border-top: 8px solid #ffffff; /* Borda mais forte no topo */
+border-radius: 50%; /* Forma circular */
+width: 60px; /* Largura do spinner */
+height: 60px; /* Altura do spinner */
+animation: spin 1s linear infinite; /* Animação de rotação */
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.filter-sidebar {
+position: fixed; /* Fixa a sidebar no canto */
+right: 0;
+top: 0;
+width: 300px; /* Largura da sidebar */
+height: 100%; /* Altura completa */
+background-color: #343a40; /* Cor de fundo escura */
+color: #ffffff; /* Cor do texto */
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+padding: 20px; /* Espaçamento interno */
+transition: transform 0.3s ease; /* Transição suave */
+z-index: 1000; /* Coloca a sidebar acima de outros elementos */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .filter-sidebar label {
+<<<<<<< HEAD
     font-weight: bold;
     color: #e9ecef;
     display: block;
     margin-bottom: 8px;
     font-size: 16px;
+=======
+font-weight: bold; /* Negrito */
+color: #e9ecef; /* Cor do texto clara */
+display: block; /* Faz o label ocupar toda a largura */
+margin-bottom: 8px; /* Margem inferior */
+font-size: 16px; /* Tamanho da fonte */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .date-input {
+<<<<<<< HEAD
     width: calc(100% - 10px);
     padding: 10px;
     margin-bottom: 15px;
@@ -537,15 +961,32 @@ body {
     background-color: #495057;
     color: #ffffff;
     transition: border-color 0.3s, background-color 0.3s;
+=======
+width: calc(100% - 10px); /* Largura total menos margem */
+padding: 10px; /* Espaçamento interno */
+margin-bottom: 15px; /* Margem inferior */
+border: 1px solid #495057; /* Borda cinza escura */
+border-radius: 4px; /* Bordas arredondadas */
+background-color: #495057; /* Cor de fundo do campo */
+color: #ffffff; /* Cor do texto */
+transition: border-color 0.3s, background-color 0.3s; /* Transição suave */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .date-input:focus {
+<<<<<<< HEAD
     border-color: #007bff;
     outline: none;
     background-color: #3c4043;
+=======
+border-color: #007bff; /* Cor da borda ao focar */
+outline: none; /* Remove contorno padrão */
+background-color: #3c4043; /* Muda o fundo ao focar */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .btn_dowload {
+<<<<<<< HEAD
     position: absolute;
     right: 130px;
     top: 20px;
@@ -558,27 +999,60 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
     z-index: 1000;
+=======
+position: absolute; 
+right: 130px; 
+top: 20px; 
+background-color: #45a049; 
+color: white; 
+border: none; 
+border-radius: 5px; 
+padding: 10px 15px; 
+font-size: 16px; 
+cursor: pointer; 
+transition: background-color 0.3s; 
+z-index: 1000;
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .btn_dowload:hover {
+<<<<<<< HEAD
     background-color: #2eaf55;
     transform: translateY(-2px);
+=======
+background-color: #2eaf55; /* Cor mais escura ao passar o mouse */
+transform: translateY(-2px); /* Eleva o botão levemente */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .btn_dowload:active {
+<<<<<<< HEAD
     transform: translateY(1px);
+=======
+transform: translateY(1px); /* Faz o botão "afundar" ao ser clicado */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 @keyframes fadeIn {
+<<<<<<< HEAD
     from {
         opacity: 0;
     }
     to {
         opacity: 1;
     }
+=======
+from {
+opacity: 0; /* Começa invisível */
+}
+to {
+opacity: 1; /* Fica totalmente visível */
+}
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .btn_dowload {
+<<<<<<< HEAD
     animation: fadeIn 0.5s ease;
 }
 
@@ -605,73 +1079,107 @@ body {
     flex-grow: 1;
     position: relative;
     top: center;
+=======
+animation: fadeIn 0.5s ease; /* Animação de aparição */
+}
+
+.menu {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #333;
+padding: 20px 0px;
+color: white;
+font-size: 24px;
+transition: left 0.5s ease 0.3s, color 0.3s ease;
+position: relative;
+z-index: 1000;
+width: 100%;
+border-bottom: 1px solid #0a990a; 
+
+
+}
+
+
+.menu h1 {
+margin: 0; 
+text-align: center; 
+padding: 0; 
+font-size: 25px; 
+flex-grow: 1;
+
+position: relative; 
+
+top: center; 
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .user-form {
-    display: center;
-    flex-direction: column;
-    gap: 15px;
-    margin-inline: 20px;
+display: center;
+flex-direction: column;
+gap: 15px;
+margin-inline: 20px;
 }
 
 .user-form label {
-    font-size: 1.1em;
-    margin-bottom: 5px;
-    color: #cccccc;
+font-size: 1.1em;
+margin-bottom: 5px;
+color: #cccccc;
 }
 
 .user-form input {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #444;
-    border-radius: 5px;
-    background-color: #333;
-    color: #ffffff;
-    outline: none;
-    transition: border-color 0.3s ease;
+padding: 10px;
+font-size: 1em;
+border: 1px solid #444;
+border-radius: 5px;
+background-color: #333;
+color: #ffffff;
+outline: none;
+transition: border-color 0.3s ease;
 }
 
 .user-form input:focus {
-    border-color: #4CAF50;
+border-color: #4CAF50;
 }
 
 .user-form .btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+background-color: #4CAF50;
+color: white;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+transition: background-color 0.3s ease;
 }
 
 .user-form .btn:hover {
-    background-color: #45a049;
+background-color: #45a049;
 }
 
 .user-list {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
+list-style-type: none;
+padding: 0;
+margin-top: 20px;
 }
 
 .user-list li {
-    background-color: #3c3c3c;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    color: #e0e0e0;
-    font-size: 1em;
-    transition: background-color 0.3s;
+background-color: #3c3c3c;
+margin-bottom: 10px;
+padding: 10px;
+border-radius: 5px;
+color: #e0e0e0;
+font-size: 1em;
+transition: background-color 0.3s;
 }
 
 .user-list li:hover {
-    background-color: #4CAF50;
-    color: #ffffff;
+background-color: #4CAF50;
+color: #ffffff;
 }
 
 .logo-container {
+<<<<<<< HEAD
     width: auto;
     height: 60px;
     overflow: hidden;
@@ -683,9 +1191,23 @@ body {
     z-index: 10000;
     left: 10px;
     transition: right 0.3s ease;
+=======
+width: auto;            /* Largura do contêiner */
+height: 60px;           /* Defina o comprimento desejado */
+overflow: hidden;       /* Corta qualquer parte que ultrapasse os limites */
+display: flex;
+justify-content: center; /* Centraliza horizontalmente */
+align-items: center;     /* Centraliza verticalmente */
+background: transparent; /* Remova qualquer fundo no contêiner */
+position: absolute;      /* Necessário para o 'right' funcionar */
+z-index: 10000;
+left: 10px;                /* Inicialmente, a imagem estará no lugar normal */
+transition: right 0.3s ease; /* Transição suave para o 'right' */
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10
 }
 
 .logo-img {
+<<<<<<< HEAD
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -721,3 +1243,41 @@ body {
 .logout-btn:hover {
     background-color: #d32f2f;
 }
+=======
+width: 100%;            
+height: 100%;           
+object-fit: cover;      
+
+z-index: 2000;
+}
+
+.sidebar-bottom-button {
+position: absolute;
+bottom: 20px; /* Distância de 20px da parte inferior */
+width: 100%; /* Largura total da sidebar */
+display: flex;
+justify-content: center; /* Centraliza o botão */
+}
+
+.logout-btn {
+background-color: #f44336; /* Cor vermelha para indicar o logout */
+color: white; /* Cor do texto */
+border: none;
+padding: 5px 5px;
+border-radius: 5px;
+cursor: pointer;
+font-size: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.3s ease;
+}
+
+.logout-btn i {
+margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+}
+
+.logout-btn:hover {
+background-color: #d32f2f; /* Cor ao passar o mouse */
+}
+>>>>>>> 8598610d147f90eb7dec740a070b33a1c6c33e10

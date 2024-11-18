@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Configurações</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link rel="stylesheet" href="/stylesTelaAdm.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -85,6 +87,22 @@
         </div>
     </div>
 
+
+
+    <div class="sidebar-details" id="visitorSidebar">
+        <button class="btn-close-sidebar" onclick="closeVisitorSidebar()">✖</button>
+        <button id="deleteVisitorButton" class="sidebarbtExcluir" onclick="deleteVisitorFromSidebar()">Excluir Visitante</button>
+        <button id="downloadVisitorData" class="sidebarbtDownload" onclick="downloadVisitorData()">Baixar Dados</button>
+
+
+        <h2>Detalhes do Visitante</h2>
+        <div id="visitorDetails">
+            <!-- Os detalhes do visitante serão carregados dinamicamente aqui -->
+        </div>
+    </div>
+
+    
+
     <div class="cards-container">
        
         
@@ -121,9 +139,9 @@
 
         <div class="info-card visitante-info visitante-card">
             <h3>visitante</h3>
-            <ul id="categoriasList">
+            <ul id="visitanteList">
+                <li>Carregando Visitantes...</li>
                
-                <li>visitante</li>
             </ul>
         </div>
     
@@ -189,25 +207,25 @@ const visitasGrafico = new Chart(ctx, {
 });
 
 
-fetch('/categorias/list')  
+fetch('/categorias/list')  // A URL do endpoint que você configurou
     .then(response => response.json())
     .then(data => {
         const categoriasList = document.getElementById('categoriasList');
-        categoriasList.innerHTML = ''; 
+        categoriasList.innerHTML = '';  // Limpa a lista existente
 
         if (data && data.length > 0) {
             data.forEach(categoria => {
                 const li = document.createElement('li');
                 li.textContent = categoria.nome;
 
-              
+                // Cria o botão "Excluir"
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Excluir';
                 deleteButton.onclick = function() {
-                    deleteCategoria(categoria.id);  
+                    deleteCategoria(categoria.id);  // Chama a função de exclusão com o ID da categoria
                 };
 
-            
+                // Adiciona o botão à lista e exibe a categoria
                 li.appendChild(deleteButton);
                 categoriasList.appendChild(li);
             });
@@ -219,7 +237,6 @@ fetch('/categorias/list')
         console.error('Erro ao buscar categorias:', error);
     });
 
-
 function deleteCategoria(id) {
     fetch(`/categorias/${id}`, {
         method: 'DELETE'
@@ -227,16 +244,23 @@ function deleteCategoria(id) {
     .then(response => {
         if (response.ok) {
             alert('Categoria excluída com sucesso.');
-           
+            
             location.reload();
         } else {
-            alert('Erro ao excluir a categoria.');
+            alert('Não é possível excluir a categoria. Existem registros associados.');
         }
     })
     .catch(error => {
         console.error('Erro ao excluir a categoria:', error);
     });
 }
+
+
+
+
+
+
+
 
          fetch('/users/userContagem')
             .then(response => response.json())
@@ -338,10 +362,237 @@ function toggleSidebar() {
 }
 
 
+fetch('/visitantes/list')  // A URL do endpoint que você configurou
+    .then(response => response.json())
+    .then(data => {
+        const visitantesList = document.getElementById('visitanteList'); // ID correto no HTML
+        visitantesList.innerHTML = '';  // Limpa a lista antes de adicionar os itens
+
+        if (data && data.length > 0) {
+            data.forEach(visitante => {
+                const li = document.createElement('li');
+                li.textContent = visitante.nome;
+
+                
+              
+
+                // Adiciona o evento de clique para abrir a sidebar com detalhes do visitante
+                li.onclick = function () {
+                    openVisitorSidebar(visitante.id);
+                };
+
+               
+                visitantesList.appendChild(li); // Adiciona o item à lista no HTML
+            });
+        } else {
+            visitantesList.innerHTML = '<li>Nenhum visitante cadastrado</li>';
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao buscar visitantes:', error);
+    });
+
+ 
+
+
+    function openVisitorSidebar(visitorId) {
+    currentVisitorId = visitorId; // Armazena o ID do visitante atual
+
+    fetch('/visitantes/list')
+        .then(response => response.json())
+        .then(data => {
+            const visitor = data.find(v => v.id === visitorId);
+
+            if (!visitor) {
+                alert('Visitante não encontrado!');
+                return;
+            }
+
+            const sidebar = document.getElementById('visitorSidebar');
+            const detailsContainer = document.getElementById('visitorDetails');
+
+            // Preenche os detalhes do visitante
+            detailsContainer.innerHTML = `
+                <button id="deleteVisitorButton" class="sidebarbtExcluir" onclick="deleteVisitorFromSidebar()">Excluir Visitante</button>
+                <p><strong>Nome:</strong> ${visitor.nome}</p>
+                <p><strong>Documento:</strong> ${visitor.documento || 'Não informado'}</p>
+                <p><strong>Empresa:</strong> ${visitor.empresa || 'Não informado'}</p>
+                <h2>Visitas</h2>
+                <table id="visitsTable">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Responsável</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Crachá</th>
+                            <th id="actionsHeader">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Os registros de visitas serão preenchidos aqui -->
+                    </tbody>
+                </table>
+            `;
+
+            // Faz a chamada para obter as visitas do visitante
+            fetch(`/porVisitante/${visitorId}`)
+                .then(response => response.json())
+                .then(visitas => {
+                    const visitsTableBody = document.querySelector('#visitsTable tbody');
+                    visitsTableBody.innerHTML = ''; // Limpa a tabela
+
+                    if (visitas && visitas.length > 0) {
+                        visitas.forEach(visita => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${visita.categoria?.nome || 'Não informado'}</td>
+                                <td>${visita.responsavel || 'Não informado'}</td>
+                                <td>${visita.horarioEntradaFormatado || 'Não informado'}</td>
+                                <td>${visita.horarioSaidaFormatado || 'Não disponível'}</td>
+                                <td>${visita.cracha || 'Não informado'}</td>
+                                <td><button class="btn-delete-visita" onclick="deleteVisita(${visita.id})">Excluir</button></td>
+                            `;
+                            visitsTableBody.appendChild(row);
+                        });
+                    } else {
+                        visitsTableBody.innerHTML = '<tr><td colspan="5">Nenhuma visita encontrada</td></tr>';
+                        document.getElementById('actionsHeader').style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Erro ao buscar visitas:', error));
+
+            // Exibe a sidebar
+            sidebar.classList.add('open');
+        })
+        .catch(error => console.error('Erro ao buscar visitantes:', error));
+}
+
+
+
+
+
+
+
+
+
+function closeVisitorSidebar() {
+    const sidebar = document.getElementById('visitorSidebar');
+    sidebar.classList.remove('open'); 
+}
+
+let currentVisitorId = null; 
+
+function deleteVisitante(id) {
+    fetch(`/visitantes/${id}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+           
+            location.reload(); 
+        } else {
+            alert('Não é possível excluir o visitante. Existem registros associados.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro', error);
+    });
+}
+
+function deleteVisitorFromSidebar() {
+    if (currentVisitorId !== null) {
+        if (confirm("Tem certeza que deseja excluir este visitante?")) {
+            deleteVisitante(currentVisitorId);
+        }
+    } else {
+        alert("Nenhum visitante selecionado.");
+    }
+}
+
+
+function deleteVisita(visitaId) {
+    // Confirmação antes de excluir
+    if (confirm('Tem certeza que deseja excluir esta visita?')) {
+        // Faz a requisição DELETE para o servidor
+        fetch(`/visitas/deletar/${visitaId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Visita excluída com sucesso.');
+                openVisitorSidebar(currentVisitorId); // Recarrega os detalhes do visitante e visitas
+            } else {
+                alert('Erro ao excluir a visita. Tente novamente.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir a visita:', error);
+        });
+    }
+}
+
+
+function downloadVisitorData() {
+    // Verifica se há um visitante selecionado
+    if (!currentVisitorId) {
+        alert('Nenhum visitante selecionado.');
+        return;
+    }
+
+    // Faz a chamada para obter os detalhes do visitante
+    fetch(`/visitantes/list`)
+        .then(response => response.json())
+        .then(visitorData => {
+            const visitor = visitorData.find(v => v.id === currentVisitorId);
+
+            if (!visitor) {
+                alert('Visitante não encontrado!');
+                return;
+            }
+
+            // Faz a chamada para obter as visitas
+            fetch(`/porVisitante/${currentVisitorId}`)
+                .then(response => response.json())
+                .then(visitas => {
+                    // Prepara os dados do Excel
+                    const rows = [];
+                    
+                    // Adiciona os dados do visitante no início
+                    rows.push(["Nome", "Documento", "Empresa"]);
+                    rows.push([visitor.nome, visitor.documento || "Não informado", visitor.empresa || "Não informado"]);
+                    rows.push([]); // Linha em branco
+                    rows.push(["Categoria", "Responsável", "Entrada", "Saída", "Crachá"]); // Cabeçalho da tabela
+
+                    // Adiciona as visitas
+                    visitas.forEach(visita => {
+                        rows.push([
+                            visita.categoria?.nome || "Não informado",
+                            visita.responsavel || "Não informado",
+                            visita.horarioEntradaFormatado || "Não informado",
+                            visita.horarioSaidaFormatado || "Não disponível",
+                            visita.cracha || "Não informado"
+                        ]);
+                    });
+
+                    // Cria o arquivo Excel usando SheetJS
+                    const worksheet = XLSX.utils.aoa_to_sheet(rows);
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Dados Visitante");
+
+                    // Faz o download do arquivo
+                    XLSX.writeFile(workbook, `${visitor.nome.replace(/ /g, "_")}_dados.xlsx`);
+                })
+                .catch(error => console.error('Erro ao buscar visitas:', error));
+        })
+        .catch(error => console.error('Erro ao buscar visitante:', error));
+}
 
 
 
     </script>
+    
+
     
     
 </body>

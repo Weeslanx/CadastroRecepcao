@@ -29,6 +29,11 @@ public class CategoriaService {
     }
 
     public void deletar(Long id) {
-        categoriaRepository.deleteById(id);
+        if (categoriaRepository.existsById(id)) {
+            categoriaRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Categoria com ID " + id + " não encontrada.");
+        }
     }
+    
 }

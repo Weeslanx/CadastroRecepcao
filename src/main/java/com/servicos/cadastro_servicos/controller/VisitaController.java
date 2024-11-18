@@ -167,4 +167,11 @@ public class VisitaController {
     public String showLoginPage() {
         return "login"; 
     }
+
+    @GetMapping("/porVisitante/{visitanteId}")
+    @ResponseBody
+    public List<Visita> listarVisitasPorVisitante(@PathVariable Long visitanteId) {
+        return visitaRepository.findByVisitanteId(visitanteId);  
+    }
+
 }

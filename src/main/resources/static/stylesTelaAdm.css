@@ -142,9 +142,10 @@ input[type="text"], input[type="password"], select {
 }
 
 .visitante-card {
-    grid-column: 1/4;
-    grid-row: 4/ 4;
+    grid-column: 3/ 4;
+    grid-row: 3 / 4;
     height: 400px;
+    margin-top: 150px;
 }
 
 .grafico-visitas-card canvas {
@@ -157,7 +158,7 @@ input[type="text"], input[type="password"], select {
 }
 
 .usuarios-card {
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     grid-row: 3 / 3;
     margin-top: 150px;
     height: 400px;
@@ -174,6 +175,7 @@ input[type="text"], input[type="password"], select {
     gap: 10px;
     box-sizing: border-box;
     overflow: hidden;
+    
 }
 
 .info-card h3 {
@@ -199,47 +201,57 @@ input[type="text"], input[type="password"], select {
 }
 
 .info-card.user-info,
-.info-card.categorias-card {
+.info-card.categorias-card,
+.info-card.visitante-card {
     max-height: 250px;
     overflow-y: auto;
 }
 
-.info-card.categorias-card {
+.info-card.categorias-card,
+.info-card.visitante-card {
     max-height: auto;
 }
 
 .info-card.user-info::-webkit-scrollbar,
-.info-card.categorias-card::-webkit-scrollbar {
+.info-card.categorias-card::-webkit-scrollbar,
+.info-card.visitante-card::-webkit-scrollbar{
     width: 8px;
     background-color: #2c2c2c;
 }
 
 .info-card.user-info::-webkit-scrollbar-thumb,
-.info-card.categorias-card::-webkit-scrollbar-thumb {
+.info-card.categorias-card::-webkit-scrollbar-thumb,
+.info-card.visitante-card::-webkit-scrollbar-thumb {
     background-color: #444;
     border-radius: 4px;
 }
 
 .info-card.user-info::-webkit-scrollbar-thumb:hover,
-.info-card.categorias-card::-webkit-scrollbar-thumb:hover {
+.info-card.categorias-card::-webkit-scrollbar-thumb:hover,
+.info-card.visitante-card::-webkit-scrollbar-thumb:hover {
     background-color: #23e644;
 }
 
 .user-info button,
-.categorias-card button {
+.categorias-card button,
+.sidebarbt,
+.btn-delete-visita
+{
     background-color: #ff4c4c;
     color: white;
     border: none;
     border-radius: 5px;
     padding: 1px 3px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 5px;
     transition: background-color 0.3s;
+    z-index: 1000;
 }
 
 .user-info button:hover,
-.categorias-card button:hover {
+.categorias-card button:hover
+.visitante-card button:hover {
     background-color: #d43f3f;
 }
 
@@ -423,4 +435,172 @@ input[type="text"], input[type="password"], select {
 
 .icon:hover i {
     color: #0c9e3d !important;
+}
+
+.sidebar-details {
+    position: fixed;
+    top: 0;
+    right: -800px;
+    width: 700px;
+    height: 100%;
+    
+    background-color: #2c2c2c;
+    color: white;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    z-index: 30000;
+}
+
+.sidebar-details.open {
+    right: 0; 
+}
+
+.sidebar-details h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar-details button.btn-close-sidebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #444;
+    border: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 50%;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.sidebar-details button.btn-close-sidebar:hover {
+    background-color: #d43f3f;
+    transform: scale(1.1);
+}
+
+.sidebar-details #visitorDetails {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-details #visitorDetails p {
+    padding: 10px;
+    background-color: #3a3a3a;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+}
+
+.sidebar-details #visitorDetails p strong {
+    color: #23e644;
+    display: inline-block;
+    width: 100px;
+}
+
+
+#visitorDetails h2 {
+    font-size: 30px;
+    margin-top: 20px;
+    color: #ffffff;
+    
+}
+
+#visitsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+#visitsTable th, #visitsTable td {
+    border: 1px solid #444;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+#visitsTable th {
+    background-color: #3a3a3a;
+    color: #23e644;
+}
+
+#visitsTable tr:nth-child(even) {
+    background-color: #2c2c2c;
+}
+
+#visitsTable tr:hover {
+    background-color: #444;
+}
+
+#visitanteList li {
+    padding: 10px;
+    background-color: #2c2c2c;
+   
+    margin-bottom: 5px;
+    
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    color: #fff;
+}
+
+#visitanteList li:hover {
+    background-color: #444;
+    transform: scale(1.02);
+}
+
+#visitanteList li.selected {
+    background-color: #23e644;
+    color: #000;
+    font-weight: bold;
+    border-color: #1a8e32;
+}
+
+.sidebarbtExcluir {
+    position: absolute;
+    top: 20px;
+    right: 40px; 
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 3px 4px;
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 1000;
+}
+
+.sidebarbtExcluir:hover {
+    background-color: #d43f3f;
+    transform: scale(1.1);
+}
+
+.sidebarbtDownload {
+    position: absolute;
+    top: 20px;
+    right: 145px; 
+    background-color: #1a8e32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 3px 11px;
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 1000;
+}
+
+.sidebarbtDownload:hover {
+    background-color: #23e644;
+    transform: scale(1.1);
 }

@@ -14,6 +14,26 @@
 </head>
 <body>
 
+
+    <div id="customConfirm" class="custom-confirm">
+        <div class="custom-confirm-content">
+            <p id="customConfirmMessage">Você tem certeza?</p>
+            <div class="custom-confirm-buttons">
+                <button id="confirmYes" class="btn-confirm">Sim</button>
+                <button id="confirmNo" class="btn-cancel">Não</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <p id="customAlertMessage">Mensagem</p>
+            <button id="alertOk" class="btn-confirm">OK</button>
+        </div>
+    </div>
+    
+
    
     <button class="btn-open-sidebar" onclick="toggleSidebar()">☰ Painel de Configuração</button>
 
@@ -138,12 +158,13 @@
         </div>
 
         <div class="info-card visitante-info visitante-card">
-            <h3>visitante</h3>
+            <h3>Visitante</h3>
+            <input type="text" id="searchVisitante" placeholder="Pesquisar visitante..." />
             <ul id="visitanteList">
                 <li>Carregando Visitantes...</li>
-               
             </ul>
         </div>
+        
     
      
         <div class="info-card user-info usuarios-card">
@@ -237,23 +258,25 @@ fetch('/categorias/list')  // A URL do endpoint que você configurou
         console.error('Erro ao buscar categorias:', error);
     });
 
-function deleteCategoria(id) {
+    function deleteCategoria(id) {
     fetch(`/categorias/${id}`, {
         method: 'DELETE'
     })
     .then(response => {
         if (response.ok) {
-            alert('Categoria excluída com sucesso.');
-            
-            location.reload();
+            customAlert('Categoria excluída com sucesso.');
+            location.reload(); // Recarrega a página após exclusão
         } else {
-            alert('Não é possível excluir a categoria. Existem registros associados.');
+            customAlert('Não é possível excluir a categoria. Existem registros associados.');
         }
     })
     .catch(error => {
         console.error('Erro ao excluir a categoria:', error);
+        customAlert('Erro ao excluir a categoria. Por favor, tente novamente.');
     });
 }
+
+
 
 
 
@@ -286,23 +309,29 @@ function deleteCategoria(id) {
                 console.error('Erro ao buscar os dados dos usuários:', error);
             });
 
-        function deleteUser(userId) {
-            if (confirm('Você tem certeza que deseja excluir este usuário?')) {
-                fetch('/users/deleteUser', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({ userId: userId })
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert(data);
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error('Erro ao excluir o usuário:', error);
-                });
-            }
+            function deleteUser(userId) {
+    // Usando o customConfirm para substituir o confirm
+    customConfirm('Você tem certeza que deseja excluir este usuário?').then((response) => {
+        if (response) {
+            fetch('/users/deleteUser', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ userId: userId })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Pode ser substituído por outro modal, se desejar
+                location.reload(); // Recarrega a página após exclusão
+            })
+            .catch(error => {
+                console.error('Erro ao excluir o usuário:', error);
+            });
+        } else {
+            console.log('Exclusão cancelada pelo usuário.');
         }
+    });
+}
+
 
         fetch('/visitas/contagem')
             .then(response => response.json())
@@ -362,27 +391,24 @@ function toggleSidebar() {
 }
 
 
-fetch('/visitantes/list')  // A URL do endpoint que você configurou
+fetch('/visitantes/list')  // URL do endpoint
     .then(response => response.json())
     .then(data => {
-        const visitantesList = document.getElementById('visitanteList'); // ID correto no HTML
-        visitantesList.innerHTML = '';  // Limpa a lista antes de adicionar os itens
+        const visitantesList = document.getElementById('visitanteList');
+        visitantesList.innerHTML = ''; // Limpa a lista
 
         if (data && data.length > 0) {
             data.forEach(visitante => {
                 const li = document.createElement('li');
                 li.textContent = visitante.nome;
 
-                
-              
-
-                // Adiciona o evento de clique para abrir a sidebar com detalhes do visitante
+                // Evento de clique para abrir detalhes
                 li.onclick = function () {
                     openVisitorSidebar(visitante.id);
                 };
 
-               
-                visitantesList.appendChild(li); // Adiciona o item à lista no HTML
+                li.setAttribute('data-nome', visitante.nome.toLowerCase()); // Para facilitar o filtro
+                visitantesList.appendChild(li);
             });
         } else {
             visitantesList.innerHTML = '<li>Nenhum visitante cadastrado</li>';
@@ -392,11 +418,26 @@ fetch('/visitantes/list')  // A URL do endpoint que você configurou
         console.error('Erro ao buscar visitantes:', error);
     });
 
+
+document.getElementById('searchVisitante').addEventListener('input', function () {
+    const filter = this.value.toLowerCase(); 
+    const listItems = document.querySelectorAll('#visitanteList li');
+
+    listItems.forEach(item => {
+        const nome = item.getAttribute('data-nome'); 
+        if (nome.includes(filter)) {
+            item.style.display = ''; 
+        } else {
+            item.style.display = 'none'; 
+        }
+    });
+});
+
  
 
 
     function openVisitorSidebar(visitorId) {
-    currentVisitorId = visitorId; // Armazena o ID do visitante atual
+    currentVisitorId = visitorId; 
 
     fetch('/visitantes/list')
         .then(response => response.json())
@@ -502,39 +543,47 @@ function deleteVisitante(id) {
 
 function deleteVisitorFromSidebar() {
     if (currentVisitorId !== null) {
-        if (confirm("Tem certeza que deseja excluir este visitante?")) {
-            deleteVisitante(currentVisitorId);
-        }
+        // Usando o customConfirm para confirmação
+        customConfirm("Tem certeza que deseja excluir este visitante?").then((response) => {
+            if (response) {
+                deleteVisitante(currentVisitorId); // Chama a função para deletar o visitante
+            }
+        });
     } else {
-        alert("Nenhum visitante selecionado.");
+        // Usando o customAlert para avisar
+        customAlert("Nenhum visitante selecionado.");
     }
 }
+
 
 
 function deleteVisita(visitaId) {
-    // Confirmação antes de excluir
-    if (confirm('Tem certeza que deseja excluir esta visita?')) {
-        // Faz a requisição DELETE para o servidor
-        fetch(`/visitas/deletar/${visitaId}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Visita excluída com sucesso.');
-                openVisitorSidebar(currentVisitorId); // Recarrega os detalhes do visitante e visitas
-            } else {
-                alert('Erro ao excluir a visita. Tente novamente.');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao excluir a visita:', error);
-        });
-    }
+   
+    customConfirm('Tem certeza que deseja excluir esta visita?').then((response) => {
+        if (response) {
+            fetch(`/visitas/deletar/${visitaId}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    customAlert('Visita excluída com sucesso.');
+                    openVisitorSidebar(currentVisitorId); 
+                } else {
+                    customAlert('Erro ao excluir a visita. Tente novamente.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao excluir a visita:', error);
+                customAlert('Erro ao excluir a visita. Verifique sua conexão e tente novamente.');
+            });
+        }
+    });
 }
 
 
+
 function downloadVisitorData() {
-    // Verifica se há um visitante selecionado
+    
     if (!currentVisitorId) {
         alert('Nenhum visitante selecionado.');
         return;
@@ -587,6 +636,52 @@ function downloadVisitorData() {
         })
         .catch(error => console.error('Erro ao buscar visitante:', error));
 }
+
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('customConfirm');
+        const messageElement = document.getElementById('customConfirmMessage');
+        const yesButton = document.getElementById('confirmYes');
+        const noButton = document.getElementById('confirmNo');
+
+        // Atualiza a mensagem
+        messageElement.textContent = message;
+
+        // Mostra o modal
+        modal.style.display = 'flex';
+
+        // Lida com a resposta
+        yesButton.onclick = () => {
+            modal.style.display = 'none'; // Fecha o modal
+            resolve(true); // Retorna "true"
+        };
+
+        noButton.onclick = () => {
+            modal.style.display = 'none'; // Fecha o modal
+            resolve(false); // Retorna "false"
+        };
+    });
+}
+
+
+function customAlert(message) {
+    const modal = document.getElementById('customAlert');
+    const messageElement = document.getElementById('customAlertMessage');
+    const okButton = document.getElementById('alertOk');
+
+    // Define a mensagem no modal
+    messageElement.textContent = message;
+
+    // Mostra o modal
+    modal.style.display = 'flex';
+
+    // Adiciona evento para fechar o modal
+    okButton.onclick = () => {
+        modal.style.display = 'none';
+    };
+}
+
 
 
 

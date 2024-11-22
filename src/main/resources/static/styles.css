@@ -119,6 +119,7 @@ body {
     margin: 5px;
     position: relative;
     overflow: hidden;
+
     width: 300px;
     height: 200px;
     z-index: 0;
@@ -148,6 +149,7 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #e0e0e0;
+   
 }
 
 .add-visit {
@@ -387,11 +389,17 @@ body {
     cursor: pointer;
     visibility: hidden;
     opacity: 0;
+
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     z-index: 1000 !important;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.btn-card:hover {
+    background-color: #57c971;
+
 }
 
 .card:hover .btn-card {

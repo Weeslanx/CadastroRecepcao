@@ -22,5 +22,6 @@ public interface VisitaRepository extends JpaRepository<Visita, Long> {
 		LocalDateTime findUltimaModificacao();
 
 
+
 	  
 }

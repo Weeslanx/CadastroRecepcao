@@ -10,10 +10,13 @@ body, html {
 }
 
 .sidebar h2 {
+
     text-align: center;
     margin: 0;
     padding: 15px;
     font-size: 18px;
+
+
 }
 
 .sidebar button {
@@ -188,19 +191,20 @@ input[type="text"], input[type="password"], select {
 }
 
 .info-card h3 {
-    margin-bottom: 5px; 
-    font-size: 20px; 
-    text-align: center; 
-    font-weight: bold; 
-    color: #f8fcf9; 
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); 
-    background: linear-gradient(130deg, #104703c7, #2c2c2c);
-    
+    margin-bottom: 1px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #f8fcf9;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     border-radius: 8px; 
-    padding: 10px 15px; 
-    
-    display: inline-block; 
+    padding: 0; 
+    padding-bottom: 5px;
+    display: inline-block;
+    border-bottom: 1px solid #519c516c;
 }
+
+
 
 .info-card ul {
     list-style: none;
@@ -475,6 +479,8 @@ input[type="text"], input[type="password"], select {
     z-index: 9998;
 }
 
+
+
 .sidebar-details.open {
     right: 0; 
 }
@@ -506,6 +512,43 @@ input[type="text"], input[type="password"], select {
     transform: scale(1.1);
 }
 
+
+
+.sidebar-details input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #444; 
+    border-radius: 5px;
+    background-color: #2c2c2c; 
+    color: #f7f7f7; 
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5); 
+}
+
+
+.sidebar-details input[type="text"]::placeholder {
+    color: #888; 
+    font-style: italic;
+}
+
+
+
+
+.sidebar-details input[type="text"]:not([readonly]) {
+    border: 2px solid #4caf50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); 
+    background-color: #1f1f1f; 
+    color: #fff;
+}
+
+
+.sidebar-details input[type="text"]:not([readonly]):focus {
+    border-color: #388e3c;
+    box-shadow: 0 0 10px rgba(56, 142, 60, 0.7);
+}
+
 .sidebar-details #visitorDetails {
     margin-top: 20px;
     font-size: 16px;
@@ -515,6 +558,8 @@ input[type="text"], input[type="password"], select {
     flex-direction: column;
     gap: 15px;
 }
+
+
 
 .sidebar-details #visitorDetails p {
     padding: 10px;
@@ -530,6 +575,54 @@ input[type="text"], input[type="password"], select {
     width: 100px;
 }
 
+
+
+
+
+
+
+.sidebar-details #editButton {
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.sidebar-details #editButton:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
+
+.sidebar-details #saveButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    display: none; 
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.sidebar-details #saveButton:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
+
+.sidebar-details.editing #editButton {
+    display: none;
+}
+
+.sidebar-details.editing #saveButton {
+    display: inline-block;
+}
 
 #visitorDetails h2 {
     font-size: 30px;

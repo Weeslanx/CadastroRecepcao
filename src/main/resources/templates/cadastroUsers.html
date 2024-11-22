@@ -113,11 +113,11 @@
         <button class="btn-close-sidebar" onclick="closeVisitorSidebar()">✖</button>
         <button id="deleteVisitorButton" class="sidebarbtExcluir" onclick="deleteVisitorFromSidebar()">Excluir Visitante</button>
         <button id="downloadVisitorData" class="sidebarbtDownload" onclick="downloadVisitorData()">Baixar Dados</button>
-
+      
 
         <h2>Detalhes do Visitante</h2>
         <div id="visitorDetails">
-            <!-- Os detalhes do visitante serão carregados dinamicamente aqui -->
+            
         </div>
     </div>
 
@@ -452,29 +452,40 @@ document.getElementById('searchVisitante').addEventListener('input', function ()
             const sidebar = document.getElementById('visitorSidebar');
             const detailsContainer = document.getElementById('visitorDetails');
 
-            // Preenche os detalhes do visitante
             detailsContainer.innerHTML = `
-                <button id="deleteVisitorButton" class="sidebarbtExcluir" onclick="deleteVisitorFromSidebar()">Excluir Visitante</button>
-                <p><strong>Nome:</strong> ${visitor.nome}</p>
-                <p><strong>Documento:</strong> ${visitor.documento || 'Não informado'}</p>
-                <p><strong>Empresa:</strong> ${visitor.empresa || 'Não informado'}</p>
-                <h2>Visitas</h2>
-                <table id="visitsTable">
-                    <thead>
-                        <tr>
-                            <th>Categoria</th>
-                            <th>Responsável</th>
-                            <th>Entrada</th>
-                            <th>Saída</th>
-                            <th>Crachá</th>
-                            <th id="actionsHeader">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Os registros de visitas serão preenchidos aqui -->
-                    </tbody>
-                </table>
-            `;
+    <button id="deleteVisitorButton" class="sidebarbtExcluir" onclick="deleteVisitorFromSidebar()">Excluir Visitante</button>
+    <p>
+        <strong>Nome:</strong>
+        <input id="editNomeInput" type="text" value="${visitor.nome}" readonly />
+    </p>
+    <p>
+        <strong>Documento:</strong>
+        <input id="editDocumentoInput" type="text" value="${visitor.documento || ''}" readonly placeholder="Não informado" />
+    </p>
+    <p>
+        <strong>Empresa:</strong>
+        <input id="editEmpresaInput" type="text" value="${visitor.empresa || ''}" readonly placeholder="Não informado" />
+    </p>
+    <button id="editButton" onclick="enableEdit()">Editar</button>
+    <button id="saveButton" onclick="saveVisitorChanges()" style="display: none;">Salvar</button>
+    <h2>Visitas</h2>
+    <table id="visitsTable">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Responsável</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Crachá</th>
+                <th id="actionsHeader">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os registros de visitas serão preenchidos aqui -->
+        </tbody>
+    </table>
+`;
+
 
             // Faz a chamada para obter as visitas do visitante
             fetch(`/porVisitante/${visitorId}`)
@@ -509,6 +520,62 @@ document.getElementById('searchVisitante').addEventListener('input', function ()
         .catch(error => console.error('Erro ao buscar visitantes:', error));
 }
 
+
+function enableEdit() {
+    document.getElementById('editNomeInput').removeAttribute('readonly');
+    document.getElementById('editDocumentoInput').removeAttribute('readonly');
+    document.getElementById('editEmpresaInput').removeAttribute('readonly');
+
+    // Exibir o botão de salvar e esconder o botão de editar
+    document.getElementById('editButton').style.display = 'none';
+    document.getElementById('saveButton').style.display = 'inline';
+}
+
+
+function saveVisitorChanges() {
+    // Captura os valores dos campos de entrada
+    const id = currentVisitorId; // O ID do visitante que está sendo editado
+    const nome = document.getElementById('editNomeInput').value;
+    const documento = document.getElementById('editDocumentoInput').value;
+    const empresa = document.getElementById('editEmpresaInput').value;
+
+    // Objeto visitante atualizado
+    const updatedVisitor = {
+        id, // Inclui o ID no objeto
+        nome,
+        documento,
+        empresa,
+    };
+
+    // Envia os dados para o backend
+    fetch('/visitantes/update', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedVisitor),
+    })
+        .then(async response => {
+            if (response.ok) {
+                alert('Alterações salvas com sucesso!');
+                // Restaurar os campos para apenas leitura
+                document.getElementById('editNomeInput').setAttribute('readonly', true);
+                document.getElementById('editDocumentoInput').setAttribute('readonly', true);
+                document.getElementById('editEmpresaInput').setAttribute('readonly', true);
+
+                // Alternar os botões novamente
+                document.getElementById('editButton').style.display = 'inline';
+                document.getElementById('saveButton').style.display = 'none';
+            } else {
+                const errorMessage = await response.text();
+                alert(`Erro ao salvar alterações: ${errorMessage}`);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao salvar alterações:', error);
+            alert('Erro ao salvar alterações. Verifique sua conexão.');
+        });
+}
 
 
 

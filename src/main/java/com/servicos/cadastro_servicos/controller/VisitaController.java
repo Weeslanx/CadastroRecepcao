@@ -1,11 +1,14 @@
 package com.servicos.cadastro_servicos.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.servicos.cadastro_servicos.model.Categoria;
 import com.servicos.cadastro_servicos.model.Visita;
@@ -33,6 +37,7 @@ public class VisitaController {
     private final CategoriaRepository categoriaRepository;
     private final VisitaRepository visitaRepository;
 
+    private final CopyOnWriteArrayList<SseEmitter> emissores = new CopyOnWriteArrayList<>();
     
     public VisitaController(VisitanteRepository visitanteRepository,
                             CategoriaRepository categoriaRepository,
@@ -110,6 +115,8 @@ public class VisitaController {
         }
     
         visitaRepository.save(visita); 
+        notificarMudanca();
+
         return "redirect:/registros/visitas"; 
     }
     
@@ -173,5 +180,50 @@ public class VisitaController {
     public List<Visita> listarVisitasPorVisitante(@PathVariable Long visitanteId) {
         return visitaRepository.findByVisitanteId(visitanteId);  
     }
+
+
+    @GetMapping("/visitas/checar-alteracoes")
+@ResponseBody
+public boolean checarAlteracoes(@RequestParam(required = false) Long ultimaAtualizacao) {
+    LocalDateTime ultimaModificacao = visitaRepository.findUltimaModificacao();
+
+    if (ultimaModificacao == null) {
+        return false; // Nenhuma modificação foi feita ainda
+    }
+
+    // Converta a última modificação para timestamp (em milissegundos)
+    long ultimaModificacaoTimestamp = ultimaModificacao
+        .atZone(ZoneId.systemDefault())
+        .toInstant()
+        .toEpochMilli();
+
+    return ultimaAtualizacao == null || ultimaAtualizacao < ultimaModificacaoTimestamp;
+}
+
+
+    @GetMapping("/sse/visitas")
+    public SseEmitter visitasStream() {
+        SseEmitter emitter = new SseEmitter();
+        emissores.add(emitter);
+
+        // Remove o emissor quando ele completar ou expirar
+        emitter.onCompletion(() -> emissores.remove(emitter));
+        emitter.onTimeout(() -> emissores.remove(emitter));
+
+        return emitter;
+    }
+
+  
+    public void notificarMudanca() {
+        for (SseEmitter emitter : emissores) {
+            try {
+                emitter.send(SseEmitter.event().name("update").data("Nova visita cadastrada"));
+            } catch (IOException e) {
+                emissores.remove(emitter);
+            }
+        }
+    }
+
+
 
 }

@@ -119,25 +119,23 @@ body {
     margin: 5px;
     position: relative;
     overflow: hidden;
- 
-    width: 300px; /* Define uma largura padrão */
-    height: 200px; /* Define uma altura padrão */
-
-    /* Garantir layout interno organizado */
-  
-
-
-   
-
+    width: 300px;
+    height: 200px;
+    z-index: 0;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+.card-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: filter 0.3s ease;
+}
+
+.card:hover .card-content {
+    filter: blur(3px);
 }
 
 .card h3 {
-   
     font-size: 1.2em;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -150,7 +148,6 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #e0e0e0;
-   
 }
 
 .add-visit {
@@ -385,51 +382,77 @@ body {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.3s ease;
-    z-index: 10;
-    margin-bottom: 20px;
-}
-
-.btn-card:hover {
-    background-color: #57c971;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 1000 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card:hover .btn-card {
     visibility: visible;
     opacity: 1;
-}
-
-.btn-card i {
-    font-size: 15px;
+    transform: scale(1.1);
+    z-index: 1000;
 }
 
 .btn-card.delet {
-    bottom: -7px;
-    right: 50px;
+    bottom: 45%;
+    right: 55%;
 }
 
 .btn-card.saida {
-    bottom: -7px;
-    right: 15px;
+    bottom: 45%;
+    right: 35%;
+}
+.btn-card.delet:hover::after {
+    content: 'Deletar';
+
 }
 
-.search-container {
-    position: relative;
-    right: 145px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    max-width: 500px;
-    padding: 0 10px;
-    box-sizing: border-box;
-    transition: margin-left 0.2s ease;
-    z-index: 1;
+
+.btn-card.saida:hover::after {
+    content: 'Adicionar Saída';
+
+}
+
+
+.btn-card.saida:hover::after,
+.btn-card.delet:hover::after {
+    
+    position: absolute;
+    bottom: -30px; /* Ajuste a posição para o texto */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1001;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.btn-card::after {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-card:hover {
+    background-color: #57c971;
+    transform: scale(1.2);
+}
+
+.btn-card i {
+    font-size: 18px;
+    color: white;
 }
 
 #search-input {

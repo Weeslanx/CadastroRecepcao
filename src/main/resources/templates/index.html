@@ -80,31 +80,30 @@
        
     
     
-        <div class="main-content">
-           
-            
-            <div class="card-container" id="visitas-container">
-                <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} == null">
-                    <div class="card">
+       <div class="main-content">
+        <div class="card-container" id="visitas-container">
+            <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} == null">
+                <div class="card">
+                    <div class="card-content">
                         <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
                         <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
                         <p><strong>Responsável:</strong> <span th:text="${visita.responsavel}">Nome Categoria</span></p>
                         <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
                         <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
-                        
-                        
-                        <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-
-                        <button class="btn-card delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
-                            <i class="fa fa-trash"></i>
-                        </button>
-            
-                      
                     </div>
-                </th:block>
-            </div>
+    
+                    <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+    
+                    <button class="btn-card delet" th:onclick="'deletarVisita(' + ${visita.id} + ')'">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    
             
 
 			<div class="sidebar-right" id="sidebar-visitor" style="display: none;">

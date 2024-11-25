@@ -67,13 +67,7 @@ git clone https://github.com/seu-usuario/cadastro-recepcao.git
 Use o Maven para compilar e executar o projeto:
 ```bash
 mvn spring-boot:run
-```
 
-### **4. Acesse o Sistema**
-- **Frontend**: [http://localhost:8080](http://localhost:8080)
-- **Documentação da API (Swagger)**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
----
 
 ## **📂 Estrutura do Projeto**
 ```

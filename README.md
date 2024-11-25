@@ -67,7 +67,7 @@ git clone https://github.com/seu-usuario/cadastro-recepcao.git
 Use o Maven para compilar e executar o projeto:
 ```bash
 mvn spring-boot:run
-
+```
 
 ## **📂 Estrutura do Projeto**
 ```

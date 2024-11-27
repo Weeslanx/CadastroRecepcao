@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.servicos.cadastro_servicos.model.Visita;
 
+
+
 @Repository
 public interface VisitaRepository extends JpaRepository<Visita, Long> {
 	 List<Visita> findByHorarioSaidaBetween(LocalDateTime startDate, LocalDateTime endDate);

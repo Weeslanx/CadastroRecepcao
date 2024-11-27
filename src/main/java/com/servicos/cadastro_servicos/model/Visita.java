@@ -20,10 +20,9 @@ public final class Visita {
     @JoinColumn(name = "visitante_id", nullable = false)
     private Visitante visitante;
 
-    @ManyToOne // Adiciona um relacionamento com Categoria
-    @JoinColumn(name = "categoria_id", nullable = false) // Chave estrangeira para Categoria
-    private Categoria categoria; // Relação com Categoria
-
+    @ManyToOne 
+    @JoinColumn(name = "categoria_id", nullable = false) 
+    private Categoria categoria; 
    
     private String responsavel;
 
@@ -37,7 +36,8 @@ public final class Visita {
     public Visita() {
     }
 
-    // Construtor com parâmetros
+    
+    
     public Visita(Visitante visitante, Categoria categoria, String responsavel,
                   LocalDateTime horarioEntrada, LocalDateTime horarioSaida, int cracha) {
         this.visitante = visitante;

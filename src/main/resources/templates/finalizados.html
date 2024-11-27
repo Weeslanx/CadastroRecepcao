@@ -4,57 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Entradas</title>
-     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-
-	<!-- Incluir jQuery -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-	<!-- Incluir JS do Select2 -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-
-
-
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-				<div id="loading">
-				    <div class="spinner"></div>
-				    <h2>Carregando...</h2> 
-				</div>
-			
-		
-		
-		
-		 
-
-	    <div class="sidebar" id="sidebar">
-	      
-	       
-        
-        
-         <div class="icon" data-tooltip="Entradas">
-	        <a href="/registros/visitas">
-	            <i class="fa fa-paper-plane"></i> 
+    <div id="loading">
+        <div class="spinner"></div>
+        <h2>Carregando...</h2> 
+    </div>
+    <div class="sidebar" id="sidebar">
+        <div class="icon" data-tooltip="Entradas">
+            <a href="/registros/visitas">
+                <i class="fa fa-paper-plane"></i> 
                 <span>Registro de Entradas</span>
-	        </a>
-	    </div>
-        
-          <div class="icon" data-tooltip="finalizados">
-	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i>
-	            <span>Visitas Finalizadas</span>
-	        </a>
-	    </div>
-        
+            </a>
+        </div>
+        <div class="icon" data-tooltip="finalizados">
+            <a href="/registros/visitas/finalizados">
+                <i class="fas fa-check-circle"></i>
+                <span>Visitas Finalizadas</span>
+            </a>
+        </div>
         <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
         </div>
-
         <div class="sidebar-bottom-button">
             <form action="/users/logout" method="get">
                 <button type="submit" class="logout-btn">
@@ -62,282 +40,167 @@
                 </button>
             </form>
         </div>
-     
-	    
-	   
     </div>
-    
-    		<div class = "menu"> 
-       
-       <h1>Visitas Finalizadas</h1>
-       
-       
-			  <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
-		        <i class="fas fa-filter"></i> Filtrar
-		    </button>
-		
-				 <button class="btn_dowload" onclick="downloadCSV()">
-					    		    <i class="fas fa-download"></i>
-					    </button>   
-
-                        <div class="logo-container">
-                            <img src="/images/logo3.png" alt="Logo" class="logo-img">
-                        </div>
-                        
-                        
-                        <div class="logo-container">
-                            <img src="/images/logo3.png" alt="Logo" class="logo-img">
-
-
+    <div class="menu"> 
+        <h1>Visitas Finalizadas</h1>
+        <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
+            <i class="fas fa-filter"></i> Filtrar
+        </button>
+        <button class="btn_dowload" onclick="downloadCSV()">
+            <i class="fas fa-download"></i>
+        </button>
+        <div class="logo-container">
+            <img src="/images/logo3.png" alt="Logo" class="logo-img">
         </div>
-            </div>
-        <div class="main-content">
-        
-		        	<div class="search-container">
-				        <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
-				    </div>
-		
-		
-        
-            
-            
-           
-            <div class="card-container" id="visitas-container">
-			  <th:block th:each="visita : ${visitas}"
-               			th:if="${visita.horarioSaida} != null">
-			        <div class="card">
-			            <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
-			            <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
-			            <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
-			            <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>
-			            <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
-			          
-			            </button>
-			        </div>
-			    </th:block>
-			</div>
-
-			
-						
-						<div class="sidebar-right" id="sidebar-category" style="display: none;">
-						    <button class="close-btn" id="close-category-btn">&times;</button> <!-- Botão de fechar -->
-						    <br><br>
-							<form action="/categorias/cadastrar" method="post">
-							            <label for="nome">Nome da Categoria</label>
-							            <input type="text" id="nome" name="nome" required>
-
-							            <button type="submit" class="btn">Salvar Categoria</button>
-						    </form>
-						</div>
-						
-						
-						
-						
-					    <div id="filter-sidebar" class="filter-sidebar" style="display: none;">
-					    <button class="close-btn" onclick="toggleSidebar()">&times;</button> <!-- Botão de fechar -->
-					    <br><br>
-					 
-					    
-					  
-					        <h2>Filtrar Visitas</h2>
-					        <label for="start-date">Data Inicial:</label>
-					        <input type="date" id="start-date" value="${startDate}">
-					        
-					        <label for="end-date">Data Final:</label>
-					        <input type="date" id="end-date" value="${endDate}">
-					        <br><br>
-					       <button class = "btn" onclick="applyFilter()">Aplicar Filtro</button> 
-					        <button class = "btn" onclick="removeFilter()">limpar</button> 
-					         <br><br>
-					        
-					    
-					    
-					    <br><br>
-					       <!--  <button class = "btn" onclick="toggleSidebar()">Fechar</button>-->
-					    </div>
-						
-					
-						
-
-					
-						  
-			    
-<script>
-
-function toggleSidebarmenu() {
-    var sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("open");
-
-    var title = document.querySelector(".menu h1");
-    title.classList.toggle("open");
-
-    var searchContainer = document.getElementById("search-container"); // Certifique-se que o ID está correto
-    searchContainer.classList.toggle("open"); // Adiciona/remover a classe
-}
-
-
-function initializeSidebar() {
-    const params = new URLSearchParams(window.location.search);
-    
-    // Obter os valores dos parâmetros da URL
-    const startDate = params.get('startDate');
-    const endDate = params.get('endDate');
-    
-    // Preencher os campos do sidebar se os valores existirem
-    if (startDate) {
-        document.getElementById('start-date').value = startDate; // Substitua pelo ID correto do seu campo
-    }
-    if (endDate) {
-        document.getElementById('end-date').value = endDate; // Substitua pelo ID correto do seu campo
-    }
-}
-
-
-function downloadCSV() {
-    // Seleciona todos os cartões visíveis na tela
-    const cards = document.querySelectorAll(".card");
-    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Inclui BOM para codificação UTF-8
-
-    // Cabeçalhos das colunas do CSV
-    csvContent += "Nome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n";
-
-    // Extrai dados de cada cartão visível e adiciona ao conteúdo CSV
-    cards.forEach(card => {
-        // Verifica se o cartão está visível
-        if (card.style.display !== "none") {
-            const nome = card.querySelector("h3").innerText;
-            const tipo = card.querySelector("p:nth-child(2) span").innerText;
-            const horarioEntrada = card.querySelector("p:nth-child(3) span").innerText;
-            const horarioSaida = card.querySelector("p:nth-child(4) span").innerText;
-            const cartao = card.querySelector("p:nth-child(5) span").innerText;
-
-            // Cria uma linha no CSV com os dados do cartão usando ";" como separador
-            csvContent += `${nome};${tipo};${horarioEntrada};${horarioSaida};${cartao}\n`;
+        <div class="logo-container">
+            <img src="/images/logo3.png" alt="Logo" class="logo-img">
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
+        </div>
+        <div class="card-container" id="visitas-container">
+            <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} != null">
+                <div class="card">
+                    <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
+                    <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
+                    <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
+                    <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>
+                    <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
+                </div>
+            </th:block>
+        </div>
+        <div class="sidebar-right" id="sidebar-category" style="display: none;">
+            <button class="close-btn" id="close-category-btn">&times;</button>
+            <br><br>
+            <form action="/categorias/cadastrar" method="post">
+                <label for="nome">Nome da Categoria</label>
+                <input type="text" id="nome" name="nome" required>
+                <button type="submit" class="btn">Salvar Categoria</button>
+            </form>
+        </div>
+        <div id="filter-sidebar" class="filter-sidebar" style="display: none;">
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+            <br><br>
+            <h2>Filtrar Visitas</h2>
+            <label for="start-date">Data Inicial:</label>
+            <input type="date" id="start-date" value="${startDate}">
+            <label for="end-date">Data Final:</label>
+            <input type="date" id="end-date" value="${endDate}">
+            <br><br>
+            <button class="btn" onclick="applyFilter()">Aplicar Filtro</button> 
+            <button class="btn" onclick="removeFilter()">Limpar</button> 
+            <br><br>
+        </div>
+    </div>
+    <script>
+        function toggleSidebarmenu() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+            var title = document.querySelector(".menu h1");
+            title.classList.toggle("open");
+            var searchContainer = document.getElementById("search-container");
+            searchContainer.classList.toggle("open");
         }
-    });
 
-    // Verifica se há dados para download
-    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nNome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n") {
-        alert("Nenhum dado disponível para download.");
-        return;
-    }
-
-    // Cria um link para download do CSV
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "dados_visitas.csv");
-    document.body.appendChild(link);
-
-    // Aciona o download e remove o link
-    link.click();
-    document.body.removeChild(link);
-}
-
-
-
-function toggleSidebar() {
-    const sidebar = document.getElementById('filter-sidebar');
-    
-    // Verifica se o sidebar está oculto e deve ser aberto
-    if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-        sidebar.style.display = 'block'; // Exibe o sidebar
-        
-        // Chama a função para carregar os dados
-        initializeSidebar();
-        
-    } else {
-        sidebar.style.display = 'none'; // Oculta o sidebar
-    }
-}
-
-
-function applyFilter() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-
-    // Verifica se as datas estão preenchidas
-    if (!startDate || !endDate) {
-        alert('Por favor, selecione ambas as datas.');
-        return; 
-    }
-    
-    document.getElementById('loading').style.display = 'block';
-    
-    
-    
-    
-    // Redireciona para a URL com as datas para aplicar o filtro
-    window.location.href = `/registros/visitas/finalizados?startDate=${startDate}&endDate=${endDate}`;
-   
- 
-}
-
-function checkFilterStatus() {
-    const params = new URLSearchParams(window.location.search);
-    
-    // Obter os valores dos parâmetros da URL
-    const startDate = params.get('startDate');
-    const endDate = params.get('endDate');
-    
-    // Seleciona o botão de filtro
-    const filterBtn = document.getElementById("filter-btn");
-    
-    // Verifica se startDate e endDate estão preenchidos
-    if (startDate && endDate) {
-        // Altera a cor do botão para laranja se ambos os parâmetros estiverem preenchidos
-        filterBtn.style.backgroundColor = "orange"; // Muda a cor para laranja
-    } else {
-        // Se não, define a cor original
-        filterBtn.style.backgroundColor = "#45a049"; // Cor original
-    }
-}
-
-// Chama a função ao carregar a página
-window.onload = function() {
-    checkFilterStatus();
-};
-
-
-function removeFilter() {
-    // Obtém a URL atual
-    const url = new URL(window.location.href);
-
-    // Remove os parâmetros `startDate` e `endDate`
-    url.searchParams.delete("startDate");
-    url.searchParams.delete("endDate");
-
-    // Atualiza a URL sem redirecionar
-    window.history.replaceState(null, '', url);
-
-   
-    document.getElementById('loading').style.display = 'block';
-    // Recarrega a página
-    location.reload();
-}
-
-
-function filterCards() {
-    // Obtém o valor digitado no campo de pesquisa
-    const query = document.getElementById("search-input").value.toLowerCase();
-    // Seleciona todos os cartões de visita
-    const cards = document.querySelectorAll(".card");
-
-    // Itera sobre cada cartão e aplica o filtro
-    cards.forEach(card => {
-        // Obter o texto do cartão (nome, tipo, horário, etc.)
-        const cardText = card.innerText.toLowerCase();
-
-        // Verifica se o texto do cartão contém a consulta de pesquisa
-        if (cardText.includes(query)) {
-            card.style.display = "block"; // Exibe o cartão
-        } else {
-            card.style.display = "none"; // Oculta o cartão
+        function initializeSidebar() {
+            const params = new URLSearchParams(window.location.search);
+            const startDate = params.get('startDate');
+            const endDate = params.get('endDate');
+            if (startDate) {
+                document.getElementById('start-date').value = startDate;
+            }
+            if (endDate) {
+                document.getElementById('end-date').value = endDate; 
+            }
         }
-    });
-}
 
-</script>
+        function downloadCSV() {
+            const cards = document.querySelectorAll(".card");
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "Nome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n";
+            cards.forEach(card => {
+                if (card.style.display !== "none") {
+                    const nome = card.querySelector("h3").innerText;
+                    const tipo = card.querySelector("p:nth-child(2) span").innerText;
+                    const horarioEntrada = card.querySelector("p:nth-child(3) span").innerText;
+                    const horarioSaida = card.querySelector("p:nth-child(4) span").innerText;
+                    const cartao = card.querySelector("p:nth-child(5) span").innerText;
+                    csvContent += `${nome};${tipo};${horarioEntrada};${horarioSaida};${cartao}\n`;
+                }
+            });
+            if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nNome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n") {
+                alert("Nenhum dado disponível para download.");
+                return;
+            }
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "dados_visitas.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
-	</body>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('filter-sidebar');
+            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                sidebar.style.display = 'block';
+                initializeSidebar();
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+
+        function applyFilter() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            if (!startDate || !endDate) {
+                alert('Por favor, selecione ambas as datas.');
+                return; 
+            }
+            document.getElementById('loading').style.display = 'block';
+            window.location.href = `/registros/visitas/finalizados?startDate=${startDate}&endDate=${endDate}`;
+        }
+
+        function checkFilterStatus() {
+            const params = new URLSearchParams(window.location.search);
+            const startDate = params.get('startDate');
+            const endDate = params.get('endDate');
+            const filterBtn = document.getElementById("filter-btn");
+            if (startDate && endDate) {
+                filterBtn.style.backgroundColor = "orange";
+            } else {
+                filterBtn.style.backgroundColor = "#45a049";
+            }
+        }
+
+        window.onload = function() {
+            checkFilterStatus();
+        };
+
+        function removeFilter() {
+            const url = new URL(window.location.href);
+            url.searchParams.delete("startDate");
+            url.searchParams.delete("endDate");
+            window.history.replaceState(null, '', url);
+            document.getElementById('loading').style.display = 'block';
+            location.reload();
+        }
+
+        function filterCards() {
+            const query = document.getElementById("search-input").value.toLowerCase();
+            const cards = document.querySelectorAll(".card");
+            cards.forEach(card => {
+                const cardText = card.innerText.toLowerCase();
+                if (cardText.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
 </html>

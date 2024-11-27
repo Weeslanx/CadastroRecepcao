@@ -119,16 +119,16 @@ body {
     margin: 5px;
     position: relative;
     overflow: hidden;
-    width: 300px;
-    height: 200px;
-    z-index: 0;
-}
+ 
+    width: 300px; /* Define uma largura padrão */
+    height: 200px; /* Define uma altura padrão */
 
-.card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: filter 0.3s ease;
+    /* Garantir layout interno organizado */
+  
+
+
+   
+
 }
 
 .card:hover .card-content {
@@ -136,6 +136,7 @@ body {
 }
 
 .card h3 {
+   
     font-size: 1.2em;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -148,6 +149,7 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #e0e0e0;
+   
 }
 
 .add-visit {
@@ -387,11 +389,13 @@ body {
     cursor: pointer;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: 1000 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+
+.btn-card:hover {
+    background-color: #57c971;
 }
 
 .card:hover .btn-card {
@@ -402,13 +406,13 @@ body {
 }
 
 .btn-card.delet {
-    bottom: 45%;
-    right: 55%;
+    bottom: -7px;
+    right: 50px;
 }
 
 .btn-card.saida {
-    bottom: 45%;
-    right: 35%;
+    bottom: -7px;
+    right: 15px;
 }
 .btn-card.delet:hover::after {
     content: 'Deletar';

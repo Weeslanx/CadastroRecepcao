@@ -487,12 +487,12 @@ document.getElementById('searchVisitante').addEventListener('input', function ()
 `;
 
 
-            // Faz a chamada para obter as visitas do visitante
+            
             fetch(`/porVisitante/${visitorId}`)
                 .then(response => response.json())
                 .then(visitas => {
                     const visitsTableBody = document.querySelector('#visitsTable tbody');
-                    visitsTableBody.innerHTML = ''; // Limpa a tabela
+                    visitsTableBody.innerHTML = ''; 
 
                     if (visitas && visitas.length > 0) {
                         visitas.forEach(visita => {
@@ -514,7 +514,7 @@ document.getElementById('searchVisitante').addEventListener('input', function ()
                 })
                 .catch(error => console.error('Erro ao buscar visitas:', error));
 
-            // Exibe a sidebar
+
             sidebar.classList.add('open');
         })
         .catch(error => console.error('Erro ao buscar visitantes:', error));
@@ -526,28 +526,28 @@ function enableEdit() {
     document.getElementById('editDocumentoInput').removeAttribute('readonly');
     document.getElementById('editEmpresaInput').removeAttribute('readonly');
 
-    // Exibir o botão de salvar e esconder o botão de editar
+
     document.getElementById('editButton').style.display = 'none';
     document.getElementById('saveButton').style.display = 'inline';
 }
 
 
 function saveVisitorChanges() {
-    // Captura os valores dos campos de entrada
-    const id = currentVisitorId; // O ID do visitante que está sendo editado
+
+    const id = currentVisitorId; 
     const nome = document.getElementById('editNomeInput').value;
     const documento = document.getElementById('editDocumentoInput').value;
     const empresa = document.getElementById('editEmpresaInput').value;
 
-    // Objeto visitante atualizado
+  
     const updatedVisitor = {
-        id, // Inclui o ID no objeto
+        id, 
         nome,
         documento,
         empresa,
     };
 
-    // Envia os dados para o backend
+
     fetch('/visitantes/update', {
         method: 'PUT',
         headers: {
@@ -558,12 +558,12 @@ function saveVisitorChanges() {
         .then(async response => {
             if (response.ok) {
                 alert('Alterações salvas com sucesso!');
-                // Restaurar os campos para apenas leitura
+               
                 document.getElementById('editNomeInput').setAttribute('readonly', true);
                 document.getElementById('editDocumentoInput').setAttribute('readonly', true);
                 document.getElementById('editEmpresaInput').setAttribute('readonly', true);
 
-                // Alternar os botões novamente
+                
                 document.getElementById('editButton').style.display = 'inline';
                 document.getElementById('saveButton').style.display = 'none';
             } else {
@@ -610,14 +610,14 @@ function deleteVisitante(id) {
 
 function deleteVisitorFromSidebar() {
     if (currentVisitorId !== null) {
-        // Usando o customConfirm para confirmação
+
         customConfirm("Tem certeza que deseja excluir este visitante?").then((response) => {
             if (response) {
-                deleteVisitante(currentVisitorId); // Chama a função para deletar o visitante
+                deleteVisitante(currentVisitorId);
             }
         });
     } else {
-        // Usando o customAlert para avisar
+     
         customAlert("Nenhum visitante selecionado.");
     }
 }
@@ -656,7 +656,7 @@ function downloadVisitorData() {
         return;
     }
 
-    // Faz a chamada para obter os detalhes do visitante
+
     fetch(`/visitantes/list`)
         .then(response => response.json())
         .then(visitorData => {
@@ -667,20 +667,20 @@ function downloadVisitorData() {
                 return;
             }
 
-            // Faz a chamada para obter as visitas
+     
             fetch(`/porVisitante/${currentVisitorId}`)
                 .then(response => response.json())
                 .then(visitas => {
-                    // Prepara os dados do Excel
+                  
                     const rows = [];
                     
-                    // Adiciona os dados do visitante no início
+                   
                     rows.push(["Nome", "Documento", "Empresa"]);
                     rows.push([visitor.nome, visitor.documento || "Não informado", visitor.empresa || "Não informado"]);
-                    rows.push([]); // Linha em branco
+                    rows.push([]); 
                     rows.push(["Categoria", "Responsável", "Entrada", "Saída", "Crachá"]); // Cabeçalho da tabela
 
-                    // Adiciona as visitas
+          
                     visitas.forEach(visita => {
                         rows.push([
                             visita.categoria?.nome || "Não informado",
@@ -691,12 +691,12 @@ function downloadVisitorData() {
                         ]);
                     });
 
-                    // Cria o arquivo Excel usando SheetJS
+                    
                     const worksheet = XLSX.utils.aoa_to_sheet(rows);
                     const workbook = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(workbook, worksheet, "Dados Visitante");
 
-                    // Faz o download do arquivo
+                
                     XLSX.writeFile(workbook, `${visitor.nome.replace(/ /g, "_")}_dados.xlsx`);
                 })
                 .catch(error => console.error('Erro ao buscar visitas:', error));
@@ -715,18 +715,18 @@ function customConfirm(message) {
         // Atualiza a mensagem
         messageElement.textContent = message;
 
-        // Mostra o modal
+
         modal.style.display = 'flex';
 
-        // Lida com a resposta
+    
         yesButton.onclick = () => {
-            modal.style.display = 'none'; // Fecha o modal
-            resolve(true); // Retorna "true"
+            modal.style.display = 'none';
+            resolve(true); 
         };
 
         noButton.onclick = () => {
-            modal.style.display = 'none'; // Fecha o modal
-            resolve(false); // Retorna "false"
+            modal.style.display = 'none'; 
+            resolve(false); 
         };
     });
 }
@@ -737,13 +737,13 @@ function customAlert(message) {
     const messageElement = document.getElementById('customAlertMessage');
     const okButton = document.getElementById('alertOk');
 
-    // Define a mensagem no modal
+   
     messageElement.textContent = message;
 
-    // Mostra o modal
+    
     modal.style.display = 'flex';
 
-    // Adiciona evento para fechar o modal
+    
     okButton.onclick = () => {
         modal.style.display = 'none';
     };

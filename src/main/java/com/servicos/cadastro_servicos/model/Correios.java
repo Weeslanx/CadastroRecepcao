@@ -21,6 +21,7 @@ public class Correios {
     private String codigoPostal; 
     private String destinatario;
     private String servico;
+    private String entregador;
 
 
     public Correios() {}
@@ -82,6 +83,9 @@ public class Correios {
         this.servico = servico;
     }
 
+
+    
+
     @Override
     public String toString() {
         return "Correios{" +
@@ -93,6 +97,16 @@ public class Correios {
                 ", codigoPostal='" + codigoPostal + '\'' +
                 ", destinatario='" + destinatario + '\'' +
                 '}';
+    }
+
+
+    public String getEntregador() {
+        return entregador;
+    }
+
+
+    public void setEntregador(String entregador) {
+        this.entregador = entregador;
     }
 
     

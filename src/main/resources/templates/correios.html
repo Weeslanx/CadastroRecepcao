@@ -24,6 +24,9 @@
 
 </head>
 <body>
+
+
+
     <div class="sidebar" id="sidebar">
         
         
@@ -34,6 +37,8 @@
 	            <span>Registro de Entradas</span>
 	        </a>
 	    </div>
+
+        
         
           <div class="icon" data-tooltip="finalizados">
 	        <a href="/registros/visitas/finalizados">
@@ -41,6 +46,14 @@
 	            <span>Visitas Finalizadas</span>
 	        </a>
 	    </div>
+
+        <div class="icon" data-tooltip="Correios">
+	        <a href="/correios">
+	            <i class="fas fa-envelope"></i> 
+	            <span>correios</span>
+	        </a>
+	    </div>
+
         <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
             <i class="fas fa-cog"></i>
             <span>Configuração</span>
@@ -52,13 +65,30 @@
                 </button>
             </form>
         </div>
-        
-        
-        
-     
-	    
-	   
     </div>
+
+
+
+    <div id="customConfirm" class="custom-confirm">
+        <div class="custom-confirm-content">
+            <p id="customConfirmMessage">Você tem certeza?</p>
+            <div class="custom-confirm-buttons">
+                <button id="confirmYes" class="btn-confirm">Sim</button>
+                <button id="confirmNo" class="btn-cancel">Não</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <p id="customAlertMessage">Mensagem</p>
+            <button id="alertOk" class="btn-confirm">OK</button>
+        </div>
+    </div>
+
+
+
     
        <div class = "menu"> 
        
@@ -101,23 +131,46 @@
                     <th>Horário</th>
                     <th>Código Postal</th>
                     <th>Destinatário</th>
+                    <th>Entregador</th>
                     <th>Serviço</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="correio : ${Correios}">
+                <tr th:each="correio : ${Correios}" th:attr="data-id=${correio.id}">
                     <td th:text="${correio.id}"></td>
                     <td th:text="${correio.funcionario}"></td>
                     <td th:text="${correio.setor}"></td>
                     <td th:text="${#temporals.format(correio.horario, 'dd/MM/yyyy HH:mm')}"></td>
-
                     <td th:text="${correio.codigoPostal}"></td>
                     <td th:text="${correio.destinatario}"></td>
+                    <td th:text="${correio.entregador}"></td>
                     <td th:text="${correio.servico}"></td>
                 </tr>
             </tbody>
+            
         </table>
     </div>
+
+        
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalhes do Registro</h2>
+            <p><strong>ID:</strong> <span id="modal-id"></span></p>
+            <p><strong>Funcionário:</strong> <span id="modal-funcionario"></span></p>
+            <p><strong>Setor:</strong> <span id="modal-setor"></span></p>
+            <p><strong>Horário:</strong> <span id="modal-horario"></span></p>
+            <p><strong>Código Postal:</strong> <span id="modal-codigoPostal"></span></p>
+            <p><strong>Destinatário:</strong> <span id="modal-destinatario"></span></p>
+            <p><strong>Entregador:</strong> <span id="modal-entregador"></span></p>
+            <p><strong>Serviço:</strong> <span id="modal-servico"></span></p>
+            <div class="modal-actions">
+                <button id="edit-button">Editar</button>
+                <button id="delete-button">Excluir</button>
+            </div>
+        </div>
+    </div>
+
     
     
             
@@ -126,11 +179,17 @@
         <button class="close-btn" id="close-correios-btn">&times;</button>
         <h2>Cadastrar Correios</h2>
         <form action="/correios/cadastrar" method="POST">
-            <label for="funcionario">Funcionário</label>
-            <input type="text" id="funcionario" name="funcionario" required>
 
+            <label for="funcionario">Funcionário</label>
+            <select id="funcionario" name="funcionario" class="select2" >
+                <option value="" disabled selected>Selecione um funcionário</option>
+            </select>
+
+            <br><br>
             <label for="setor">Setor</label>
-            <input type="text" id="setor" name="setor" required>
+            <select id="setor" name="setor" required>
+                <option value="">Selecione um setor</option>
+            </select>
 
             <label for="horario">Horário</label>
             <input type="datetime-local" id="horario" name="horario" required>
@@ -141,13 +200,17 @@
             <label for="destinatario">Destinatário</label>
             <input type="text" id="destinatario" name="destinatario" required>
 
+            <label for="entregador">Entragador</label>
+            <select id="entregador" name="entregador" required>
+                <option value="Valmir">VALMIR</option>
+            </select>
             <label for="servico">Serviço</label>
             <select id="servico" name="servico" required>
                 <option value="SEDEX">SEDEX</option>
                 <option value="PAC">PAC</option>
             </select>
 
-            <button type="submit">Salvar</button>
+            <button class="btn"  type="submit">Salvar</button>
         </form>
     </div>
 						
@@ -159,6 +222,49 @@
 			    
 <script>
 
+function customAlert(message) {
+    const modal = document.getElementById('customAlert');
+    const messageElement = document.getElementById('customAlertMessage');
+    const okButton = document.getElementById('alertOk');
+
+   
+    messageElement.textContent = message;
+
+    
+    modal.style.display = 'flex';
+
+    
+    okButton.onclick = () => {
+        modal.style.display = 'none';
+    };
+}
+
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('customConfirm');
+        const messageElement = document.getElementById('customConfirmMessage');
+        const yesButton = document.getElementById('confirmYes');
+        const noButton = document.getElementById('confirmNo');
+
+        // Atualiza a mensagem
+        messageElement.textContent = message;
+
+
+        modal.style.display = 'flex';
+
+    
+        yesButton.onclick = () => {
+            modal.style.display = 'none';
+            resolve(true); 
+        };
+
+        noButton.onclick = () => {
+            modal.style.display = 'none'; 
+            resolve(false); 
+        };
+    });
+}
 
         const addVisitBtn = document.getElementById('add-correios-btn');
         const sidebarRight = document.getElementById('sidebar-right');
@@ -182,12 +288,63 @@
         var sidebarRight = document.getElementById('sidebar-Correios');
         sidebarRight.style.display = 'none'; 
     });
+    
+    $(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "Selecione uma opção",
+        allowClear: true,
+        width: 'resolve', // Ajusta o tamanho automaticamente ao container
+        minimumInputLength: 1, // Exige ao menos um caractere para iniciar a busca
+        language: {
+            noResults: function() {
+                return "Nenhuma opção encontrada";
+            },
+            inputTooShort: function(args) {
+                return " ";
+            }
+        },
+        matcher: function(params, data) {
+            // Ignora a busca em opções vazias
+            if ($.trim(params.term) === '') {
+                return data;
+            }
 
+            // Faz a busca ignorando maiúsculas/minúsculas e acentos
+            const term = params.term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const text = data.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
+            if (text.includes(term)) {
+                return data;
+            }
+
+            // Retorna `null` se não houver correspondência
+            return null;
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+        
+        const setorSelect = document.getElementById('setor');
+
+        
+        fetch('/setores/dropdown')
+            .then(response => response.json())
+            .then(data => {
+         
+                data.forEach(setor => {
+                    const option = document.createElement('option');
+                    option.value = setor.id; 
+                    option.textContent = setor.nome; 
+                    setorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os setores:', error));
+    });
 
     function filter() {
         const input = document.getElementById('search-input');
-        const filter = input.value.toLowerCase(); // Converte para minúsculas
+        const filter = input.value.toLowerCase(); 
         const table = document.querySelector('table');
         const rows = table.getElementsByTagName('tr');
 
@@ -221,11 +378,12 @@
             const codigoPostal = cells[4].innerText;
             const destinatario = cells[5].innerText;
             const servico = cells[6].innerText;
-            csvContent += `${id};${funcionario};${setor};${horario};${codigoPostal};${destinatario};${servico}\n`;
+            const entregador = cells[7].innerText;
+            csvContent += `${id};${funcionario};${setor};${horario};${codigoPostal};${destinatario};${servico};${entregador}\n`;
         }
     });
 
-    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nID;Funcionário;Setor;Horário;Código Postal;Destinatário;Serviço\n") {
+    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nID;Funcionário;Setor;Horário;Código Postal;Destinatário;Serviço;entregador\n") {
         alert("Nenhum dado disponível para download.");
         return;
     }
@@ -239,8 +397,142 @@
     document.body.removeChild(link);
 }
 
+async function populateResponsaveisSelect() {
+    const responsavelSelect = document.getElementById("funcionario");
+
+    try {
+        const response = await fetch("/users/api/users");
+        const users = await response.json();
+
+        users.forEach(user => {
+            const option = document.createElement("option");
+            
+            option.value = user.officeLocation 
+                ? `${user.displayName} - ${user.officeLocation}`
+                : user.displayName;
+            option.textContent = user.displayName; 
+            responsavelSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar os dados de responsáveis:", error);
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        // Seleciona todas as linhas da tabela
+        const tableRows = document.querySelectorAll("table tbody tr");
+
+        // Seleciona o modal e seus elementos
+        const modal = document.getElementById("infoModal");
+        const closeModal = document.querySelector(".close");
+        const modalId = document.getElementById("modal-id");
+        const modalFuncionario = document.getElementById("modal-funcionario");
+        const modalSetor = document.getElementById("modal-setor");
+        const modalHorario = document.getElementById("modal-horario");
+        const modalCodigoPostal = document.getElementById("modal-codigoPostal");
+        const modalDestinatario = document.getElementById("modal-destinatario");
+        const modalServico = document.getElementById("modal-servico");
+        const modalEntregador = document.getElementById("modal-entregador");
+
+        // Adiciona evento de clique em cada linha
+        tableRows.forEach(row => {
+            row.addEventListener('click', function () {
+                // Obtém os dados da linha clicada
+                const cells = this.querySelectorAll("td");
+
+                // Preenche os dados no modal
+                modalId.textContent = cells[0].textContent;
+                modalFuncionario.textContent = cells[1].textContent;
+                modalSetor.textContent = cells[2].textContent;
+                modalHorario.textContent = cells[3].textContent;
+                modalCodigoPostal.textContent = cells[4].textContent;
+                modalDestinatario.textContent = cells[5].textContent;
+                modalServico.textContent = cells[6].textContent;
+                modalEntregador.textContent = cells[7].textContent;
+
+                // Exibe o modal
+                modal.style.display = "block";
+            });
+        });
+
+        // Fecha o modal
+        closeModal.addEventListener('click', function () {
+            modal.style.display = "none";
+        });
+
+        // Fecha o modal ao clicar fora do conteúdo
+        window.addEventListener('click', function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        // Botões de editar e excluir
+        document.getElementById("edit-button").addEventListener("click", function () {
+            alert("Função de edição ainda não implementada.");
+        });
+
+        document.getElementById("delete-button").addEventListener("click", function () {
+            const id = document.getElementById("modal-id").textContent;
+            deleteRecord(id);
+        });
+
+
+    });
+
+
+    function deleteRecord(id) {
+    // Exibe o modal de confirmação
+    customConfirm("Tem certeza de que deseja excluir este registro?")
+        .then((confirmado) => {
+            if (confirmado) {
+                // Se confirmado, realiza a requisição de exclusão
+                fetch(`/correios/${id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    // Verifica o status da resposta
+                    if (response.status === 204) {
+                        // Registro excluído com sucesso
+                        location.reload();
+
+                        showAlert("Registro excluído com sucesso.", () => {
+                            // Remove a linha correspondente da tabela
+                            document.querySelector(`tr[data-id="${id}"]`).remove();
+                            // Fecha o modal de detalhes (se estiver aberto)
+                            document.getElementById("infoModal").style.display = "none";
+                        });
+                    } else if (response.status === 404) {
+                        // Registro não encontrado
+                        showAlert("Registro não encontrado.");
+                    } else {
+                        // Outro erro na exclusão
+                        showAlert("Ocorreu um erro ao excluir o registro.");
+                    }
+                })
+                .catch(error => {
+                    // Trata erros da requisição
+                    console.error("Erro ao excluir o registro:", error);
+                });
+            } else {
+                // Usuário cancelou a ação
+                console.log("Ação de exclusão cancelada.");
+            }
+        });
+}
+
+
+
 
 </script>
+
+
 
 	</body>
     

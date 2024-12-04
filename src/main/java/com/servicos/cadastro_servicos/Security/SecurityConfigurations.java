@@ -20,7 +20,7 @@ public class SecurityConfigurations {
  private final IPFilter ipFilter;
 
     public SecurityConfigurations(IPFilter ipFilter) {
-        this.ipFilter = ipFilter;
+       this.ipFilter = ipFilter;
     }
 
     @SuppressWarnings("removal")

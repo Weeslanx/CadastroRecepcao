@@ -14,15 +14,18 @@ public class Setor {
     private Long id;
     private String nome;
     private String codDepartamento;
+    private String codCorreios;
 
     
     public Setor() {}
 
 
-    public Setor(Long id, String nome, String codDepartamento) {
+    public Setor(Long id, String nome, String codDepartamento, String codCorreios) {
         this.id = id;
         this.nome = nome;
         this.codDepartamento = codDepartamento;
+        this.codCorreios = codCorreios;
+
     }
 
     
@@ -59,5 +62,15 @@ public class Setor {
                 ", codDepartamento='" + codDepartamento + '\'' +
                 '}';
     }
+
+    public String getCodCorreios() {
+        return codCorreios;
+    }
+
+    public void setCodCorreios(String codCorreios) {
+        this.codCorreios = codCorreios;
+    }
+
+    
 }
 

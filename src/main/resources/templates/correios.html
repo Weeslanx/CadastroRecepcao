@@ -186,7 +186,7 @@
             </select>
 
             <br><br>
-            <label for="setor">Setor</label>
+            <label for="setor">N° Cartão</label>
             <select id="setor" name="setor" required>
                 <option value="">Selecione um setor</option>
             </select>
@@ -329,18 +329,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
         fetch('/setores/dropdown')
-            .then(response => response.json())
-            .then(data => {
-         
-                data.forEach(setor => {
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(setor => {
+                if (setor.codCorreios) { // Verifica se codCorreios não é null ou vazio
                     const option = document.createElement('option');
-                    option.value = setor.id; 
-                    option.textContent = setor.nome; 
+                    option.value = setor.id;
+                    option.textContent = `${setor.nome} - ${setor.codCorreios}`; // Formata o texto como "Nome - CodCorreios"
                     setorSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Erro ao carregar os setores:', error));
-    });
+                }
+            });
+        })
+        .catch(error => console.error('Erro ao carregar os setores:', error));
+
+        });
 
     function filter() {
         const input = document.getElementById('search-input');

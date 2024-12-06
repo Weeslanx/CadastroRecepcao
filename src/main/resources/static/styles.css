@@ -644,8 +644,9 @@ body {
     color: white;
     font-size: 24px;
     transition: left 0.5s ease 0.3s, color 0.3s ease;
-    position: relative;
-    z-index: 1000;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
     width: 100%;
     border-bottom: 1px solid #0a990a;
 }

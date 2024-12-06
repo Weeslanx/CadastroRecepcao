@@ -127,7 +127,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Funcionário</th>
-                    <th>Cartão</th>
+                    <th>Setor</th>
                     <th>Horário</th>
                     <th>Código Postal</th>
                     <th>Destinatário</th>
@@ -139,8 +139,7 @@
                 <tr th:each="correio : ${Correios}" th:attr="data-id=${correio.id}">
                     <td th:text="${correio.id}"></td>
                     <td th:text="${correio.funcionario}"></td>
-                    <td th:text="${correio.setor != null ? correio.setor.nome : 'Sem setor'}"></td>
-
+                    <td th:text="${correio.setor}"></td>
                     <td th:text="${#temporals.format(correio.horario, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${correio.codigoPostal}"></td>
                     <td th:text="${correio.destinatario}"></td>
@@ -351,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const table = document.querySelector('table');
         const rows = table.getElementsByTagName('tr');
 
-        for (let i = 1; i < rows.length; i++) { 
+        for (let i = 1; i < rows.length; i++) { // Começa na linha 1 para ignorar o cabeçalho
             const cells = rows[i].getElementsByTagName('td');
             let match = false;
 
@@ -362,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            rows[i].style.display = match ? '' : 'none'; 
+            rows[i].style.display = match ? '' : 'none'; // Mostra ou oculta a linha
         }
     }
 

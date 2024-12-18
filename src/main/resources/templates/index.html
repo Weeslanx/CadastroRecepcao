@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Entradas</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/responsivo.css">
 
  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,56 +14,21 @@
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   
 
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	
+	 
 
 
 
 
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        
-        
-        
-        <div class="icon" data-tooltip="Entradas">
-           <a href="/registros/visitas">
-               <i class="fa fa-paper-plane"></i> 
-               <span>Registro de Entradas</span>
-           </a>
-       </div>
 
-       
-       
-         <div class="icon" data-tooltip="finalizados">
-           <a href="/registros/visitas/finalizados">
-               <i class="fas fa-check-circle"></i> 
-               <span>Visitas Finalizadas</span>
-           </a>
-       </div>
 
-       <div class="icon" data-tooltip="Correios">
-           <a href="/correios">
-               <i class="fas fa-envelope"></i> 
-               <span>correios</span>
-           </a>
-       </div>
-
-       <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
-           <i class="fas fa-cog"></i>
-           <span>Configuração</span>
-       </div>
-       <div class="sidebar-bottom-button">
-           <form action="/users/logout" method="get">
-               <button type="submit" class="logout-btn">
-                   <i class="fas fa-sign-out-alt"></i> Sair
-               </button>
-           </form>
-        </div>
-   </div>
+    <div id="sidebar-container"></div> 
     
        <div class = "menu"> 
        
@@ -90,6 +56,9 @@
             <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} == null">
                 <div class="card">
                     <div class="card-content">
+                        <div class="cardicon">
+                            <i class="fa fa-paper-plane"></i>
+                        </div>
                         <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
                         <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
                         <p><strong>Responsável:</strong> <span th:text="${visita.responsavel}">Nome Categoria</span></p>
@@ -110,36 +79,55 @@
     </div>
     
             
+            
 
-			<div class="sidebar-right" id="sidebar-visitor" style="display: none;">
+			<div class="sidebar-right" id="sidebar-visitor" style="display: none;z-index: 1001;">
 			                <button class="close-btn" id="close-btn">&times;</button> 
 							<br><br>
-			                <form action="/visitantes/cadastrar" method="post">
-			                    <label for="nome">Nome do Visitante</label>
-			                    <input type="text" id="nome" name="nome" required>
-
-			                    <label for="empresa">Empresa</label>
-			                    <input type="text" id="empresa" name="empresa">
-
-			                    <label for="documento">Documento</label>
-			                    <input type="text" id="documento" name="documento">
-
-			                    <button type="submit" class="btn">Salvar Visitante</button>
-			                </form>
-			            </div>
+                            <h2>Cadastrar Visitante</h2>
+                            <form id="formVisitante">
+                                <label for="nomeVisitante">Nome do Visitante</label>
+                                <input type="text" id="nomeVisitante" name="nome" required />
+                        
+                                <label for="empresaVisitante">Empresa</label>
+                                <input type="text" id="empresaVisitante" name="empresa" />
+                        
+                                <label for="documentoVisitante">Documento</label>
+                                <input type="text" id="documentoVisitante" name="documento" />
+                        
+                                <button class="btn" type="submit">Salvar</button>
+                            </form>
+                        </div>
 						
-						<div class="sidebar-right" id="sidebar-category" style="display: none;">
-						    <button class="close-btn" id="close-category-btn">&times;</button> 
+						<div class="sidebar-right" id="sidebar-category" style="display: none;z-index: 1001;">
+						    <button class="close-btn" onclick="toggleDropdown('sidebar-category')">&times;</button> 
 						    <br><br>
-							<form action="/categorias/cadastrar" method="post">
-							            <label for="nome">Nome da Categoria</label>
-							            <input type="text" id="nome" name="nome" required>
-
-							            <button type="submit" class="btn">Salvar Categoria</button>
-						    </form>
+							<form id="formCategoria">
+                                <label for="nomeCategoria">Nome da Categoria</label>
+                                <input type="text" id="nomeCategoria" name="nome" required />
+                                <button class="btn" type="submit">Salvar</button>
+                            </form>
 						</div>
 						
-						
+						<div class="sidebar-right" id="sidebar-responsavel" style="display: none;z-index: 1001;">
+                            <button class="close-btn" onclick="fecharResponsavelSidebar()">&times;</button>
+                            <h2>Cadastrar Responsável</h2>
+                            <form id="formFuncionario">
+                                <label for="primeiroNome">Primeiro Nome</label>
+                                <input type="text" id="primeiroNome" name="primeiroNome" required />
+                        
+                                <label for="ultimoNome">Último Nome</label>
+                                <input type="text" id="ultimoNome" name="ultimoNome" required />
+                        
+                                <label for="setor">Setor</label>
+                                <select id="setorlist" name="setorId" required>
+                                    <option value="" disabled selected>Selecione um setor</option>
+                                </select>
+                        
+                                <button class="btn" type="submit">Salvar</button>
+                            </form>
+                        </div>
+                        
 						
 						
 						
@@ -152,330 +140,659 @@
 						
 						
 
-						<div class="sidebar-right" id="sidebar-visitas" style="display: none;">
+						<div class="sidebar-right" id="sidebar-visitas" style="display: none; ">
                             <button class="close-btn" id="close-visitas-btn">&times;</button>
-                            <br><br>
-                            <form action="/visitas/cadastrar" method="post">
+                            <br>
+                            <h2>Nova Visita</h2>
+                            <form id="visitaForm" action="/visitas/cadastrar" method="post" onsubmit="verificarECadastrarVisita(event)">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                <br><br>
+                            
                                 <label for="visitante">Visitante</label>
                                 <select id="visitante" name="visitante.id" class="select2" required>
                                     <option value="">Selecione um visitante</option>
                                 </select>
                                 <br><br>
+                            
                                 <label for="categoria">Categoria</label>
                                 <select id="categoria" name="categoria.id" class="select2" required>
                                     <option value="">Selecione uma categoria</option>
                                 </select>
                                 <br><br>
+                            
                                 <label for="responsavel">Responsável</label>
-                                <select id="responsavel" name="responsavel" class="select2" >
+                                <select id="responsavel" name="responsavel" class="select2" required>
                                     <option value="">Selecione um responsável</option>
                                 </select>
                                 <br><br>
+                            
                                 <label for="horarioEntrada">Horário de Entrada</label>
                                 <input type="datetime-local" id="horarioEntrada" name="horarioEntrada" required>
                                 <br><br>
+                            
                                 <label for="cracha">Crachá</label>
                                 <input type="number" id="cracha" name="cracha" min="1" max="30" required>
                                 <br><br>
+                            
                                 <div id="error-message" style="color: red; display: none;"></div>
+                                <div id="success-message" style="color: green; display: none;"></div>
                                 <br>
+                            
                                 <button type="submit" class="btn">Salvar Visita</button>
                             </form>
                         </div>
                         
 						
-								   <button class="add-visitor" id="add-visitor-btn">
-								      <i class="fa fa-id-badge"  ></i>Cadastrar Visitante
-								   
-								   			
-								   </button>
-						           <button class="add-visit" id="add-visit-btn">
-									    <i class="fas fa-plus"></i> Adicionar Visita
-									</button>
+								  
 						       </div>
 						  
 			    
+
 <script>
 
-async function deletarVisita(visitaId) {
-    const confirmar = confirm("Tem certeza que deseja excluir este cadastro?");
-    if (!confirmar) return; 
-
-    try {
-        const response = await fetch(`/visitas/deletar/${visitaId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            alert("Cadastro excluído com sucesso!");
-            location.reload(); 
-        } else {
-            alert("Erro ao excluir o cadastro.");
-        }
-    } catch (error) {
-        console.error("Erro ao excluir a visita:", error);
-        alert("Erro ao excluir o cadastro.");
-    }
-}
-
-async function populateResponsaveisSelect() {
-    const responsavelSelect = document.getElementById("responsavel");
-
-    try {
-        const response = await fetch("/users/api/users");
-        const users = await response.json();
-
-        users.forEach(user => {
-            const option = document.createElement("option");
-            
-            option.value = user.officeLocation 
-                ? `${user.displayName} - ${user.officeLocation}`
-                : user.displayName;
-            option.textContent = user.displayName; 
-            responsavelSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Erro ao carregar os dados de responsáveis:", error);
-    }
-}
-
-
-document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
-
-
-
-
-let currentVisitaId = null;
-
-function abrirSidebar(visitaId) {
-    currentVisitaId = visitaId; 
-    document.getElementById('sidebar-add-saida').style.display = 'block';
-}
-
-document.getElementById('close-saida-btn').addEventListener('click', function() {
-    document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null; 
+document.addEventListener("DOMContentLoaded", function () {
+   
+    configurarFormularioVisitante();
+    populateResponsaveisSelect()
+    configurarFormularioCategoria();
+    configurarFormularioResponsavel();
 });
 
-function atualizarHorarioSaida() {
-    const horarioSaida = document.getElementById('horarioSaida').value;
+function configurarFormularioResponsavel() {
+    const formFuncionario = document.getElementById("formFuncionario");
+    const sidebarResponsavel = document.getElementById("sidebar-responsavel");
+    const sidebarVisitas = document.getElementById("sidebar-visitas");
+    const responsavelSelect = document.getElementById("responsavel");
 
-    if (horarioSaida && currentVisitaId) {
-        fetch('/visitas/atualizar-saida', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `id=${currentVisitaId}&horarioSaida=${encodeURIComponent(horarioSaida)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                fecharSidebar();
-                location.reload(); 
-            } else {
-                alert(data.message);
+    formFuncionario.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Bloqueia o envio padrão do formulário
+        const formData = new FormData(formFuncionario);
+
+        try {
+            const response = await fetch("/funcionarios/cadastrar", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao salvar o responsável.");
             }
+
+            const novoResponsavel = await response.json();
+
+            // Adiciona o novo responsável ao dropdown
+            const novaOption = new Option(
+                `${novoResponsavel.name} - ${novoResponsavel.setorNome || "SEM DEPARTAMENTO"}`,
+                novoResponsavel.id,
+                false,
+                true
+            );
+            responsavelSelect.add(novaOption);
+
+            // Atualiza o Select2, se necessário
+            $(responsavelSelect).trigger("change");
+
+            // Fecha o sidebar de responsável e abre o de visitas
+            sidebarResponsavel.style.display = "none";
+            sidebarVisitas.style.display = "block";
+
+            // Limpa o formulário
+            formFuncionario.reset();
+        } catch (error) {
+            console.error("Erro ao salvar o responsável:", error);
+            alert("Erro ao salvar o responsável. Tente novamente.");
+        }
+    });
+}
+
+
+
+// Função para configurar o formulário de visitante
+function configurarFormularioVisitante() {
+    const formVisitante = document.getElementById("formVisitante");
+    const sidebarVisitor = document.getElementById("sidebar-visitor");
+    const sidebarVisitas = document.getElementById("sidebar-visitas");
+    const visitanteSelect = document.getElementById("visitante");
+
+    formVisitante.addEventListener("submit", function (event) {
+        event.preventDefault(); // Impede o envio padrão
+
+        const formData = new FormData(formVisitante);
+
+        fetch("/visitantes/cadastrar", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao salvar o visitante.");
+            return response.json();
+        })
+        .then(novoVisitante => {
+            // Fecha o sidebar de visitante
+            sidebarVisitor.style.display = "none";
+
+            // Adiciona o visitante ao dropdown
+            const novaOption = document.createElement("option");
+            novaOption.value = novoVisitante.id;
+            novaOption.textContent = novoVisitante.nome;
+            novaOption.selected = true;
+            visitanteSelect.appendChild(novaOption);
+
+            // Atualiza o Select2, se necessário
+            $(visitanteSelect).trigger("change");
+
+            // Abre o sidebar-visitas
+            sidebarVisitas.style.display = "block";
+
+            // Limpa o formulário
+            formVisitante.reset();
         })
         .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao atualizar o horário de saída.');
+            console.error("Erro ao salvar o visitante:", error);
+            alert("Erro ao salvar o visitante. Tente novamente.");
         });
-    } else {
-        alert('Por favor, informe o horário de saída.');
+    });
+}
+
+// Função para configurar o formulário de categoria
+function configurarFormularioCategoria() {
+    const formCategoria = document.getElementById("formCategoria");
+    const sidebarCategoria = document.getElementById("sidebar-category");
+    const sidebarVisitas = document.getElementById("sidebar-visitas");
+    const categoriaSelect = document.getElementById("categoria");
+
+    formCategoria.addEventListener("submit", function (event) {
+        event.preventDefault(); // Bloqueia o envio padrão
+
+        const formData = new FormData(formCategoria);
+
+        fetch("/categorias/novocadastro", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao salvar a categoria.");
+            return response.json();
+        })
+        .then(novaCategoria => {
+            // Fecha o sidebar de categoria
+            sidebarCategoria.style.display = "none";
+
+            // Adiciona a nova categoria ao dropdown
+            const novaOption = document.createElement("option");
+            novaOption.value = novaCategoria.id;
+            novaOption.textContent = novaCategoria.nome;
+            novaOption.selected = true;
+            categoriaSelect.appendChild(novaOption);
+
+            // Atualiza o Select2, se necessário
+            $(categoriaSelect).trigger("change");
+
+            // Abre o sidebar-visitas
+            sidebarVisitas.style.display = "block";
+
+            // Limpa o formulário
+            formCategoria.reset();
+        })
+        .catch(error => {
+            console.error("Erro ao salvar a categoria:", error);
+            alert("Erro ao salvar a categoria. Tente novamente.");
+        });ve
+    });
+}
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const setorSelect = document.getElementById('setorlist');
+    const sidebarSetor = document.getElementById('sidebar-setor');
+
+    
+    function carregarSetores() {
+        fetch('/setores/dropdown')
+            .then(response => response.json())
+            .then(data => {
+                setorSelect.innerHTML = '<option value="" disabled selected>Selecione um setor</option>';
+
+              
+                const novaOption = document.createElement('option');
+                novaOption.value = "novo";
+                novaOption.textContent = "+ Cadastrar novo setor";
+                novaOption.style.color = "green";
+                setorSelect.appendChild(novaOption);
+
+                // Adiciona os setores existentes
+                data.forEach(setor => {
+                    const option = document.createElement('option');
+                    option.value = setor.id;
+                    option.textContent = setor.nome.toUpperCase();
+                    setorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os setores:', error));
+    }
+
+   
+    carregarSetores();
+
+ 
+    setorSelect.addEventListener('change', function () {
+        if (this.value === 'novo') {
+            document.getElementById('nome').value = ""; // Limpa o campo de nome do setor
+            sidebarSetor.style.display = 'block'; // Abre o sidebar de setor
+            this.value = ""; // Reseta o valor do select
+        }
+    });
+
+    // Evento para o formulário de cadastro de setor
+    const formSetor = document.getElementById('formSetor');
+    formSetor.addEventListener('submit', function (event) {
+        event.preventDefault(); // Evita o envio padrão
+
+        const formData = new FormData(formSetor);
+        fetch(formSetor.action, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Setor cadastrado com sucesso!');
+                    sidebarSetor.style.display = 'none'; // Fecha o sidebar de setor
+                    carregarSetores(); // Recarrega os setores no select
+                } else {
+                    throw new Error('Erro ao salvar o setor.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao salvar o setor:', error);
+                alert('Erro ao salvar o setor.');
+            });
+    });
+
+    // Função para fechar o sidebar de responsável
+    function fecharResponsavelSidebar() {
+        document.getElementById('sidebar-responsavel').style.display = 'none';
+        document.getElementById('sidebar-visitas').style.display = 'block';
+    }
+
+    // Torna a função disponível globalmente
+    window.fecharResponsavelSidebar = fecharResponsavelSidebar;
+});
+
+    // Inicialização do Sidebar
+    $(document).ready(function () {
+        $("#sidebar-container").load("/fragment/sidebar.html");
+    });
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll("form");
+    forms.forEach(form => {
+        form.addEventListener("submit", function (e) {
+            // Verifica se o formulário está sendo submetido sem intervenção
+            const validated = form.dataset.validated === "true";
+
+            if (!validated) {
+                e.preventDefault(); // Bloqueia o envio até que seja validado
+            } else {
+                const submitButton = form.querySelector("button[type='submit']");
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = "Salvando...";
+                }
+            }
+        });
+
+    });
+});
+
+    
+    // Função para deletar uma visita
+    async function deletarVisita(visitaId) {
+        const confirmar = confirm("Tem certeza que deseja excluir este cadastro?");
+        if (!confirmar) return;
+
+        try {
+            const response = await fetch(`/visitas/deletar/${visitaId}`, { method: 'DELETE' });
+            if (response.ok) {
+                alert("Cadastro excluído com sucesso!");
+                location.reload();
+            } else {
+                alert("Erro ao excluir o cadastro.");
+            }
+        } catch (error) {
+            console.error("Erro ao excluir a visita:", error);
+            alert("Erro ao excluir o cadastro.");
+        }
+    }
+
+    // Preencher select de responsáveis
+    async function populateResponsaveisSelect() {
+    const responsavelSelect = $('#responsavel');
+    const sidebarResponsavel = document.getElementById('sidebar-responsavel');
+
+    try {
+        // Limpa e inicializa o select com opções padrão
+        responsavelSelect.empty().append(
+            new Option('Pesquise ou selecione um responsável', '', true, true)
+        ).append(
+            new Option('+ Adicionar novo responsável', 'novo')
+        );
+
+        const [apiUsers, dbResponsaveis] = await Promise.all([
+            fetch("/users/api/users").then(res => res.json()),
+            fetch("/funcionarios/listar").then(res => res.json())
+        ]);
+
+        // Adiciona os responsáveis vindos da API
+        apiUsers.forEach(user => {
+            responsavelSelect.append(
+                new Option(user.displayName, user.displayName)
+            );
+        });
+
+        // Adiciona os responsáveis vindos do banco local
+        dbResponsaveis.forEach(responsavel => {
+            responsavelSelect.append(
+                new Option(
+                    `${responsavel.name} - ${responsavel.setorNome?.toUpperCase() || 'SEM SETOR'}`,
+                    responsavel.id
+                )
+            );
+        });
+
+        // Inicializa o Select2
+        responsavelSelect.select2({
+            placeholder: 'Pesquise ou selecione',
+            allowClear: true,
+            templateResult: formatarOpcao,
+            templateSelection: formatarOpcao,
+        });
+
+        // Lógica para abrir o modal de novo responsável
+        responsavelSelect.on("change", function () {
+            if (this.value === "novo") {
+                sidebarResponsavel.style.display = "block";
+                responsavelSelect.val(null).trigger("change");
+            }
+        });
+    } catch (error) {
+        console.error("Erro ao carregar os responsáveis:", error);
     }
 }
 
-function fecharSidebar() {
-    document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null; 
+// Formata as opções no Select2
+function formatarOpcao(data) {
+    if (data.id === "novo") {
+        return $('<span>').text(data.text).css({ color: "green", fontWeight: "bold" });
+    }
+    return data.text;
 }
-    
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Selecione uma opção",
-            allowClear: true
-        });
+
+    // Gerenciamento de sidebars
+    let currentVisitaId = null;
+
+    function abrirSidebar(visitaId) {
+        currentVisitaId = visitaId;
+        document.getElementById('sidebar-add-saida').style.display = 'block';
+    }
+
+    function fecharSidebar() {
+        document.getElementById('sidebar-add-saida').style.display = 'none';
+        currentVisitaId = null;
+    }
+
+    document.getElementById('close-saida-btn').addEventListener('click', fecharSidebar);
+
+    function atualizarHorarioSaida() {
+        const horarioSaida = document.getElementById('horarioSaida').value;
+
+        if (horarioSaida && currentVisitaId) {
+            fetch('/visitas/atualizar-saida', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${currentVisitaId}&horarioSaida=${encodeURIComponent(horarioSaida)}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        fecharSidebar();
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao atualizar o horário de saída.');
+                });
+        } else {
+            alert('Por favor, informe o horário de saída.');
+        }
+    }
+
+    // Configuração do Select2
+    $(document).ready(function () {
+        $('.select2').select2({ placeholder: "Selecione uma opção", allowClear: true });
     });
 
-    
-    document.getElementById('add-visitor-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'block'; 
+    // Abertura e fechamento de sidebars
+    document.getElementById('add-visitor-btn').addEventListener('click', function () {
+        document.getElementById('sidebar-visitor').style.display = 'block';
     });
 
-   
-    document.getElementById('close-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitor');
-        sidebarRight.style.display = 'none'; 
+    document.getElementById('close-btn').addEventListener('click', function () {
+        document.getElementById('sidebar-visitor').style.display = 'none';
     });
 
-    
-    document.getElementById('add-visit-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'block'; 
+    document.getElementById('add-visit-btn').addEventListener('click', function () {
+        const sidebarRight = document.getElementById('sidebar-visitas');
+        sidebarRight.style.display = 'block';
 
         fetch('/visitas/dados')
             .then(response => response.json())
             .then(data => {
-                
-                const visitanteSelect = document.getElementById('visitante');
-                visitanteSelect.innerHTML = '<option value="">Selecione um visitante</option>'; 
+                const visitanteSelect = $('#visitante');
+                const categoriaSelect = $('#categoria');
+                const sidebarVisitante = document.getElementById('sidebar-visitor');
+                const sidebarCategoria = document.getElementById('sidebar-category');
+
+                visitanteSelect.empty().append(
+                    $('<option>', { value: '', disabled: true, selected: true, text: 'Selecione um visitante' })
+                ).append(
+                    $('<option>', { value: 'novo', text: '+ Cadastrar novo visitante' }).addClass('highlight-option')
+                );
+
                 data.visitantes.forEach(visitante => {
-                    const option = document.createElement('option');
-                    option.value = visitante.id; 
-                    option.textContent = visitante.nome; 
-                    visitanteSelect.appendChild(option);
+                    visitanteSelect.append(
+                        $('<option>', { value: visitante.id, text: visitante.nome })
+                    );
                 });
 
-                
-                const categoriaSelect = document.getElementById('categoria');
-                categoriaSelect.innerHTML = '<option value="">Selecione uma categoria</option>'; 
+                visitanteSelect.select2({
+                    placeholder: 'Selecione um visitante',
+                    allowClear: true,
+                    templateResult: function (data) {
+                        if (data.id === 'novo') {
+                            return $('<span>').text(data.text).css({ color: 'green', fontWeight: 'bold' });
+                        }
+                        return data.text;
+                    }
+                });
+
+                visitanteSelect.on('change', function () {
+                    if (this.value === 'novo') {
+                        sidebarVisitante.style.display = 'block';
+                        visitanteSelect.val(null).trigger('change');
+                    }
+                });
+
+                categoriaSelect.empty().append(
+                    $('<option>', { value: '', disabled: true, selected: true, text: 'Selecione uma categoria' })
+                ).append(
+                    $('<option>', { value: 'novo', text: '+ Cadastrar nova categoria' }).addClass('highlight-option')
+                );
+
                 data.categorias.forEach(categoria => {
-                    const option = document.createElement('option');
-                    option.value = categoria.id; 
-                    option.textContent = categoria.nome; 
-                    categoriaSelect.appendChild(option);
+                    categoriaSelect.append(
+                        $('<option>', { value: categoria.id, text: categoria.nome })
+                    );
+                });
+
+                categoriaSelect.select2({
+                    placeholder: 'Selecione uma categoria',
+                    allowClear: true,
+                    templateResult: function (data) {
+                        if (data.id === 'novo') {
+                            return $('<span>').text(data.text).css({ color: 'green', fontWeight: 'bold' });
+                        }
+                        return data.text;
+                    }
+                });
+
+                categoriaSelect.on('change', function () {
+                    if (this.value === 'novo') {
+                        sidebarCategoria.style.display = 'block';
+                        categoriaSelect.val(null).trigger('change');
+                    }
                 });
             })
             .catch(error => console.error('Erro ao carregar dados:', error));
     });
 
-    
-    document.getElementById('close-visitas-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-visitas');
-        sidebarRight.style.display = 'none'; 
+    // Fechar sidebars adicionais
+    document.getElementById('close-visitas-btn').addEventListener('click', function () {
+        document.getElementById('sidebar-visitas').style.display = 'none';
     });
 
-    
-    document.getElementById('add-category').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'block'; 
+    document.getElementById('add-category').addEventListener('click', function () {
+        document.getElementById('sidebar-category').style.display = 'block';
     });
 
-    
-    document.getElementById('close-category-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-category');
-        sidebarRight.style.display = 'none'; 
+    document.getElementById('close-category-btn').addEventListener('click', function () {
+        document.getElementById('sidebar-category').style.display = 'none';
     });
-    
 
-   
-    
-    function toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("open");
-    
-    var title = document.querySelector(".logo-container"); 
-    title.classList.toggle("open"); 
-}
-    
-    function verificarCracha(event) {
-    event.preventDefault(); 
-
-    const cracha = document.getElementById('cracha').value;
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
-
-    
-    errorMessage.style.display = 'none';
-    successMessage.style.display = 'none';
-
-    
-    fetch(`/visitas/verificar-cracha?cracha=${cracha}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.emUso) {
-                
-                errorMessage.textContent = `O crachá ${cracha} já está em uso. Por favor, escolha outro.`;
-                errorMessage.style.display = 'block'; 
-            } else {
-                
-                successMessage.textContent = 'Crachá válido, enviando formulário...';
-                successMessage.style.display = 'block'; 
-                document.getElementById('visitaForm').submit(); 
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar o crachá:', error);
-            errorMessage.textContent = 'Ocorreu um erro ao verificar o crachá. Tente novamente.';
-            errorMessage.style.display = 'block'; 
-        });
-}
-
-
-
-function armazenarToken(token) {
-    localStorage.setItem('token', token); 
-    console.log('Token armazenado com sucesso:', token);
-}
-
-
-function obterTokenDePermissao() {
-    return new Promise((resolve, reject) => {
-        const token = localStorage.getItem('token'); 
-        if (token) {
-            resolve(token);
+    // Função para alternar dropdowns
+    function toggleDropdown(menuId) {
+        const menu = document.getElementById(menuId);
+        if (menu.style.display === "none" || !menu.style.display) {
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+            menu.style.display = "block";
         } else {
-            reject('Token não encontrado');
-        }
-    });
-}
-
-
-
-    async function verificarAlteracoes() {
-        try {
-            const response = await fetch(`/visitas/verificar-alteracao?ultimoIdVerificado=${ultimoIdVerificado}`);
-            const houveMudanca = await response.json();
-
-            if (houveMudanca) {
-                console.log('Nova visita detectada! Recarregando a página...');
-                location.reload(); // Recarrega a página
-            } else {
-                console.log('Nenhuma mudança detectada.');
-            }
-
-            // Atualiza o último ID verificado com o maior ID atual
-            const maxIdResponse = await fetch('/visitas/obter-maior-id');
-            ultimoIdVerificado = await maxIdResponse.json();
-        } catch (error) {
-            console.error('Erro ao verificar alterações:', error);
+            menu.style.display = "none";
         }
     }
 
-    
-    setInterval(verificarAlteracoes, 30000);
+    async function verificarECadastrarVisita(event) {
+    event.preventDefault(); // Impede o envio direto do formulário.
 
-    
-    document.addEventListener('DOMContentLoaded', verificarAlteracoes);
+    const form = document.getElementById("visitaForm");
+    const cracha = document.getElementById("cracha").value.trim();
+    const errorMessage = document.getElementById("error-message");
+    const successMessage = document.getElementById("success-message");
 
-setInterval(() => {
-    fetch(`/visitas/checar-alteracoes?ultimaAtualizacao=${ultimaAtualizacao}`) 
-        .then(response => response.json())
-        .then(alterado => {
-            if (alterado) {
-                console.log("Alteração detectada, recarregando a página...");
+    // Oculta mensagens anteriores.
+    errorMessage.style.display = "none";
+    successMessage.style.display = "none";
 
-           
-                ultimaAtualizacao = Date.now();
+    try {
+        // Faz a verificação do crachá no backend.
+        const response = await fetch(`/visitas/verificar-cracha?cracha=${encodeURIComponent(cracha)}`);
+        const data = await response.json();
 
+        if (data.emUso) {
+            // Exibe mensagem de erro se o crachá estiver em uso.
+            errorMessage.textContent = `O crachá ${cracha} já está em uso. Por favor, escolha outro.`;
+            errorMessage.style.display = "block";
+        } else {
+            // Crachá válido. Exibe mensagem de sucesso e envia o formulário.
+            successMessage.textContent = "Crachá válido! Salvando visita...";
+            successMessage.style.display = "block";
 
-                location.reload();
+            // Envia os dados do formulário.
+            const formData = new FormData(form);
+            const postResponse = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (postResponse.ok) {
+                alert("Visita cadastrada com sucesso!");
+                location.reload(); // Recarrega a página após salvar.
             } else {
-                console.log("Nenhuma alteração detectada.");
+                throw new Error("Erro ao salvar a visita.");
             }
-        })
-        .catch(error => {
-            console.error("Erro ao verificar alterações:", error);
+        }
+    } catch (error) {
+        console.error("Erro ao verificar ou salvar a visita:", error);
+        errorMessage.textContent = "Erro ao processar a solicitação. Tente novamente.";
+        errorMessage.style.display = "block";
+    }
+}
+
+    
+    // Alternar a exibição do sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("open");
+
+        const title = document.querySelector(".logo-container");
+        title.classList.toggle("open");
+    }
+
+
+    document.getElementById('formFuncionario').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Previne o comportamento padrão do formulário
+
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    try {
+        
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
         });
-}, 5000); 
+
+        if (response.ok) {
+            alert('Responsável cadastrado com sucesso!');
+
+            
+            document.getElementById('sidebar-responsavel').style.display = 'none';
+
+
+            const sidebarVisitas = document.getElementById('sidebar-visitas');
+            sidebarVisitas.style.display = 'block';
+
+
+            await populateResponsaveisSelect();
+
+        } else {
+            alert('Erro ao cadastrar responsável. Tente novamente.');
+        }
+    } catch (error) {
+        console.error('Erro ao cadastrar responsável:', error);
+        alert('Ocorreu um erro. Tente novamente.');
+    }
+});
+
+function fecharResponsavelSidebar() {
+    document.getElementById('sidebar-responsavel').style.display = 'none';
+    document.getElementById('sidebar-visitas').style.display = 'block';
+}
+
+
+
 
 
 </script>
+                            
+
 
 	</body>
 

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Entradas</title>
+    <link rel="stylesheet" href="/styles.css">
+
+ 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+	
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+	
+
+
+
+
+</head>
+<body>
+
+  
+
+   
+    <div id="sidebar-container"></div> 
+
+    
+    
+
+
+    <div id="customConfirm" class="custom-confirm">
+        <div class="custom-confirm-content">
+            <p id="customConfirmMessage">Você tem certeza?</p>
+            <div class="custom-confirm-buttons">
+                <button id="confirmYes" class="btn-confirm">Sim</button>
+                <button id="confirmNo" class="btn-cancel">Não</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <p id="customAlertMessage">Mensagem</p>
+            <button id="alertOk" class="btn-confirm">OK</button>
+        </div>
+    </div>
+
+
+
+             
+    
+       <div class = "menu"> 
+       
+        <h1> Registro Estacionamento</h1>
+        	
+        <button class="add-visit" id="add-entrada-btn" data-sidebar="sidebar-estacionamento" data-display="block">
+            <i class="fas fa-sign-in-alt"></i>Nova Entrada
+        </button>	
+
+
+        
+    
+
+
+        
+
+						           
+                                    
+                                    <div class="logo-container">
+                                        <img src="/images/logo3.png" alt="Logo" class="logo-img">
+                                    </div>
+
+
+                                   
+       </div>
+     
+       <div class="sidebar-right" id="sidebar-veiculo" style="display: none; z-index: 1001;">
+        <button class="close-btn" id="close-btn" data-sidebar="sidebar-veiculo" data-display="none">&times;</button> 
+        <br><br>
+        <form id="formVeiculo" action="/veiculos/cadastrar" method="post">
+            <label for="proprietario">Proprietário</label>
+            <input type="text" id="proprietario" name="proprietario" required>
+    
+            <label for="placa">Placa</label>
+            <input type="text" id="placa" name="placa" required>
+    
+            <label for="modelo">Modelo</label>
+            <input type="text" id="modelo" name="modelo" required>
+    
+            <button type="submit" class="btn">Salvar Veículo</button>
+        </form>
+    </div>
+
+    <div class="sidebar-right" id="sidebar-responsavel" style="display: none;z-index: 1001;">
+        <button class="close-btn" onclick="fecharResponsavelSidebar()">&times;</button>
+        <h2>Cadastrar Motorista</h2>
+        <form id="formFuncionario">
+            <label for="primeiroNome">Primeiro Nome</label>
+            <input type="text" id="primeiroNome" name="primeiroNome" required />
+    
+            <label for="ultimoNome">Último Nome</label>
+            <input type="text" id="ultimoNome" name="ultimoNome" required />
+    
+            <label for="setor">Setor</label>
+            <select id="setorlist" name="setorId" required>
+                <option value="" disabled selected>Selecione um setor</option>
+            </select>
+    
+            <button class="btn" type="submit">Salvar</button>
+        </form>
+    </div>
+
+    <div class="sidebar-right" id="sidebar-estacionamento" style="display: none;">
+        <button class="close-btn" id="close-veiculo-btn" data-sidebar="sidebar-estacionamento" data-display="none">&times;</button> 
+        <br><br>
+        <form action="/estacionamento/cadastrar" method="post">
+            <label for="motorista">Motorista</label>
+            <select id="motorista" name="motorista" class="select2" required>
+                <option value="" disabled selected>Pesquise ou selecione um motorista</option>
+            </select>
+
+            <label for="veiculo">Veículo (ID)</label>
+            <select id="veiculo" name="veiculoId" class="select2" required>
+                <option value="" disabled selected>Selecione</option>
+            </select>
+
+          
+
+            <label for="documento">Entrada</label>
+            <input type="datetime-local" id="hrEntrada" name="hrEntrada">
+
+            
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+    </div>
+    
+    
+       <div class="main-content">
+
+        <div class="sidebar-right" id="sidebar-add-saida" style="display: none;">
+            <button class="close-btn" id="close-saida-btn">&times;</button>
+            <br><br>
+            <input type="datetime-local" id="horarioSaida" />
+            <button class ="btn" onclick="atualizarHorarioSaida()">Atualizar Horário de Saída</button>
+        </div>  
+
+        <div class="card-container" id="estacionamento-container">
+            <th:block th:each="estacionamento : ${estacionamentos}" th:if="${estacionamento.hrSaida} == null">
+                <div  class="card">
+                    <div class="card-content">
+                            <div class="cardicon">
+                                <i class="fas fa-parking"></i>
+                            </div>
+                        <h3 th:text="${estacionamento.veiculo.placa}">Placa</h3>
+                        <p><strong>Motorista:</strong> <span th:text="${estacionamento.motorista}">Placa</span></p>
+                        <p><strong>Horário de Entrada:</strong> <span th:text="${#temporals.format(estacionamento.hrEntrada, 'dd/MM/yyyy HH:mm')}">Entrada</span></p>
+                       
+                    </div>
+                    <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${estacionamento.id} + ')'">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                    <button class="btn-card delet" th:onclick="'deletarEstacionamento(' + ${estacionamento.id} + ')'">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </th:block>
+        </div>
+        
+
+
+        
+        
+       
+       
+       </div>
+			
+	
+						  
+			    
+<script>
+
+    
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+});
+
+
+document.addEventListener('DOMContentLoaded', populateMotoristaSelect);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const setorSelect = document.getElementById('setorlist');
+    const sidebarSetor = document.getElementById('sidebar-setor');
+
+    
+    function carregarSetores() {
+        fetch('/setores/dropdown')
+            .then(response => response.json())
+            .then(data => {
+                setorSelect.innerHTML = '<option value="" disabled selected>Selecione um setor</option>';
+
+              
+                const novaOption = document.createElement('option');
+                novaOption.value = "novo";
+                novaOption.textContent = "+ Cadastrar novo setor";
+                novaOption.style.color = "green";
+                setorSelect.appendChild(novaOption);
+
+                // Adiciona os setores existentes
+                data.forEach(setor => {
+                    const option = document.createElement('option');
+                    option.value = setor.id;
+                    option.textContent = setor.nome.toUpperCase();
+                    setorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os setores:', error));
+    }
+
+   
+    carregarSetores();
+
+ 
+    setorSelect.addEventListener('change', function () {
+        if (this.value === 'novo') {
+            document.getElementById('nome').value = ""; // Limpa o campo de nome do setor
+            sidebarSetor.style.display = 'block'; // Abre o sidebar de setor
+            this.value = ""; // Reseta o valor do select
+        }
+    });
+
+    // Evento para o formulário de cadastro de setor
+    const formSetor = document.getElementById('formSetor');
+    formSetor.addEventListener('submit', function (event) {
+        event.preventDefault(); // Evita o envio padrão
+
+        const formData = new FormData(formSetor);
+        fetch(formSetor.action, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Setor cadastrado com sucesso!');
+                    sidebarSetor.style.display = 'none'; // Fecha o sidebar de setor
+                    carregarSetores(); // Recarrega os setores no select
+                } else {
+                    throw new Error('Erro ao salvar o setor.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao salvar o setor:', error);
+                alert('Erro ao salvar o setor.');
+            });
+    });
+
+    // Função para fechar o sidebar de responsável
+    function fecharResponsavelSidebar() {
+        document.getElementById('sidebar-responsavel').style.display = 'none';
+        document.getElementById('sidebar-visitas').style.display = 'block';
+    }
+
+    // Torna a função disponível globalmente
+    window.fecharResponsavelSidebar = fecharResponsavelSidebar;
+});
+
+async function populateMotoristaSelect() {
+    const motoristaSelect = $('#motorista'); // Select no form de estacionamento
+    const sidebarMotorista = document.getElementById('sidebar-responsavel'); // Sidebar de cadastro
+    const formMotorista = document.getElementById('formFuncionario'); // Formulário de motorista
+
+    try {
+        // Limpa e inicializa o select com opções padrão
+        motoristaSelect.empty().append(
+            $('<option>', { value: '', disabled: true, selected: true, text: 'Pesquise ou selecione um motorista' })
+        ).append(
+            $('<option>', { value: 'novo', text: '+ Cadastrar novo motorista' }).addClass('highlight-option')
+        );
+
+        // Carrega os motoristas da API e do banco local
+        const [apiUsuarios, dbMotoristas] = await Promise.all([
+            fetch('/users/api/users').then(res => res.json()), // Dados da API
+            fetch('/funcionarios/listar').then(res => res.json()) // Dados do banco
+        ]);
+
+        // Adiciona motoristas da API
+        apiUsuarios.forEach(user => {
+            motoristaSelect.append(
+                $('<option>', {
+                    value: user.displayName,
+                    text: user.displayName
+                })
+            );
+        });
+
+        // Adiciona motoristas do banco local
+        dbMotoristas.forEach(motorista => {
+            motoristaSelect.append(
+                $('<option>', {
+                    value: motorista.id,
+                    text: `${motorista.name} - ${motorista.setorNome?.toUpperCase() || 'SEM SETOR'}`
+                })
+            );
+        });
+
+        // Inicializa Select2
+        motoristaSelect.select2({
+            placeholder: 'Pesquise ou selecione um motorista',
+            allowClear: true,
+            templateResult: formatarOpcao,
+            templateSelection: formatarOpcao
+        });
+
+        // Lógica para abrir modal de cadastro de motorista
+        motoristaSelect.on('change', function () {
+            if (this.value === 'novo') {
+                sidebarMotorista.style.display = 'block';
+                motoristaSelect.val(null).trigger('change'); // Reseta o select
+            }
+        });
+
+        // Função de formatação do Select2
+        function formatarOpcao(data) {
+            if (data.id === 'novo') {
+                return $('<span>').text(data.text).css({ color: 'green', fontWeight: 'bold' });
+            }
+            return data.text;
+        }
+
+        // Cadastro de novo motorista
+        formMotorista.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(formMotorista);
+
+            fetch('/funcionarios/cadastrar', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Erro ao salvar motorista.');
+                    return response.json();
+                })
+                .then(novoMotorista => {
+                    // Fecha o modal
+                    sidebarMotorista.style.display = 'none';
+
+                    // Adiciona o novo motorista ao select
+                    motoristaSelect.append(
+                        $('<option>', {
+                            value: novoMotorista.id,
+                            text: `${novoMotorista.name} - ${novoMotorista.setorNome || 'SEM SETOR'}`
+                        }).prop('selected', true)
+                    );
+
+                    motoristaSelect.trigger('change'); // Atualiza o Select2
+
+                    formMotorista.reset(); // Limpa o formulário
+                })
+                .catch(error => {
+                    console.error('Erro ao cadastrar motorista:', error);
+                    alert('Erro ao cadastrar motorista. Tente novamente.');
+                });
+        });
+    } catch (error) {
+        console.error('Erro ao carregar motoristas:', error);
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const veiculoSelect = $('#veiculo'); // Dropdown de veículos
+    const sidebarVeiculo = document.getElementById('sidebar-veiculo');
+    const sidebarEstacionamento = document.getElementById('sidebar-estacionamento');
+    const formVeiculo = document.getElementById('formVeiculo');
+
+    // Carregar veículos da API no dropdown
+    function carregarVeiculos() {
+        fetch('/veiculos/dropdown')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Veículos carregados:", data);
+
+                // Reinicializa o dropdown
+                veiculoSelect.empty().append(
+                    $('<option>', { value: '', disabled: true, selected: true, text: 'Selecione' }),
+                    $('<option>', { value: 'novo', text: '+ Cadastrar novo veículo' }).addClass('highlight-option')
+                );
+
+                // Adiciona os veículos no dropdown
+                data.forEach(veiculo => {
+                    veiculoSelect.append(
+                        $('<option>', { value: veiculo.id, text: `${veiculo.placa} - ${veiculo.modelo}` })
+                    );
+                });
+
+                veiculoSelect.select2({
+    placeholder: 'Selecione um veículo',
+    allowClear: true,
+    templateResult: function (data) {
+        // Verifica se o ID da opção é "novo" e estiliza
+        if (data.id === 'novo') {
+            const $result = $('<span>').text(data.text).css({
+                color: 'green',
+                fontWeight: 'bold',
+            });
+            return $result;
+        }
+        return data.text; 
+    },
+    templateSelection: function (data) {
+        return data.text; 
+    }
+});
+
+            })
+            .catch(error => console.error('Erro ao carregar veículos:', error));
+    }
+
+    
+    veiculoSelect.on('change', function () {
+        if (this.value === 'novo') {
+            sidebarVeiculo.style.display = 'block';
+            veiculoSelect.val(null).trigger('change');
+        }
+    });
+
+    
+    formVeiculo.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const data = {
+            proprietario: document.getElementById('proprietario').value,
+            placa: document.getElementById('placa').value,
+            modelo: document.getElementById('modelo').value
+        };
+
+        fetch('/veiculos/cadastrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Erro ao salvar o veículo.');
+                return response.json();
+            })
+            .then(novoVeiculo => {
+                console.log("Veículo cadastrado:", novoVeiculo);
+
+                // Fecha o sidebar de veículo
+                sidebarVeiculo.style.display = 'none';
+
+                // Adiciona o novo veículo ao dropdown e o seleciona
+                const novaOption = $('<option>', {
+                    value: novoVeiculo.id,
+                    text: `${novoVeiculo.placa} - ${novoVeiculo.modelo}`
+                });
+                veiculoSelect.append(novaOption);
+                veiculoSelect.val(novoVeiculo.id).trigger('change');
+
+                // Reabre o sidebar de estacionamento
+                sidebarEstacionamento.style.display = 'block';
+
+                // Limpa o formulário
+                formVeiculo.reset();
+            })
+            .catch(error => {
+                console.error('Erro ao salvar veículo:', error);
+                alert('Erro ao salvar veículo. Tente novamente.');
+            });
+    });
+
+    // Carregar os veículos ao iniciar a página
+    carregarVeiculos();
+});
+
+function configurarFormularioResponsavel() {
+    const formFuncionario = document.getElementById("formFuncionario");
+    const sidebarResponsavel = document.getElementById("sidebar-responsavel");
+    const sidebarVisitas = document.getElementById("sidebar-estacionamento");
+    const responsavelSelect = document.getElementById("responsavel");
+
+    formFuncionario.addEventListener("submit", function (event) {
+        event.preventDefault(); // Bloqueia o envio padrão do formulário
+
+        const formData = new FormData(formFuncionario);
+
+        fetch("/funcionarios/cadastrar", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao salvar o responsável.");
+            return response.json();
+        })
+        .then(novoResponsavel => {
+            // Fecha o sidebar de responsável
+            sidebarResponsavel.style.display = "none";
+
+            // Adiciona o novo responsável ao dropdown
+            const novaOption = document.createElement("option");
+            novaOption.value = novoResponsavel.id;
+            novaOption.textContent = `${novoResponsavel.name} - ${novoResponsavel.setorNome || "SEM DEPARTAMENTO"}`;
+            novaOption.selected = true;
+            responsavelSelect.appendChild(novaOption);
+
+            // Atualiza o Select2, se necessário
+            $(responsavelSelect).trigger("change");
+
+            // Abre o sidebar-visitas
+            sidebarVisitas.style.display = "block";
+
+            // Limpa o formulário
+            formFuncionario.reset();
+        })
+        .catch(error => {
+            console.error("Erro ao salvar o responsável:", error);
+            alert("Erro ao salvar o responsável. Tente novamente.");
+        });
+    });
+}
+
+
+
+
+
+document.body.addEventListener('click', function(event) {
+    const target = event.target;
+
+    
+    if (target.dataset.sidebar && target.dataset.display) {
+        const sidebar = document.getElementById(target.dataset.sidebar);
+        if (sidebar) {
+            sidebar.style.display = target.dataset.display;
+        }
+    }
+});
+
+    
+    
+
+function customAlert(message) {
+    const modal = document.getElementById('customAlert');
+    const messageElement = document.getElementById('customAlertMessage');
+    const okButton = document.getElementById('alertOk');
+
+   
+    messageElement.textContent = message;
+
+    
+    modal.style.display = 'flex';
+
+    
+    okButton.onclick = () => {
+        modal.style.display = 'none';
+    };
+}
+
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('customConfirm');
+        const messageElement = document.getElementById('customConfirmMessage');
+        const yesButton = document.getElementById('confirmYes');
+        const noButton = document.getElementById('confirmNo');
+
+    
+        messageElement.textContent = message;
+
+
+        modal.style.display = 'flex';
+
+    
+        yesButton.onclick = () => {
+            modal.style.display = 'none';
+            resolve(true); 
+        };
+
+        noButton.onclick = () => {
+            modal.style.display = 'none'; 
+            resolve(false); 
+        };
+    });
+}
+
+       
+
+
+
+
+
+
+
+
+
+
+function deletarEstacionamento(id) {
+   
+    customConfirm("Tem certeza de que deseja excluir este registro?")
+        .then((confirmado) => {
+            if (confirmado) {
+                
+                fetch(`/estacionamento/${id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    
+                    if (response.status === 204) {
+                        
+                        location.reload();
+
+                        showAlert("Registro excluído com sucesso.", () => {
+                          
+                            document.querySelector(`tr[data-id="${id}"]`).remove();
+                           
+                            document.getElementById("infoModal").style.display = "none";
+                        });
+                    } else if (response.status === 404) {
+                        // Registro não encontrado
+                        showAlert("Registro não encontrado.");
+                    } else {
+                        // Outro erro na exclusão
+                        showAlert("Ocorreu um erro ao excluir o registro.");
+                    }
+                })
+                .catch(error => {
+                    // Trata erros da requisição
+                    console.error("Erro ao excluir o registro:", error);
+                });
+            } else {
+                // Usuário cancelou a ação
+                console.log("Ação de exclusão cancelada.");
+            }
+        });
+}
+
+function atualizarHorarioSaida() {
+    const horarioSaida = document.getElementById("horarioSaida").value;
+
+    if (!horarioSaida) {
+        alert("Por favor, selecione um horário de saída.");
+        return;
+    }
+
+    const estacionamentoId = sessionStorage.getItem("estacionamentoId");
+
+    if (!estacionamentoId) {
+        alert("Erro: ID do estacionamento não encontrado.");
+        return;
+    }
+
+    fetch(`/estacionamento/atualizarSaida/${estacionamentoId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ hrSaida: horarioSaida }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                alert("Horário de saída atualizado com sucesso!");
+                window.location.reload();
+            } else {
+                return response.text().then((text) => {
+                    throw new Error(text);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Erro ao atualizar o horário de saída:", error);
+            alert("Erro ao atualizar o horário de saída.");
+        });
+}
+
+
+
+
+
+
+function abrirSidebar(estacionamentoId) {
+    sessionStorage.setItem("estacionamentoId", estacionamentoId);
+    document.getElementById("sidebar-add-saida").style.display = "block";
+}
+
+document.getElementById('close-saida-btn').addEventListener('click', function() {
+    document.getElementById('sidebar-add-saida').style.display = 'none';
+    currentVisitaId = null; 
+});
+
+
+
+
+
+
+        
+</script>
+
+
+
+	</body>
+    
+</html>  

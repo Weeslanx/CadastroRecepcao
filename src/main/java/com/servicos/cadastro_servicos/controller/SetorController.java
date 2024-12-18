@@ -16,21 +16,25 @@ public class SetorController {
     @Autowired
     private SetorRepository setorRepository;
 
-    // Registrar um novo setor
+    
+    @PostMapping("/cadastrar")
+    public String cadastrar(@ModelAttribute Setor setor){
+        setorRepository.save(setor);  
+        return"";
+    }
     @PostMapping
     public ResponseEntity<Setor> registrarSetor(@RequestBody Setor setor) {
         Setor novoSetor = setorRepository.save(setor);
         return ResponseEntity.ok(novoSetor);
     }
-
-    // Exibir todos os setores
+    
     @GetMapping
     public ResponseEntity<List<Setor>> listarSetores() {
         List<Setor> setores = setorRepository.findAll();
         return ResponseEntity.ok(setores);
     }
 
-    // Apagar um setor por ID
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarSetor(@PathVariable Long id) {
         Optional<Setor> setorExistente = setorRepository.findById(id);
@@ -41,6 +45,7 @@ public class SetorController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
     @GetMapping("/dropdown")

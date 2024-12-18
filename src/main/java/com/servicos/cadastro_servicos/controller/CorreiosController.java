@@ -1,17 +1,22 @@
 package com.servicos.cadastro_servicos.controller;
 
 
+import com.servicos.cadastro_servicos.model.Auditoria;
 import com.servicos.cadastro_servicos.model.Correios;
+import com.servicos.cadastro_servicos.repository.AuditoriaRepository;
 import com.servicos.cadastro_servicos.repository.CorreiosRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Sort;
@@ -24,10 +29,13 @@ public class CorreiosController {
     @Autowired
     private CorreiosRepository correiosRepository;
 
-    // Renderizar a página correios.html
+    @Autowired
+    private AuditoriaRepository auditoriaRepository;
+
+    
     @GetMapping
     public String exibirPaginaCorreios(Model model) {
-    // Busca os dados ordenados em ordem decrescente pelo ID
+   
     List<Correios> listaCorreios = correiosRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
     model.addAttribute("Correios", listaCorreios);
@@ -37,14 +45,33 @@ public class CorreiosController {
 
 
 
-    // Cadastrar uma nova entrega (via formulário)
+    
     @PostMapping("/cadastrar")
-    public String criarEntrega(Correios novaEntrega) {
-        correiosRepository.save(novaEntrega);
-        return "redirect:/correios"; // Redireciona para a listagem após o cadastro
-    }
+public String criarEntrega(Correios novaEntrega) {
+  
+    correiosRepository.save(novaEntrega);
 
-    // Buscar uma entrega específica por ID (JSON para uso API)
+   
+    String usuarioLogado = getUsuarioLogado();
+
+ 
+    String descricaoAuditoria = "Nova entrega cadastrada: " +
+                                "ID " + novaEntrega.getId() +
+                                ", Destinatário: " + (novaEntrega.getDestinatario() != null ? novaEntrega.getDestinatario() : "Não informado") +
+                                ", Serviço: " + (novaEntrega.getServico() != null ? novaEntrega.getServico() : "Não especificado");
+
+    
+    Auditoria auditoria = new Auditoria();
+    auditoria.setCreatedBy(usuarioLogado);
+    auditoria.setCreatedAt(LocalDateTime.now());
+    auditoria.setDescricao(descricaoAuditoria);
+    auditoriaRepository.save(auditoria);
+
+    return "redirect:/correios";
+}
+
+
+    
     @GetMapping("/{id}")
     public ResponseEntity<Correios> buscarPorId(@PathVariable Long id) {
         Optional<Correios> correios = correiosRepository.findById(id);
@@ -56,7 +83,7 @@ public class CorreiosController {
         }
     }
 
-    // Atualizar uma entrega existente
+    
     @PutMapping("/{id}")
     public ResponseEntity<Correios> atualizarEntrega(@PathVariable Long id, @RequestBody Correios entregaAtualizada) {
         Optional<Correios> entregaExistente = correiosRepository.findById(id);
@@ -77,14 +104,50 @@ public class CorreiosController {
         }
     }
 
-    // Excluir uma entrega
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirEntrega(@PathVariable Long id) {
-        if (correiosRepository.existsById(id)) {
+        Optional<Correios> entregaExistente = correiosRepository.findById(id);
+
+        if (entregaExistente.isPresent()) {
+            Correios entrega = entregaExistente.get();
+
+           
+            String usuarioLogado = getUsuarioLogado();
+
+           
+            String descricaoAuditoria = "Exclusão da entrega: ID " + entrega.getId() +
+                                        ", Destinatário: " + (entrega.getDestinatario() != null ? entrega.getDestinatario() : "Não informado") +
+                                        ", Serviço: " + (entrega.getServico() != null ? entrega.getServico() : "Não especificado");
+
+           
+            Auditoria auditoria = new Auditoria();
+            auditoria.setCreatedBy(usuarioLogado);
+            auditoria.setCreatedAt(LocalDateTime.now());
+            auditoria.setDescricao(descricaoAuditoria);
+            auditoriaRepository.save(auditoria);
+
+           
             correiosRepository.deleteById(id);
+
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    private String getUsuarioLogado() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+    
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return "Usuário desconhecido"; 
+        }
+    
+        Object principal = authentication.getPrincipal();
+    
+        if (principal instanceof UserDetails userDetails) {
+            return userDetails.getUsername();
+        } else {
+            return principal != null ? principal.toString() : "Usuário desconhecido";
         }
     }
 }

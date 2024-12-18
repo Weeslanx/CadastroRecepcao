@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Entradas</title>
+    <link rel="stylesheet" href="/styles.css">
+
+ 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+	
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+	
+
+
+
+
+</head>
+<body>
+
+
+    <div id="sidebar-container"></div> 
+
+
+
+    <div id="customConfirm" class="custom-confirm">
+        <div class="custom-confirm-content">
+            <p id="customConfirmMessage">Você tem certeza?</p>
+            <div class="custom-confirm-buttons">
+                <button id="confirmYes" class="btn-confirm">Sim</button>
+                <button id="confirmNo" class="btn-cancel">Não</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <p id="customAlertMessage">Mensagem</p>
+            <button id="alertOk" class="btn-confirm">OK</button>
+        </div>
+    </div>
+
+
+
+             
+    
+       <div class = "menu"> 
+       
+        <h1> Registro Estacionamento</h1>
+
+        <button class="btn_dowload-estacion" onclick="exportVisibleToCSV()">
+            <i class="fas fa-download"></i>
+        </button>
+        	
+        
+
+
+        
+
+						           
+                                    
+                                    <div class="logo-container">
+                                        <img src="/images/logo3.png" alt="Logo" class="logo-img">
+                                    </div>
+
+
+                                   
+       </div>
+     
+       <div class="sidebar-right" id="sidebar-veiculo" style="display: none;">
+        <button class="close-btn" id="close-btn" data-sidebar="sidebar-veiculo" data-display="none">&times;</button> 
+        <br><br>
+        <form action="/veiculos/cadastrar" method="post">
+            <label for="nome">Proprietário</label>
+            <input type="text" id="proprietario" name="proprietario" required>
+
+            <label for="empresa">Placa</label>
+            <input type="text" id="placa" name="placa">
+
+            <label for="documento">Modelo</label>
+            <input type="text" id="modelo" name="modelo">
+
+            <button type="submit" class="btn">Salvar Veículo</button>
+        </form>
+    </div>
+
+
+    <div class="sidebar-right" id="sidebar-estacionamento" style="display: none;">
+        <button class="close-btn" id="close-veiculo-btn" data-sidebar="sidebar-estacionamento" data-display="none">&times;</button> 
+        <br><br>
+        <form action="/estacionamento/cadastrar" method="post">
+            <label for="nome">Motorista</label>
+            <input type="text" id="motorista" name="motorista" required>
+
+            <label for="veiculo">Veículo (ID)</label>
+            <select id ="veiculo" name="veiculoId" required>
+                <option value="">Selecione</option>
+            </select>
+          
+
+            <label for="documento">Entrada</label>
+            <input type="datetime-local" id="hrEntrada" name="hrEntrada">
+
+            <label for="documento">Saida</label>
+            <input type="datetime-local" id="hrSaida" name="hrSaida">
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+    </div>
+    
+    
+       <div class="main-content">
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Pesquisar" onkeyup="filter()">
+        </div>
+
+        <br><br>
+
+        <div class="sidebar-right" id="sidebar-add-saida" style="display: none;">
+            <button class="close-btn" id="close-saida-btn">&times;</button>
+            <br><br>
+            <input type="datetime-local" id="horarioSaida" />
+            <button class ="btn" onclick="atualizarHorarioSaida()">Atualizar Horário de Saída</button>
+        </div>  
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Motorista</th>
+                        <th>Horário de Entrada</th>
+                        <th>Horário de Saída</th>
+       
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="estacionamento : ${estacionamentos}" th:if="${estacionamento.hrSaida} != null">
+                        <tr>
+                            <td th:text="${estacionamento.veiculo.placa}">Placa</td>
+                            <td th:text="${estacionamento.motorista}">Motorista</td>
+                            <td th:text="${#temporals.format(estacionamento.hrEntrada, 'dd/MM/yyyy HH:mm')}">Entrada</td>
+                            <td th:text="${#temporals.format(estacionamento.hrSaida, 'dd/MM/yyyy HH:mm')}">Saída</td>
+                            
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+        
+        
+
+
+        
+        
+       
+       
+       </div>
+			
+						
+						  
+			    
+<script>
+
+
+document.body.addEventListener('click', function(event) {
+    const target = event.target;
+
+    
+    if (target.dataset.sidebar && target.dataset.display) {
+        const sidebar = document.getElementById(target.dataset.sidebar);
+        if (sidebar) {
+            sidebar.style.display = target.dataset.display;
+        }
+    }
+});
+
+    
+    
+
+function customAlert(message) {
+    const modal = document.getElementById('customAlert');
+    const messageElement = document.getElementById('customAlertMessage');
+    const okButton = document.getElementById('alertOk');
+
+   
+    messageElement.textContent = message;
+
+    
+    modal.style.display = 'flex';
+
+    
+    okButton.onclick = () => {
+        modal.style.display = 'none';
+    };
+}
+
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('customConfirm');
+        const messageElement = document.getElementById('customConfirmMessage');
+        const yesButton = document.getElementById('confirmYes');
+        const noButton = document.getElementById('confirmNo');
+
+    
+        messageElement.textContent = message;
+
+
+        modal.style.display = 'flex';
+
+    
+        yesButton.onclick = () => {
+            modal.style.display = 'none';
+            resolve(true); 
+        };
+
+        noButton.onclick = () => {
+            modal.style.display = 'none'; 
+            resolve(false); 
+        };
+    });
+}
+
+       
+
+
+
+document.querySelectorAll('.dropdown-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const dropdownMenu = button.nextElementSibling;
+        
+        
+        if (dropdownMenu.classList.contains('active')) {
+            dropdownMenu.classList.remove('active');
+        } else {
+           
+            document.querySelectorAll('.dropdown-menu.active').forEach(menu => {
+                menu.classList.remove('active');
+            });
+            dropdownMenu.classList.add('active');
+        }
+    });
+});
+
+
+function deletarEstacionamento(id) {
+   
+    customConfirm("Tem certeza de que deseja excluir este registro?")
+        .then((confirmado) => {
+            if (confirmado) {
+                
+                fetch(`/estacionamento/${id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    
+                    if (response.status === 204) {
+                        
+                        location.reload();
+
+                        showAlert("Registro excluído com sucesso.", () => {
+                          
+                            document.querySelector(`tr[data-id="${id}"]`).remove();
+                           
+                            document.getElementById("infoModal").style.display = "none";
+                        });
+                    } else if (response.status === 404) {
+                        // Registro não encontrado
+                        showAlert("Registro não encontrado.");
+                    } else {
+                        // Outro erro na exclusão
+                        showAlert("Ocorreu um erro ao excluir o registro.");
+                    }
+                })
+                .catch(error => {
+                    // Trata erros da requisição
+                    console.error("Erro ao excluir o registro:", error);
+                });
+            } else {
+                // Usuário cancelou a ação
+                console.log("Ação de exclusão cancelada.");
+            }
+        });
+}
+
+
+
+
+
+
+
+
+function filter() {
+        const input = document.getElementById('search-input');
+        const filter = input.value.toLowerCase(); 
+        const table = document.querySelector('table');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { 
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = match ? '' : 'none'; 
+        }
+    }
+
+    function exportVisibleToCSV() {
+    const rows = document.querySelectorAll("table tbody tr");
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+    csvContent += "Placa;Motorista;Horário de Entrada;Horário de Saída\n";
+
+    rows.forEach(row => {
+        if (row.style.display !== "none") { // Considera apenas linhas visíveis
+            const cells = row.querySelectorAll("td");
+            const placa = cells[0]?.innerText || ""; // Verifica se a célula existe
+            const motorista = cells[1]?.innerText || "";
+            const horarioEntrada = cells[2]?.innerText || "";
+            const horarioSaida = cells[3]?.innerText || "";
+            csvContent += `${placa};${motorista};${horarioEntrada};${horarioSaida}\n`;
+        }
+    });
+
+    if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nPlaca;Motorista;Horário de Entrada;Horário de Saída\n") {
+        alert("Nenhum dado disponível para download.");
+        return;
+    }
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "estacionamento.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "none" || !menu.style.display) {
+       
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+       
+        menu.style.display = "block";
+    } else {
+    
+        menu.style.display = "none";
+    }
+}
+
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+        });
+</script>
+
+</script>
+
+
+
+	</body>
+    
+</html>  

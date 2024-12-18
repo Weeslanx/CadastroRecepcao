@@ -27,57 +27,8 @@
 
 
 
-    <div class="sidebar" id="sidebar">
-        
-        
-        
-         <div class="icon" data-tooltip="Entradas">
-	        <a href="/registros/visitas">
-	            <i class="fa fa-paper-plane"></i> 
-	            <span>Registro de Entradas</span>
-	        </a>
-	    </div>
+    <div id="sidebar-container"></div> 
 
-        
-        
-          <div class="icon" data-tooltip="finalizados">
-	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i> 
-	            <span>Visitas Finalizadas</span>
-	        </a>
-	    </div>
-
-        <div class="icon" data-tooltip="Correios">
-	        <a href="/correios">
-	            <i class="fas fa-envelope"></i> 
-	            <span>correios</span>
-	        </a>
-	    </div>
-
-        <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
-            <i class="fas fa-cog"></i>
-            <span>Configuração</span>
-        </div>
-        <div class="sidebar-bottom-button">
-            <form action="/users/logout" method="get">
-                <button type="submit" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </button>
-            </form>
-        </div>
-    </div>
-
-
-
-    <div id="customConfirm" class="custom-confirm">
-        <div class="custom-confirm-content">
-            <p id="customConfirmMessage">Você tem certeza?</p>
-            <div class="custom-confirm-buttons">
-                <button id="confirmYes" class="btn-confirm">Sim</button>
-                <button id="confirmNo" class="btn-cancel">Não</button>
-            </div>
-        </div>
-    </div>
 
 
     <div id="customAlert" class="custom-alert">
@@ -152,6 +103,7 @@
         </table>
     </div>
 
+
         
     <div id="infoModal" class="modal">
         <div class="modal-content">
@@ -173,7 +125,24 @@
     </div>
 
     
-    
+    <div class="sidebar-right" id="sidebar-funcionario" style="display: none;z-index: 1001;">
+                            <button class="close-btn" onclick="toggleDropdown('sidebar-funcionario')">&times;</button>
+                            <h2>Cadastrar Funcionário</h2>
+                            <form id="formFuncionario">
+                                <label for="primeiroNome">Primeiro Nome</label>
+                                <input type="text" id="primeiroNome" name="primeiroNome" required />
+                        
+                                <label for="ultimoNome">Último Nome</label>
+                                <input type="text" id="ultimoNome" name="ultimoNome" required />
+                        
+                                <label for="setor">Setor</label>
+                                <select id="setorlist" name="setorId" required>
+                                    <option value="" disabled selected>Selecione um setor</option>
+                                </select>
+                        
+                                <button class="btn" type="submit">Salvar</button>
+                            </form>
+                        </div>
             
 
     <div class="sidebar-right" id="sidebar-Correios" style="display: none;">
@@ -223,6 +192,18 @@
 			    
 <script>
 
+    // Inicializa a função ao carregar a página
+document.addEventListener('DOMContentLoaded', function(){
+ configurarFormularioFuncionario();
+ populateFuncionariosSelect()
+
+});
+
+
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+        });
+
 function customAlert(message) {
     const modal = document.getElementById('customAlert');
     const messageElement = document.getElementById('customAlertMessage');
@@ -248,7 +229,6 @@ function customConfirm(message) {
         const yesButton = document.getElementById('confirmYes');
         const noButton = document.getElementById('confirmNo');
 
-        // Atualiza a mensagem
         messageElement.textContent = message;
 
 
@@ -324,6 +304,146 @@ function customConfirm(message) {
     });
 });
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const setorSelect = document.getElementById('setorlist');
+        const sidebarSetor = document.getElementById('sidebar-setor');
+
+        
+        function carregarSetores() {
+            fetch('/setores/dropdown')
+                .then(response => response.json())
+                .then(data => {
+                    setorSelect.innerHTML = '<option value="" disabled selected>Selecione um setor</option>';
+
+                
+                    const novaOption = document.createElement('option');
+                    novaOption.value = "novo";
+                    novaOption.textContent = "+ Cadastrar novo setor";
+                    novaOption.style.color = "green";
+                    setorSelect.appendChild(novaOption);
+
+                    // Adiciona os setores existentes
+                    data.forEach(setor => {
+                        const option = document.createElement('option');
+                        option.value = setor.id;
+                        option.textContent = setor.nome.toUpperCase();
+                        setorSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar os setores:', error));
+        }
+
+    
+        carregarSetores();
+
+    
+        setorSelect.addEventListener('change', function () {
+            if (this.value === 'novo') {
+                document.getElementById('nome').value = ""; // Limpa o campo de nome do setor
+                sidebarSetor.style.display = 'block'; // Abre o sidebar de setor
+                this.value = ""; // Reseta o valor do select
+            }
+        });
+
+        // Evento para o formulário de cadastro de setor
+        const formSetor = document.getElementById('formSetor');
+        formSetor.addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita o envio padrão
+
+            const formData = new FormData(formSetor);
+            fetch(formSetor.action, {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Setor cadastrado com sucesso!');
+                        sidebarSetor.style.display = 'none'; // Fecha o sidebar de setor
+                        carregarSetores(); // Recarrega os setores no select
+                    } else {
+                        throw new Error('Erro ao salvar o setor.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar o setor:', error);
+                    alert('Erro ao salvar o setor.');
+                });
+        });
+
+        // Função para fechar o sidebar de responsável
+        function fecharResponsavelSidebar() {
+            document.getElementById('sidebar-responsavel').style.display = 'none';
+            document.getElementById('sidebar-correios').style.display = 'block';
+        }
+
+        // Torna a função disponível globalmente
+        window.fecharResponsavelSidebar = fecharResponsavelSidebar;
+    });
+
+    function configurarFormularioFuncionario() {
+    const formFuncionario = document.getElementById("formFuncionario");
+    const sidebarFuncionario = document.getElementById("sidebar-funcionario");
+    const sidebarCorreios = document.getElementById("sidebar-Correios");
+    const funcionarioSelect = document.getElementById("funcionario");
+
+    formFuncionario.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Captura os campos do formulário
+        const primeiroNome = document.getElementById("primeiroNome").value.trim();
+        const ultimoNome = document.getElementById("ultimoNome").value.trim();
+        const setorId = document.getElementById("setorlist").value;
+
+        if (!primeiroNome || !ultimoNome || !setorId) {
+            alert("Preencha todos os campos.");
+            return;
+        }
+
+        // Cria os dados no formato correto para o backend
+        const formData = new URLSearchParams();
+        formData.append("primeiroNome", primeiroNome);
+        formData.append("ultimoNome", ultimoNome);
+        formData.append("setorId", setorId);
+
+        // Envia os dados para o backend
+        fetch("/funcionarios/cadastrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData.toString(),
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao salvar o funcionário.");
+            return response.json();
+        })
+        .then(novoFuncionario => {
+            console.log("Funcionário cadastrado:", novoFuncionario);
+
+            // Adiciona o novo funcionário ao dropdown
+            const novaOption = document.createElement("option");
+            novaOption.value = novoFuncionario.id;
+            novaOption.textContent = `${novoFuncionario.name} - ${novoFuncionario.setorNome}`;
+            novaOption.selected = true;
+            funcionarioSelect.appendChild(novaOption);
+
+            // Atualiza o Select2
+            $(funcionarioSelect).trigger("change");
+
+            // Fecha o sidebar de funcionário e abre o de correios
+            sidebarFuncionario.style.display = "none";
+            sidebarCorreios.style.display = "block";
+
+            // Limpa o formulário
+            formFuncionario.reset();
+        })
+        .catch(error => {
+            console.error("Erro ao salvar o funcionário:", error);
+            alert("Erro ao salvar o funcionário. Verifique os dados e tente novamente.");
+        });
+    });
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
         
         const setorSelect = document.getElementById('setor');
@@ -333,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             data.forEach(setor => {
-                if (setor.codCorreios) { // Verifica se codCorreios não é null ou vazio
+                if (setor.codCorreios) { 
                     const option = document.createElement('option');
                     option.value = setor.id;
                     option.textContent = `${setor.nome} - ${setor.codCorreios}`; // Formata o texto como "Nome - CodCorreios"
@@ -400,29 +520,87 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.removeChild(link);
 }
 
-async function populateResponsaveisSelect() {
-    const responsavelSelect = document.getElementById("funcionario");
+// Preencher select de funcionários no sidebar-Correios
+async function populateFuncionariosSelect() {
+    const funcionarioSelect = $('#funcionario'); // Select no sidebar-Correios
+    const sidebarFuncionario = document.getElementById('sidebar-funcionario'); // Sidebar de cadastro de funcionário
+    const spinner = $('#loading'); // Elemento de loading (se existir)
 
     try {
-        const response = await fetch("/users/api/users");
-        const users = await response.json();
+        // Limpa o select e adiciona as opções padrão
+        funcionarioSelect.empty().append(
+            $('<option>', { value: '', disabled: true, selected: true, text: 'Pesquise ou selecione um funcionário' })
+        ).append(
+            $('<option>', { value: 'novo', text: '+ Cadastrar novo funcionário' }).addClass('highlight-option')
+        );
 
-        users.forEach(user => {
-            const option = document.createElement("option");
-            
-            option.value = user.officeLocation 
-                ? `${user.displayName} - ${user.officeLocation}`
-                : user.displayName;
-            option.textContent = user.displayName; 
-            responsavelSelect.appendChild(option);
+        // Busca os dados da API e do banco local simultaneamente
+        const [apiUsuarios, dbFuncionarios] = await Promise.all([
+            fetch("/users/api/users").then(res => res.json()), // Dados da API externa
+            fetch("/funcionarios/listar").then(res => res.json()) // Dados do banco local
+        ]);
+
+        // Adiciona os usuários da API ao select
+        apiUsuarios.forEach(user => {
+            funcionarioSelect.append(
+                $('<option>', {
+                    value: user.officeLocation ? `${user.displayName} - ${user.officeLocation}` : user.displayName,
+                    text: user.displayName
+                })
+            );
         });
+
+        // Adiciona os funcionários do banco local ao select
+        dbFuncionarios.forEach(funcionario => {
+            funcionarioSelect.append(
+                $('<option>', {
+                    value: funcionario.id,
+                    text: `${funcionario.name} - ${funcionario.setorNome?.toUpperCase() || 'SEM SETOR'}`
+                })
+            );
+        });
+
+
+        // Inicializa o Select2 com formatação especial
+        funcionarioSelect.select2({
+            placeholder: 'Pesquise ou selecione um funcionário',
+            allowClear: true,
+            templateResult: function (data) {
+                // Formata a opção "+ Cadastrar novo funcionário"
+                if (data.id === 'novo') {
+                    return $('<span>').text(data.text).css({ color: 'green', fontWeight: 'bold' });
+                }
+                return data.text;
+            },
+            templateSelection: function (data) {
+                return data.text;
+            }
+        });
+
+        // Evento para abrir o sidebar de cadastro ao selecionar "+ Cadastrar novo funcionário"
+        funcionarioSelect.on('change', function () {
+            if (this.value === 'novo') {
+                abrirSidebarCadastroFuncionario();
+                funcionarioSelect.val(null).trigger('change'); // Reseta o select
+            }
+        });
+
+        // Esconde o spinner e mostra o select (se existir o spinner)
+        if (spinner.length) spinner.hide();
+        funcionarioSelect.show();
+
     } catch (error) {
-        console.error("Erro ao carregar os dados de responsáveis:", error);
+        console.error('Erro ao carregar os funcionários:', error);
     }
 }
 
+// Função para abrir o sidebar de cadastro de funcionário
+function abrirSidebarCadastroFuncionario() {
+    document.getElementById('sidebar-funcionario').style.display = 'block';
+}
 
-document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
+// Inicializa o script ao carregar a página
+document.addEventListener('DOMContentLoaded', populateFuncionariosSelect);
 
 
 
@@ -530,6 +708,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 }
 
+function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "none" || !menu.style.display) {
+        
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+       
+        menu.style.display = "block";
+    } else {
+       
+        menu.style.display = "none";
+    }
+}
+
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+        });
+</script>
 
 
 

@@ -27,46 +27,7 @@
 
 
 
-    <div class="sidebar" id="sidebar">
-        
-        
-        
-         <div class="icon" data-tooltip="Entradas">
-	        <a href="/registros/visitas">
-	            <i class="fa fa-paper-plane"></i> 
-	            <span>Registro de Entradas</span>
-	        </a>
-	    </div>
-
-        
-        
-          <div class="icon" data-tooltip="finalizados">
-	        <a href="/registros/visitas/finalizados">
-	            <i class="fas fa-check-circle"></i> 
-	            <span>Visitas Finalizadas</span>
-	        </a>
-	    </div>
-
-        <div class="icon" data-tooltip="Correios">
-	        <a href="/correios">
-	            <i class="fas fa-envelope"></i> 
-	            <span>correios</span>
-	        </a>
-	    </div>
-
-        <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
-            <i class="fas fa-cog"></i>
-            <span>Configuração</span>
-        </div>
-        <div class="sidebar-bottom-button">
-            <form action="/users/logout" method="get">
-                <button type="submit" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </button>
-            </form>
-        </div>
-    </div>
-
+    <div id="sidebar-container"></div> 
 
 
     <div id="customConfirm" class="custom-confirm">
@@ -92,135 +53,131 @@
     
        <div class = "menu"> 
        
-        <h1> Registro de Correios</h1>
+        <h1> Registro de Chaves</h1>
         	
         	
-								   <button class="add-visit" id="add-correios-btn">
-                                    <i class="fas fa-plus"></i> Adicionar Correios	
+								   <button class="add-visit"  onclick="toggleDropdown('sidebar-Regischave')">
+                                    <i class="fas fa-plus"></i>Novo Solicitante  	
 								   </button>
 
-						           
+						           <button class="add-visitor"  onclick="toggleDropdown('sidebar-chave')" >
+                                    <i class="fa fa-key"  ></i>Registrar Chave 
+                                </button>
+                                             
+                                 
                                     
                                     <div class="logo-container">
                                         <img src="/images/logo3.png" alt="Logo" class="logo-img">
                                     </div>
 
 
-                                    <button class="btn_dowload-correios" onclick="exportVisibleToCSV()">
+                                    <button class="btn_dowload-chave" onclick="exportVisibleToCSV()">
                                         <i class="fas fa-download"></i>
                                     </button>
        </div>
      
        
     
-    
+      
        <div class="main-content">
+
+       
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Pesquisar" onkeyup="filter()">
         </div>
 
-        
+        <br><br>
 
-        <h2>Correios Cadastrados</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Funcionário</th>
-                    <th>Setor</th>
-                    <th>Horário</th>
-                    <th>Código Postal</th>
-                    <th>Destinatário</th>
-                    <th>Entregador</th>
-                    <th>Serviço</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="correio : ${Correios}" th:attr="data-id=${correio.id}">
-                    <td th:text="${correio.id}"></td>
-                    <td th:text="${correio.funcionario}"></td>
-                    <td th:text="${correio.setor}"></td>
-                    <td th:text="${#temporals.format(correio.horario, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td th:text="${correio.codigoPostal}"></td>
-                    <td th:text="${correio.destinatario}"></td>
-                    <td th:text="${correio.entregador}"></td>
-                    <td th:text="${correio.servico}"></td>
-                </tr>
-            </tbody>
-            
-        </table>
-    </div>
-
-        
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Detalhes do Registro</h2>
-            <p><strong>ID:</strong> <span id="modal-id"></span></p>
-            <p><strong>Funcionário:</strong> <span id="modal-funcionario"></span></p>
-            <p><strong>Setor:</strong> <span id="modal-setor"></span></p>
-            <p><strong>Horário:</strong> <span id="modal-horario"></span></p>
-            <p><strong>Código Postal:</strong> <span id="modal-codigoPostal"></span></p>
-            <p><strong>Destinatário:</strong> <span id="modal-destinatario"></span></p>
-            <p><strong>Entregador:</strong> <span id="modal-entregador"></span></p>
-            <p><strong>Serviço:</strong> <span id="modal-servico"></span></p>
-            <div class="modal-actions">
-                <button id="edit-button">Editar</button>
-                <button id="delete-button">Excluir</button>
-            </div>
-        </div>
-    </div>
-
-    
-    
-            
-
-    <div class="sidebar-right" id="sidebar-Correios" style="display: none;">
-        <button class="close-btn" id="close-correios-btn">&times;</button>
-        <h2>Cadastrar Correios</h2>
-        <form action="/correios/cadastrar" method="POST">
-
-            <label for="funcionario">Funcionário</label>
-            <select id="funcionario" name="funcionario" class="select2" >
-                <option value="" disabled selected>Selecione um funcionário</option>
-            </select>
-
+        <div class="sidebar-right" id="sidebar-add-saida" style="display: none;">
+            <button class="close-btn" id="close-saida-btn">&times;</button>
             <br><br>
-            <label for="setor">N° Cartão</label>
-            <select id="setor" name="setor" required>
-                <option value="">Selecione um setor</option>
-            </select>
+            <input type="datetime-local" id="horarioSaida" />
+            <button class ="btn" onclick="atualizarHorarioSaida()">Atualizar Horário de Saída</button>
+        </div>  
+        
+        <div class="sidebar-right" id="sidebar-Regischave" style="display: none;">
+            <button class="close-btn" onclick="toggleDropdown('sidebar-Regischave')">&times;</button>
+            <h2>Cadastrar Solicitante</h2>
+                <form action="/chave/registrar" method="POST">
 
-            <label for="horario">Horário</label>
-            <input type="datetime-local" id="horario" name="horario" required>
+                    <label for="solicitante">Solicitante</label>
+                    <input type="text" id="requisi" name="requisi" required>
+                    <br><br>
 
-            <label for="codigoPostal">Código Postal</label>
-            <input type="text" id="codigoPostal" name="codigoPostal" required>
+                    <label for="chave">Chave</label>
+                    <select id="chave" name="chave" required>
+                        <option value="1">1</option>
+                    </select>
 
-            <label for="destinatario">Destinatário</label>
-            <input type="text" id="destinatario" name="destinatario" required>
+                    <label for="horarioEntrada">Hora de Retirada</label>
+                    <input type="datetime-local" id="saida" name="saida" required>
 
-            <label for="entregador">Entragador</label>
-            <select id="entregador" name="entregador" required>
-                <option value="Valmir">VALMIR</option>
-            </select>
-            <label for="servico">Serviço</label>
-            <select id="servico" name="servico" required>
-                <option value="SEDEX">SEDEX</option>
-                <option value="PAC">PAC</option>
-            </select>
+                    <label for="horariodevol">Devolução</label>
+                    <input type="datetime-local" id="devol" name="devol" required>
+                   
+                    <button class="btn"  type="submit">Salvar</button>
+                </form>
+        </div>  
 
-            <button class="btn"  type="submit">Salvar</button>
-        </form>
-    </div>
-						
-						
-						
-						
-						
-						  
-			    
+
+                <div class="sidebar-right" id="sidebar-chave" style="display: none;">
+                    <button class="close-btn" onclick="toggleDropdown('sidebar-chave')">&times;</button>
+                    <h2>Cadastrar chave</h2>
+                        <form action="/chave/cadastrar" method="POST">
+
+                            <label for="chave">N° Chave</label>
+                            <input type="text" id="cod" name="cod" required>
+
+                            <br><br>
+                            <label for="local">Local</label>
+                            <input type="text" id="local" name="local" required>
+
+
+
+
+                            <button class="btn"  type="submit">Salvar</button>
+                        </form>
+                </div>  
+
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Solicitante</th>
+                                <th>Chave</th>
+                                <th>Horário de Retirada</th>
+                                <th>Horário de Devolução</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         
+                            <th:block th:each="regisChave : ${rchaves}">
+                                <tr>
+                                    
+                                    <td th:text="${regisChave.requisi}">Solicitante</td>
+                                    
+                                    <td th:text="${regisChave.chave.local}">Chave</td>
+                                  
+                                    <td th:text="${#temporals.format(regisChave.saida, 'dd/MM/yyyy HH:mm')}">Horário de Retirada</td>
+                                  
+                                    <td th:text="${#temporals.format(regisChave.devol, 'dd/MM/yyyy HH:mm')}">Horário de Devolução</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+                
+
 <script>
+
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+        });
+
+
 
 function customAlert(message) {
     const modal = document.getElementById('customAlert');
@@ -229,11 +186,7 @@ function customAlert(message) {
 
    
     messageElement.textContent = message;
-
-    
     modal.style.display = 'flex';
-
-    
     okButton.onclick = () => {
         modal.style.display = 'none';
     };
@@ -266,28 +219,12 @@ function customConfirm(message) {
     });
 }
 
-        const addVisitBtn = document.getElementById('add-correios-btn');
-        const sidebarRight = document.getElementById('sidebar-right');
-        const closeSidebarBtn = document.getElementById('close-correios-btn');
-
-     
-        addVisitBtn.addEventListener('click', () => {
-            sidebarRight.classList.add('active');
-        });
-
-       
-        closeSidebarBtn.addEventListener('click', () => {
-            sidebarRight.classList.remove('active');
-        });
-
+        
         document.getElementById('add-correios-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-Correios');
+        var sidebarRight = document.getElementById('sidebar-chave');
         sidebarRight.style.display = 'block'; 
     });
-    document.getElementById('close-correios-btn').addEventListener('click', function() {
-        var sidebarRight = document.getElementById('sidebar-Correios');
-        sidebarRight.style.display = 'none'; 
-    });
+   
     
     $(document).ready(function() {
     $('.select2').select2({
@@ -427,10 +364,10 @@ document.addEventListener("DOMContentLoaded", populateResponsaveisSelect);
 
 
 document.addEventListener('DOMContentLoaded', function () {
-        // Seleciona todas as linhas da tabela
+        
         const tableRows = document.querySelectorAll("table tbody tr");
 
-        // Seleciona o modal e seus elementos
+        
         const modal = document.getElementById("infoModal");
         const closeModal = document.querySelector(".close");
         const modalId = document.getElementById("modal-id");
@@ -442,13 +379,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const modalServico = document.getElementById("modal-servico");
         const modalEntregador = document.getElementById("modal-entregador");
 
-        // Adiciona evento de clique em cada linha
+        
         tableRows.forEach(row => {
             row.addEventListener('click', function () {
-                // Obtém os dados da linha clicada
+                
                 const cells = this.querySelectorAll("td");
 
-                // Preenche os dados no modal
+                
                 modalId.textContent = cells[0].textContent;
                 modalFuncionario.textContent = cells[1].textContent;
                 modalSetor.textContent = cells[2].textContent;
@@ -458,24 +395,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 modalServico.textContent = cells[6].textContent;
                 modalEntregador.textContent = cells[7].textContent;
 
-                // Exibe o modal
+                
                 modal.style.display = "block";
             });
         });
 
-        // Fecha o modal
+        
         closeModal.addEventListener('click', function () {
             modal.style.display = "none";
         });
 
-        // Fecha o modal ao clicar fora do conteúdo
+        
         window.addEventListener('click', function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         });
 
-        // Botões de editar e excluir
+        
         document.getElementById("edit-button").addEventListener("click", function () {
             alert("Função de edição ainda não implementada.");
         });
@@ -490,40 +427,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function deleteRecord(id) {
-    // Exibe o modal de confirmação
+    
     customConfirm("Tem certeza de que deseja excluir este registro?")
         .then((confirmado) => {
             if (confirmado) {
-                // Se confirmado, realiza a requisição de exclusão
+                
                 fetch(`/correios/${id}`, {
                     method: 'DELETE',
                 })
                 .then(response => {
-                    // Verifica o status da resposta
+                    
                     if (response.status === 204) {
-                        // Registro excluído com sucesso
+                        
                         location.reload();
 
                         showAlert("Registro excluído com sucesso.", () => {
-                            // Remove a linha correspondente da tabela
+                            
                             document.querySelector(`tr[data-id="${id}"]`).remove();
-                            // Fecha o modal de detalhes (se estiver aberto)
+                            
                             document.getElementById("infoModal").style.display = "none";
                         });
                     } else if (response.status === 404) {
-                        // Registro não encontrado
+                       
                         showAlert("Registro não encontrado.");
                     } else {
-                        // Outro erro na exclusão
+                        
                         showAlert("Ocorreu um erro ao excluir o registro.");
                     }
                 })
                 .catch(error => {
-                    // Trata erros da requisição
+                    
                     console.error("Erro ao excluir o registro:", error);
                 });
             } else {
-                // Usuário cancelou a ação
+                
                 console.log("Ação de exclusão cancelada.");
             }
         });

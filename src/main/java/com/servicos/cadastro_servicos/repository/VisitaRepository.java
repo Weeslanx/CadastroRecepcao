@@ -23,6 +23,10 @@ public interface VisitaRepository extends JpaRepository<Visita, Long> {
 	  @Query("SELECT MAX(v.horarioEntrada) FROM Visita v")
 		LocalDateTime findUltimaModificacao();
 
+		List<Visita> findByHorarioSaidaBetweenOrderByIdDesc(LocalDateTime start, LocalDateTime end);
+    
+    // Busca todas as visitas com horário de saída não nulo e ordenação
+    List<Visita> findByHorarioSaidaIsNotNullOrderByIdDesc();
 
 	  
 }

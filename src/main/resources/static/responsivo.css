@@ -1,0 +1,117 @@
+/* Estilos gerais para telas menores que 768px (tablets e celulares) */
+@media (max-width: 768px) {
+   
+    .menu h1{
+        font-size: 8px;
+       
+    }
+    
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+        width: 70%;
+    }
+
+    .card {
+        width: 100%;
+        height: 20%;
+        margin-bottom: 15px;
+    }
+
+   
+
+    .card p {
+    
+        margin: 10px 0;
+        font-weight: 300;
+        line-height: 1.5;
+        color: #e0e0e0;
+       
+    }
+
+    
+
+    /* Sidebars */
+    .sidebar-right {
+        width: 90%;
+        height: 90%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .sidebar-right form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-right form label,
+    .sidebar-right form input,
+    .sidebar-right form select,
+    .sidebar-right form button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Ajuste para Select2 */
+    .select2-container {
+        width: 100% !important;
+    }
+
+    /* Botões de fechar */
+    .close-btn {
+        font-size: 1.5rem;
+        margin-left: auto;
+        margin-bottom: 10px;
+    }
+
+    .add-visitor {
+        position: fixed; /* Fixa no lugar */
+        top: 10px;       /* Distância do topo */
+        right: 10px;     /* Distância da direita */
+        width: auto;     /* Largura automática com base no conteúdo */
+        font-size: 14px; /* Ajusta o tamanho da fonte */
+        padding: 8px 12px; /* Padding ajustado */
+        border-radius: 5px; /* Borda arredondada */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        background-color: #4CAF50; /* Cor de fundo */
+        color: white; /* Cor do texto */
+    }
+
+    .add-visitor i {
+        font-size: 14px; /* Ajusta o tamanho do ícone */
+        margin-right: 5px; /* Espaçamento entre ícone e texto */
+    }
+
+    .add-visitor {
+        right: 125px !important;
+        top: 5px !important;
+        width: 100px !important; /* Tamanho fixo menor */
+        padding: 2px 8px !important; /* Reduz o padding interno */
+        font-size: 8px !important; /* Reduz o tamanho da fonte */
+       
+    }
+
+    
+    
+    .logo-container{
+        display: none;
+    }
+
+    .add-visit{
+        
+
+        width: 80px !important; /* Tamanho fixo menor */
+        margin-right: 20px !important;
+        top: 5px !important;
+        padding: 2px 8px !important; /* Reduz o padding interno */
+        font-size: 8px !important; /* Reduz o tamanho da fonte */
+    }
+
+    
+    .add-visit i,
+    .add-visitor i {
+        margin-right: 8px;
+        font-size: 10px;
+    }
+}
+

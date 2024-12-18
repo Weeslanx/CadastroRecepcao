@@ -12,50 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="loading">
+    
+    <div id="sidebar-container"></div> 
+
+
+   <div id="loading">
         <div class="spinner"></div>
         <h2>Carregando...</h2> 
     </div>
-    <div class="sidebar" id="sidebar">
-        
-        
-        
-        <div class="icon" data-tooltip="Entradas">
-           <a href="/registros/visitas">
-               <i class="fa fa-paper-plane"></i> 
-               <span>Registro de Entradas</span>
-           </a>
-       </div>
 
-       
-       
-         <div class="icon" data-tooltip="finalizados">
-           <a href="/registros/visitas/finalizados">
-               <i class="fas fa-check-circle"></i> 
-               <span>Visitas Finalizadas</span>
-           </a>
-       </div>
 
-       <div class="icon" data-tooltip="Correios">
-           <a href="/correios">
-               <i class="fas fa-envelope"></i> 
-               <span>correios</span>
-           </a>
-       </div>
-
-       <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
-           <i class="fas fa-cog"></i>
-           <span>Configuração</span>
-       </div>
-       <div class="sidebar-bottom-button">
-           <form action="/users/logout" method="get">
-               <button type="submit" class="logout-btn">
-                   <i class="fas fa-sign-out-alt"></i> Sair
-               </button>
-           </form>
-       </div>
-   </div>
-   
     <div class="menu"> 
         <h1>Visitas Finalizadas</h1>
         <button id="filter-btn" class="filter-btn" onclick="toggleSidebar()">
@@ -73,19 +39,36 @@
     </div>
     <div class="main-content">
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterCards()">
+            <input type="text" id="search-input" placeholder="Pesquisar visitas" onkeyup="filterTable()">
         </div>
-        <div class="card-container" id="visitas-container">
-            <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} != null">
-                <div class="card">
-                    <h3 th:text="${visita.visitante.nome}">Nome Visitante</h3>
-                    <p><strong>Tipo:</strong> <span th:text="${visita.categoria.nome}">Nome Categoria</span></p>
-                    <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
-                    <p><strong>Horário de Saída:</strong> <span th:text="${visita.horarioSaidaFormatado}">Horário Saída</span></p>
-                    <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
-                </div>
-            </th:block>
+        <br><br>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome Visitante</th>
+                        <th>Tipo</th>
+                        <th>Responsável</th>
+                        <th>Horário de Entrada</th>
+                        <th>Horário de Saída</th>
+                        <th>Cartão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="visita : ${visitas}" th:if="${visita.horarioSaida} != null">
+                        <tr>
+                            <td th:text="${visita.visitante.nome}">Nome Visitante</td>
+                            <td th:text="${visita.categoria.nome}">Nome Categoria</td>
+                            <td th:text="${visita.responsavel}">Nome Responsável</td>
+                            <td th:text="${visita.horarioEntradaFormatado}">Horário Entrada</td>
+                            <td th:text="${visita.horarioSaidaFormatado}">Horário Saída</td>
+                            <td th:text="${visita.cracha}">Cartão</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
         </div>
+        
         <div class="sidebar-right" id="sidebar-category" style="display: none;">
             <button class="close-btn" id="close-category-btn">&times;</button>
             <br><br>
@@ -132,23 +115,27 @@
         }
 
         function downloadCSV() {
-            const cards = document.querySelectorAll(".card");
+            const rows = document.querySelectorAll("table tbody tr");
             let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
             csvContent += "Nome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n";
-            cards.forEach(card => {
-                if (card.style.display !== "none") {
-                    const nome = card.querySelector("h3").innerText;
-                    const tipo = card.querySelector("p:nth-child(2) span").innerText;
-                    const horarioEntrada = card.querySelector("p:nth-child(3) span").innerText;
-                    const horarioSaida = card.querySelector("p:nth-child(4) span").innerText;
-                    const cartao = card.querySelector("p:nth-child(5) span").innerText;
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                if (cells.length > 0) {
+                    const nome = cells[0].innerText;
+                    const tipo = cells[1].innerText;
+                    const horarioEntrada = cells[2].innerText;
+                    const horarioSaida = cells[3].innerText;
+                    const cartao = cells[4].innerText;
                     csvContent += `${nome};${tipo};${horarioEntrada};${horarioSaida};${cartao}\n`;
                 }
             });
+
             if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nNome Visitante;Tipo;Horário de Entrada;Horário de Saída;Cartão\n") {
                 alert("Nenhum dado disponível para download.");
                 return;
             }
+
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -157,6 +144,7 @@
             link.click();
             document.body.removeChild(link);
         }
+
 
         function toggleSidebar() {
             const sidebar = document.getElementById('filter-sidebar');
@@ -204,18 +192,39 @@
             location.reload();
         }
 
-        function filterCards() {
-            const query = document.getElementById("search-input").value.toLowerCase();
-            const cards = document.querySelectorAll(".card");
-            cards.forEach(card => {
-                const cardText = card.innerText.toLowerCase();
-                if (cardText.includes(query)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
+        function filterTable() {
+        const query = document.getElementById("search-input").value.toLowerCase();
+        const rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            if (rowText.includes(query)) {
+                row.style.display = ""; 
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+
+        function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "none" || !menu.style.display) {
+       
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+        
+        menu.style.display = "block";
+    } else {
+        
+        menu.style.display = "none";
+    }
+}
+
+$(document).ready(function() {
+            $("#sidebar-container").load("/fragment/sidebar.html");
+        });
+</script>
+
     </script>
 </body>
 </html>

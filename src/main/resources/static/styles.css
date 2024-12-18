@@ -1,5 +1,5 @@
 body {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
     color: #ffffff;
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -32,6 +32,7 @@ body {
     color: #fff;
     cursor: pointer;
     margin-bottom: 20px;
+    z-index: 1100;
 }
 
 .sidebar .icon {
@@ -45,6 +46,8 @@ body {
     margin: 20px;
     left: 8px;
     margin-left: 2px;
+    z-index: 100;
+    
 }
 
 .sidebar .icon span {
@@ -60,6 +63,8 @@ body {
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
+
+/* Tooltip padrão */
 .sidebar:not(.open) .icon:hover::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -73,7 +78,22 @@ body {
     white-space: nowrap;
     transform: translateY(-50%);
     opacity: 0.9;
+    z-index: 100;
 }
+
+/* Remove o tooltip quando o dropdown está visível */
+.dropdown-btn:hover ~ .dropdown-menu,
+.dropdown-menu.active,
+.dropdown-menu:hover {
+    visibility: visible;
+}
+
+.dropdown-menu.active ~ .icon:hover::after,
+.dropdown-menu:hover ~ .icon:hover::after {
+    content: none;
+    visibility: hidden;
+}
+
 
 .sidebar.open ~ .main-content {
     margin-left: 200px;
@@ -109,44 +129,53 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     flex-wrap: wrap;
     margin-top: 40px;
+    margin-left: 30px;
+    overflow: visible;
 }
 
 .card {
-    background-color: #3c3c3c;
+    background-color: #3c3c3c !important;
     border-radius: 10px;
-    padding: 15px;
+    padding: 22px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s, box-shadow 0.3s;
-    margin: 5px;
+    margin: 10px;
     position: relative;
-    overflow: hidden;
-
+    overflow: visible;
     width: 300px;
     height: 200px;
+    user-select: none;
     z-index: 0;
 }
 
 .card-content {
+    
     position: relative;
     width: 100%;
     height: 100%;
     transition: filter 0.3s ease;
+    overflow: visible;
+    
 }
 
 .card:hover .card-content {
     filter: blur(3px);
+    pointer-events: none; 
+    user-select: none; 
 }
+
 
 .card h3 {
     font-size: 1.2em;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
     color: #4caf50;
     font-weight: 700;
 }
 
 .card p {
-    margin: 5px 0;
+    
+    margin: 3px 0;
     font-weight: 400;
     line-height: 1.5;
     color: #e0e0e0;
@@ -178,6 +207,7 @@ body {
     background-color: #45a049;
 }
 
+
 .add-visitor {
     display: inline-flex;
     align-items: center;
@@ -192,6 +222,7 @@ body {
     position: fixed;
     top: 20px;
     right: 210px;
+    display: none;
 }
 
 .add-visitor i {
@@ -216,6 +247,7 @@ body {
     transition: transform 0.3s ease;
     z-index: 1000;
 }
+
 
 .sidebar-vitan {
     position: fixed;
@@ -314,6 +346,15 @@ body {
     display: flex;
     align-items: center;
 }
+
+
+.select2-results__option.highlight-option {
+    color: green !important;
+    font-weight: bold;
+    
+}
+
+
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #e0e0e0 !important;
@@ -592,7 +633,9 @@ body {
 }
 
 .btn_dowload,
-.btn_dowload-correios {
+.btn_dowload-correios,
+.btn_dowload-estacion,
+.btn_dowload-chave {
     position: absolute;
     right: 130px;
     top: 20px;
@@ -608,18 +651,29 @@ body {
 }
 
 .btn_dowload:hover,
-.btn_dowload-correios:hover {
+.btn_dowload-correios:hover,
+.btn_dowload-estacion:hover,
+.btn_dowload-chave:hover {
     background-color: #2eaf55;
     transform: translateY(-2px);
 }
 
 .btn_dowload:active,
-.btn_dowload-correios:active{
+.btn_dowload-correios:active,
+.btn_dowload-estacion:active,
+.btn_dowload-chave:active{
     transform: translateY(1px);
+}
+
+.btn_dowload-chave{
+    right: 400px !important;
 }
 
 .btn_dowload-correios{
     right: 220px !important;
+}
+.btn_dowload-estacion{
+    right: 20px !important;
 }
 
 @keyframes fadeIn {
@@ -980,3 +1034,146 @@ table tbody tr:hover {
 #alertOk:hover {
     background-color: #1dbb38;
 }
+
+
+.sidebar-estacionamento{
+    display: none;
+}
+
+.sidebar-estacionamento{
+    display: none;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 10000;
+}
+
+.dropdown-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-btn:hover {
+    color: #00bcd4; 
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(0% + 5px);
+    left: 46px;
+    background-color: #2d2c2c;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
+    display: none;
+    padding: 10px 8px;
+    z-index: 15000; 
+   
+}
+
+
+.dropdown-menu a {
+    color: #e0e0e0; 
+    text-decoration: none;
+    padding: 8px 16px; 
+    display: block; 
+    transition: background-color 0.2s ease-in-out;
+    font-size: 14px; 
+}
+
+.dropdown-menu a:hover {
+    background-color: #505050; 
+    color: #ffffff; 
+}
+
+.dropdown-menu.active {
+    display: block; 
+    flex-direction: column; 
+}
+
+
+#estacionamento-menu a[href="/estacionamento/entradas"],
+#Chave-menu a[href="/chave/entradas"]{
+    color: #28a745; 
+    font-weight: bold;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+#estacionamento-menu a[href="/estacionamento/entradas"]:hover,
+#Chave-menu a[href="/chave/entradas"]:hover {
+    color: #fff; 
+    background-color: #218838; 
+}
+
+
+#estacionamento-menu a[href="/estacionamento/saidas"],
+#Chave-menu a[href="/chave/finalizados"] {
+    color: #355cdc; 
+    font-weight: bold; 
+    transition: color 0.3s, background-color 0.3s;
+}
+
+#estacionamento-menu a[href="/estacionamento/saidas"]:hover,
+#Chave-menu a[href="/chave/finalizados"]:hover {
+    color: #fff; 
+    background-color: #2365c8; 
+}
+
+
+
+#visitas-menu a[href="/registros/visitas"] {
+    color: #28a745;
+    font-weight: bold;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+#visitas-menu a[href="/registros/visitas"]:hover {
+    color: #fff; 
+    background-color: #31c553; 
+}
+
+
+#visitas-menu a[href="/registros/visitas/finalizados"] {
+    color: #355cdc; 
+    font-weight: bold; 
+    transition: color 0.3s, background-color 0.3s;
+}
+
+#visitas-menu a[href="/registros/visitas/finalizados"]:hover {
+    color: #fff; 
+    background-color: #2365c8; 
+}
+
+
+.cardicon {
+    position: absolute;
+    top: -16%;
+    left: -37px; 
+    transform: translateY(-50%); 
+    background-color: #45a0497e; 
+    color: white;
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    font-size: 24px; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    pointer-events: none; 
+    user-select: none; 
+}
+

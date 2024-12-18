@@ -12,16 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
- private final IPFilter ipFilter;
 
-    public SecurityConfigurations(IPFilter ipFilter) {
-       this.ipFilter = ipFilter;
-    }
 
     @SuppressWarnings("removal")
     @Bean
@@ -30,7 +26,6 @@ public class SecurityConfigurations {
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             .and()
-            .addFilterBefore(ipFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro antes da autenticação
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
                 .requestMatchers("/users/cadastroUsers").hasRole("ADMIN")

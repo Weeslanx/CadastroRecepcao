@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="sidebar" id="sidebar">
+    <div class="icon" data-tooltip="Estacionamento">
+        <div class="dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown('estacionamento-menu')">
+                <i class="fas fa-parking"></i> 
+                <span>Estacionamento</span>
+            </button>
+            <div id="estacionamento-menu" class="dropdown-menu" style="display: none;">
+                <a href="/estacionamento/entradas">
+                    <i class="fas fa-sign-in-alt"></i>Entradas
+                </a>
+                <a href="/estacionamento/saidas">
+                    <i class="fas fa-sign-out-alt"></i>Finalizados
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="icon" data-tooltip="Visitas">
+        <div class="dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown('visitas-menu')">
+                <i class="fa fa-paper-plane"></i> 
+                <span>Visitas</span>
+            </button>
+            <div id="visitas-menu" class="dropdown-menu" style="display: none;">
+                <a href="/registros/visitas">
+                    <i class="fa fa-sign-in-alt"></i>Entradas
+                </a>
+                <a href="/registros/visitas/finalizados">
+                    <i class="fas fa-check-circle"></i>Finalizadas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="icon" data-tooltip="Chaves">
+        <div class="dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown('Chave-menu')">
+                <i class="fa fa-key"></i> 
+                <span>Chaves</span>
+            </button>
+            <div id="Chave-menu" class="dropdown-menu" style="display: none;">
+                <a href="/chave/entradas">
+                    <i class="fa fa-sign-in-alt"></i>Em Uso
+                </a>
+                <a href="/chave/finalizados">
+                    <i class="fas fa-check-circle"></i>Finalizadas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="icon" data-tooltip="Correios">
+        <a href="/correios">
+            <i class="fas fa-envelope"></i> 
+            <span>correios</span>
+        </a>
+    </div>
+
+    <div class="icon" data-tooltip="Configuração" onclick="window.location.href='/users/cadastroUsers'">
+        <i class="fas fa-cog"></i>
+        <span>Configuração</span>
+    </div>
+    <div class="sidebar-bottom-button">
+        <form action="/users/logout" method="get">
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+
+document.addEventListener('click', function (event) {
+   
+    if (!event.target.closest('.dropdown') && !event.target.closest('.dropdown-btn')) {
+       
+        document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
+    }
+});
+
+
+    function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "none" || !menu.style.display) {
+        
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+       
+        menu.style.display = "block";
+    } else {
+       
+        menu.style.display = "none";
+    }
+}
+</script>
+</html>

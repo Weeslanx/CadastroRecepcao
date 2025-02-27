@@ -64,6 +64,7 @@
                         <p><strong>Responsável:</strong> <span th:text="${visita.responsavel}">Nome Categoria</span></p>
                         <p><strong>Horário de Entrada:</strong> <span th:text="${visita.horarioEntradaFormatado}">Horário Entrada</span></p>
                         <p><strong>Cartão:</strong> <span th:text="${visita.cracha}">Cartão</span></p>
+                        <p><strong>Observações:</strong> <span th:text="${visita.observacoes}">Observações</span></p>
                     </div>
     
                     <button class="btn-card saida" th:onclick="'abrirSidebar(' + ${visita.id} + ')'">
@@ -97,7 +98,7 @@
                         
                                 <button class="btn" type="submit">Salvar</button>
                             </form>
-                        </div>
+                        </div> 
 						
 						<div class="sidebar-right" id="sidebar-category" style="display: none;z-index: 1001;">
 						    <button class="close-btn" onclick="toggleDropdown('sidebar-category')">&times;</button> 
@@ -180,6 +181,9 @@
                                 <label for="cracha">Crachá</label>
                                 <input type="number" id="cracha" name="cracha" min="1" max="150" required>
                                 <br><br>
+
+                                <label for="observacoes">Observações:</label>
+                                <input type="text" id="observacoes" name="observacoes">
                             
                                 <div id="error-message" style="color: red; display: none;"></div>
                                 <div id="success-message" style="color: green; display: none;"></div>

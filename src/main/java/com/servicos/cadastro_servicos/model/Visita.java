@@ -30,7 +30,9 @@ public final class Visita {
     private LocalDateTime horarioSaida;
 
     
-    private int cracha; 
+    private int cracha;
+    private String observacoes;
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     // Construtor padrão
     public Visita() {
@@ -39,12 +41,13 @@ public final class Visita {
     
     
     public Visita(Visitante visitante, Categoria categoria, String responsavel,
-                  LocalDateTime horarioEntrada, LocalDateTime horarioSaida, int cracha) {
+                  LocalDateTime horarioEntrada, LocalDateTime horarioSaida, String observacoes, int cracha) {
         this.visitante = visitante;
         this.categoria = categoria; // Usando Categoria diretamente
         this.responsavel = responsavel;
         this.horarioEntrada = horarioEntrada;
         this.horarioSaida = horarioSaida;
+        this.observacoes = observacoes;
         setCracha(cracha);
     }
     
@@ -79,6 +82,15 @@ public final class Visita {
     }
 
     // Outros getters e setters...
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+    
+    // Setter para observacoes
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
 
 
     public String getResponsavel() {

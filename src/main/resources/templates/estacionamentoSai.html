@@ -140,36 +140,128 @@
                         <th>Motorista</th>
                         <th>Horário de Entrada</th>
                         <th>Horário de Saída</th>
-       
                     </tr>
                 </thead>
                 <tbody>
-                    <th:block th:each="estacionamento : ${estacionamentos}" th:if="${estacionamento.hrSaida} != null">
-                        <tr>
-                            <td th:text="${estacionamento.veiculo.placa}">Placa</td>
-                            <td th:text="${estacionamento.motorista}">Motorista</td>
-                            <td th:text="${#temporals.format(estacionamento.hrEntrada, 'dd/MM/yyyy HH:mm')}">Entrada</td>
-                            <td th:text="${#temporals.format(estacionamento.hrSaida, 'dd/MM/yyyy HH:mm')}">Saída</td>
-                            
-                        </tr>
-                    </th:block>
+                    <tbody>
+                        <th:block th:each="estacionamento : ${estacionamentos}" th:if="${estacionamento.hrSaida} != null">
+                            <tr>
+                                <td th:text="${estacionamento.veiculo.placa}" th:attr="data-id=${estacionamento.id}">Placa</td>
+                                <td th:text="${estacionamento.motorista}">Motorista</td>
+                                <td th:text="${#temporals.format(estacionamento.hrEntrada, 'dd/MM/yyyy HH:mm')}">Entrada</td>
+                                <td th:text="${#temporals.format(estacionamento.hrSaida, 'dd/MM/yyyy HH:mm')}">Saída</td>
+                            </tr>
+                        </th:block>
+                    </tbody>
                 </tbody>
             </table>
         </div>
         
+        <div id="infoModal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <span id="closeModal" class="close">&times;</span>
+                <h3>Opções</h3>
+                <p id="modal-id-container" style="display: none;">ID: <span id="modal-id"></span></p>
+
+                <div class="modal-actions">
+                    <button id="edit-button">Editar</button>
+                    <button id="delete-button">Excluir</button>
+                </div>
+            </div>
+        </div>
         
 
 
-        
-        
-       
-       
+
        </div>
-			
-						
-						  
+
+      
+
+ 		  
 			    
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('infoModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalId = document.getElementById('modal-id');
+    const tableRows = document.querySelectorAll("table tbody tr");
+
+    // Adiciona evento de clique em cada linha
+    tableRows.forEach(row => {
+        row.addEventListener('click', function () {
+            // Obtém os dados da linha clicada
+            const cells = this.querySelectorAll("td");
+            const id = cells[0].getAttribute("data-id");  // Aqui pegamos o ID do estacionamento
+            const placa = cells[0].textContent;
+
+            
+            modalId.textContent = id;
+
+           
+            modal.style.display = "block";
+        });
+    });
+
+   
+    closeModal.addEventListener('click', function () {
+        modal.style.display = "none";
+    });
+
+    
+    window.addEventListener('click', function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    
+    document.getElementById("edit-button").addEventListener("click", function () {
+        customAlert("Função de edição ainda não implementada.");
+    });
+
+    document.getElementById("delete-button").addEventListener("click", function () {
+        const id = modalId.textContent.trim(); // Agora o ID do estacionamento
+    
+            deletarEstacionamento(id);
+        
+    });
+
+
+
+         // Função de exclusão (exemplo para chamada de API ou lógica)
+         function deletarEstacionamento(id) {
+    customConfirm(`Tem certeza que deseja excluir este registro com o ID: ${id}?`)
+        .then((confirmed) => {
+            if (confirmed) {
+                fetch(`/estacionamento/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => {
+                    if (response.status === 204) {
+                        customAlert("Registro excluído com sucesso!");
+                        window.location.reload(); 
+                    } else if (response.status === 404) {
+                        customAlert("Registro não encontrado. Não foi possível excluir.");
+                    } else {
+                        customAlert("Ocorreu um erro ao tentar excluir o registro.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir o registro:", error);
+                    customAlert("Erro de comunicação com o servidor.");
+                });
+            }
+        });
+}
+
+   
+
+       
+    });
 
 
 document.body.addEventListener('click', function(event) {
@@ -253,14 +345,17 @@ document.querySelectorAll('.dropdown-btn').forEach(button => {
 });
 
 
-function deletarEstacionamento(id) {
+function deletarEstacionamentor(id) {
    
     customConfirm("Tem certeza de que deseja excluir este registro?")
         .then((confirmado) => {
             if (confirmado) {
                 
                 fetch(`/estacionamento/${id}`, {
-                    method: 'DELETE',
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 })
                 .then(response => {
                     
@@ -268,7 +363,7 @@ function deletarEstacionamento(id) {
                         
                         location.reload();
 
-                        showAlert("Registro excluído com sucesso.", () => {
+                        customAlert("Registro excluído com sucesso.", () => {
                           
                             document.querySelector(`tr[data-id="${id}"]`).remove();
                            
@@ -338,7 +433,7 @@ function filter() {
     });
 
     if (csvContent.trim() === "data:text/csv;charset=utf-8,\uFEFF\nPlaca;Motorista;Horário de Entrada;Horário de Saída\n") {
-        alert("Nenhum dado disponível para download.");
+        customAlert("Nenhum dado disponível para download.");
         return;
     }
 

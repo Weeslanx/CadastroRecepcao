@@ -155,7 +155,7 @@
                 <form action="/chave/registrar" method="POST">
 
                 <label for="solicitante">Solicitante</label>
-                <select id="solicitante" name="solicitante" class="select2" required>
+                <select id="solicitante" name="requisi" class="select2" required>
                     <option value="" disabled selected>Selecione um solicitante</option>
                 </select>
 
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebarRegischave = document.getElementById('sidebar-Regischave');
 
     function reloadChaveList() {
-        fetch('/chave/list')
+        fetch('/chave/chaves')
             .then(response => response.json())
             .then(data => {
                 chaveSelect.empty();
@@ -386,10 +386,18 @@ document.body.addEventListener('click', function(event) {
     }
 });
 
-document.getElementById('close-saida-btn').addEventListener('click', function() {
-    document.getElementById('sidebar-add-saida').style.display = 'none';
-    currentVisitaId = null;
-});
+let currentVisitaId = null;
+
+function abrirSidebar(visitaId) {
+    currentVisitaId = visitaId;
+    console.log("Abrindo sidebar para visita ID:", currentVisitaId); // Debug
+    document.getElementById('sidebar-add-saida').style.display = 'block';
+}
+
+    function fecharSidebar() {
+        document.getElementById('sidebar-add-saida').style.display = 'none';
+        currentVisitaId = null;
+    }
 
 // Custom Alerts and Confirms
 function customAlert(message) {
@@ -403,6 +411,8 @@ function customAlert(message) {
         window.location.reload();
     };
 }
+
+
 
 function customConfirm(message) {
     return new Promise((resolve) => {
@@ -455,9 +465,9 @@ function atualizarHorarioSaida() {
         customAlert("Por favor, selecione um horário de saída.");
         return;
     }
-    const Id = sessionStorage.getItem("Id");
+    const Id = currentVisitaId;
     if (!Id) {
-        customAlert("Erro: ID do estacionamento não encontrado.");
+        customAlert("Erro: ID da chave não encontrado.");
         return;
     }
     fetch(`/chave/atualizarSaida/${Id}`, {

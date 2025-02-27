@@ -110,8 +110,8 @@ public final class Visita {
     }
 
     public void setCracha(int cracha) {
-        if (cracha < 1 || cracha > 30) {
-            throw new IllegalArgumentException("O crachá deve ser um número entre 1 e 10.");
+        if (cracha < 1 || cracha > 150) {
+            throw new IllegalArgumentException("O crachá deve ser um número entre 1 e 150.");
         }
         this.cracha = cracha;
     }

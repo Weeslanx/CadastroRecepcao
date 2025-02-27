@@ -114,34 +114,31 @@ public class EstacionamentoController {
 
     @DeleteMapping("/{id}")
 public ResponseEntity<Void> excluirRegistro(@PathVariable Long id) {
-    if (estacionamentoRepository.existsById(id)) {
-        Estacionamento estacionamento = estacionamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estacionamento não encontrado"));
+    Estacionamento estacionamento = estacionamentoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estacionamento não encontrado"));
 
-        // Captura o usuário logado
-        String usuarioLogado = getUsuarioLogado();
+    // Captura o usuário logado
+    String usuarioLogado = getUsuarioLogado(); // Certifique-se de implementar corretamente
 
-        // Cria e salva a auditoria
-        Auditoria auditoria = new Auditoria();
-        auditoria.setCreatedBy(usuarioLogado);
-        auditoria.setCreatedAt(LocalDateTime.now());
-        auditoria.setDescricao("Exclusão de registro no estacionamento: " +
-        "ID " + estacionamento.getId() + 
-        ", Placa: " + estacionamento.getVeiculo().getPlaca() + 
-        ", Motorista: " + estacionamento.getMotorista() + 
-        ", Hora de Entrada: " + estacionamento.getHrEntrada() + 
-        ", Hora de Saída: " + (estacionamento.getHrSaida() != null ? estacionamento.getHrSaida() : "Não registrado"));
+    // Cria e salva a auditoria
+    Auditoria auditoria = new Auditoria();
+    auditoria.setCreatedBy(usuarioLogado);
+    auditoria.setCreatedAt(LocalDateTime.now());
+    auditoria.setDescricao(String.format("Exclusão de registro no estacionamento: ID %d, Placa: %s, Motorista: %s, Hora de Entrada: %s, Hora de Saída: %s",
+            estacionamento.getId(),
+            estacionamento.getVeiculo().getPlaca(),
+            estacionamento.getMotorista(),
+            estacionamento.getHrEntrada(),
+            estacionamento.getHrSaida() != null ? estacionamento.getHrSaida() : "Não registrado"));
 
-        auditoriaRepository.save(auditoria);
+    auditoriaRepository.save(auditoria);
 
-        // Remove o registro do estacionamento
-        estacionamentoRepository.delete(estacionamento);
+    // Remove o registro do estacionamento
+    estacionamentoRepository.delete(estacionamento);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 }
+
 
     
 

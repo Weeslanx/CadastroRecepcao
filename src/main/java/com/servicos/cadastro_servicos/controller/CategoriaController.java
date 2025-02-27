@@ -42,13 +42,13 @@ public class CategoriaController {
     }
 
 @PostMapping("/novocadastro")
-@ResponseBody // Garante que o retorno será em JSON
+@ResponseBody 
 public ResponseEntity<?> cadastrarCategoria(@ModelAttribute Categoria categoria) {
     try {
-        // Salva a categoria
+        
         categoriaRepository.save(categoria);
 
-        // Registra a auditoria
+        
         String usuarioLogado = getUsuarioLogado();
         String descricaoAuditoria = "Nova categoria cadastrada: " +
                                     "ID " + categoria.getId() +

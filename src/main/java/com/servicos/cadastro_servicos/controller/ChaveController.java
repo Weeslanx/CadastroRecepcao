@@ -10,16 +10,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.ui.Model;
 
 import com.servicos.cadastro_servicos.model.Auditoria;
 import com.servicos.cadastro_servicos.model.Chave;
@@ -92,7 +92,7 @@ public String Cadastrar(@ModelAttribute Chave chave) {
     return "redirect:/chave/entradas";
 }
 
-
+   
 
     @PostMapping("/registrar")
     public String registrar(@ModelAttribute RegisChaves regischave) {

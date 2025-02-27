@@ -192,10 +192,11 @@
 			    
 <script>
 
-    // Inicializa a função ao carregar a página
+    
 document.addEventListener('DOMContentLoaded', function(){
  configurarFormularioFuncionario();
- populateFuncionariosSelect()
+ populateFuncionariosSelect();
+ carregarSetores();
 
 });
 
@@ -357,7 +358,7 @@ function customConfirm(message) {
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Setor cadastrado com sucesso!');
+                        customAlert('Setor cadastrado com sucesso!');
                         sidebarSetor.style.display = 'none'; // Fecha o sidebar de setor
                         carregarSetores(); // Recarrega os setores no select
                     } else {
@@ -366,7 +367,7 @@ function customConfirm(message) {
                 })
                 .catch(error => {
                     console.error('Erro ao salvar o setor:', error);
-                    alert('Erro ao salvar o setor.');
+                    customAlert('Erro ao salvar o setor.');
                 });
         });
 
